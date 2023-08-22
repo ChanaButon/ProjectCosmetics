@@ -8,12 +8,6 @@ import { addUser, setUser } from '../redux/actions'//יבוא של השם של �
 
 import './register.css'
 
-// const mapStateToProps = (state) = {
-//   return: {
-//     aa: state.UserReducer.currentUser
-//   }
-// }
-
 
 
 const Register = (props) => {
@@ -26,7 +20,18 @@ const Register = (props) => {
   const passwordRef = useRef('null')
   const MailRef = useRef('null')
   const PhoneRef = useRef('null')
-  
+
+  const [formErrors, setFormErrors] = useState({
+    name: false,
+    familyName: false,
+    ID: false,
+    password: false,
+    mail: false,
+    phone: false,
+  });
+  const [checkboxError, setCheckboxError] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
 
 
 
@@ -41,6 +46,24 @@ const Register = (props) => {
 
 
   const checkUser = () => {
+    
+    const errors = {
+      name: !nameRef.current.value,
+      familyName: !FamilyNameRef.current.value,
+      ID: !IDRef.current.value,
+      password: !passwordRef.current.value,
+      mail: !MailRef.current.value,
+      phone: !PhoneRef.current.value,
+    };
+
+  if (Object.values(errors).some(error => error)) {
+    setFormErrors(errors);
+    return;
+  }
+  if (!isChecked) {
+    setCheckboxError(true); // Set checkbox error to true
+    return;
+  }
     //שליחת הנתונים להוספה לנוד - משתמש חדש כולל כל הנתונים 
     let user = {
       Name: nameRef.current.value,
@@ -51,7 +74,6 @@ const Register = (props) => {
       Phone:PhoneRef.current.value,
       
 
-      //
     }
 
     //שליחה לשרת
@@ -66,11 +88,6 @@ const Register = (props) => {
       console.log(err);
       alert("אירעה שגיאה")
     })
-    // async function createEvent(event) {
-    //   const response = await axios.post('/create-event', event);
-    //   return response.data;
-    // }
-
 
   }
 
@@ -83,14 +100,16 @@ const Register = (props) => {
       :שם פרטי
     </label>
     <br/>
-    <input ref={nameRef} placeholder='Name' id="firstNameInput" className="aaa bbb"  type="text" />
-  </div>
-  <div className="inputColumn">
+    <input ref={nameRef} placeholder='Name' id="firstNameInput" className={`aaa bbb ${formErrors.name ? 'error' : ''}`}  type="text" />
+    {formErrors.name && <span className="error-text">שדה חובה</span>}
+  </div> 
+  <div cl assName="inputColumn">
     <label htmlFor="lastNameInput" className="inputLabel">
       :שם משפחה
     </label>
     <br/>
-    <input ref={FamilyNameRef}  placeholder='FamilyName' id="lastNameInput" className="aaa bbb" type="text" />
+    <input ref={FamilyNameRef}  placeholder='FamilyName' id="lastNameInput"  className={`aaa bbb ${formErrors.familyName ? 'error' : ''}`} type="text" />
+    {formErrors.familyName && <span className="error-text">שדה חובה</span>}
   </div>
 <br/>
 <div className="inputColumn">
@@ -98,7 +117,8 @@ const Register = (props) => {
       :תעודת זהות
     </label>
     <br/>
-    <input ref={IDRef}  placeholder='ID' id="lastNameInput" className="aaa bbb"  type="text" />
+    <input ref={IDRef}  placeholder='ID' id="lastNameInput" className={`aaa bbb ${formErrors.ID ? 'error' : ''}`}  type="text" />
+    {formErrors.ID && <span className="error-text">שדה חובה</span>}
   </div>
 {/* <br/> */}
 <br/>
@@ -107,60 +127,32 @@ const Register = (props) => {
       :סיסמא
     </label>
     <br/>
-    <input ref={passwordRef}  placeholder='PassWord' id="lastNameInput" className="aaa bbb" type="text" />
+    <input ref={passwordRef}  placeholder='PassWord' id="lastNameInput" className={`aaa bbb ${formErrors.password ? 'error' : ''}`} type="text" />
+    {formErrors.password && <span className="error-text">שדה חובה</span>}
   </div>
   <div className="inputColumn">
     <label htmlFor="emailInput" className="inputLabel">
       :אימייל
     </label>
     <br/>
-    <input ref={MailRef}  placeholder='Gmail' id="emailInput" className="aaa bbb"  type="email" />
+    <input ref={MailRef}  placeholder='Gmail' id="emailInput" className={`aaa bbb ${formErrors.mail ? 'error' : ''}`}   type="email" />
+    {formErrors.mail && <span className="error-text">שדה חובה</span>}
   </div>
   <div className="inputColumn">
     <label htmlFor="phoneInput" className="inputLabel">
       :טלפון
     </label>
     <br/>
-    <input ref={PhoneRef} placeholder='Phone' id="phoneInput" className="aaa bbb"  type="tel" />
+    <input ref={PhoneRef} placeholder='Phone' id="phoneInput" className={`aaa bbb ${formErrors.phone ? 'error' : ''}`}  type="tel" />
+    {formErrors.phone && <span className="error-text">שדה חובה</span>}
   </div>
 </div>
 
-      {/* <Message
-        attached
-        header='ברוכים הבאים!'
-        content='נא למלא פרטים ליצירת חשבון'
-      /> */}
-      {/* <Form className='attached fluid segment'> */}
-        {/* <Form.Group widths='equal'> */}
-        
-        {/* <Form.Input
-          fluid
-          label='שם'
-          placeholder='First Name'
-          type='text'
-          inputRef={nameRef}
-        /> */}
-
-        {/* <Form.Input
-          fluid
-          label=' משפחה'
-          placeholder='Last Name'
-          type='text'
-        /> */}
-        {/* </Form.Group> */}
-        {/* <Form.Input label=' phone' placeholder='ID' type='text' /> */}
-        {/* <Form.Input label=' mail' placeholder='GIMAIL' type='text' /> */}
-
-
-
-        {/* <Form.Input label='סיסמא' placeholder='Password' type='password' /> */}
-        <Form.Checkbox inline label='אני מאשר/ת את תנאי האתר' />
+      
+        <Form.Checkbox inline label='אני מאשר/ת את תנאי האתר'  checked={isChecked} onChange={() => { setIsChecked(!isChecked); setCheckboxError(false);  }}/>
+        {checkboxError && <span className="error-text">יש לאשר את תנאי האתר</span>}
         <Button onClick={checkUser} color='pink'>Submit</Button>
-      {/* </Form>
-      <Message attached='bottom' warning>
-        <Icon name='עזרה' />
-        רשום ?&nbsp;<button onClick={checkUser}> לחץ להרשמה</button>&nbsp;
-      </Message> */}
+      
 
 
     </div>
@@ -168,56 +160,3 @@ const Register = (props) => {
  } 
 
 export default connect()(Register)
-
-
-
-
-
-
-
-
-
-
-
-
-// const MessageExampleAttached = ({ setNextPage }) => (
-
-//   <div>
-//     <Message
-//       attached
-//       header='ברוכים הבאים!'
-//       content='נא למלא פרטים ליצירת חשבון'
-//     />
-//     <Form className='attached fluid segment'>
-//       {/* <Form.Group widths='equal'> */}
-//       <Form.Input
-//         fluid
-//         label=' שם'
-//         placeholder='First Name'
-//         type='text'
-//       />
-//       <Form.Input
-//         fluid
-//         label=' משפחה'
-//         placeholder='Last Name'
-//         type='text'
-//       />
-//       {/* </Form.Group> */}
-//       <Form.Input label=' תעודת זהות' placeholder='ID' type='text' />
-
-
-//       <Form.Input label='סיסמא' placeholder='Password' type='password' />
-//       <Form.Checkbox inline label='אני מאשר/ת את תנאי האתר' />
-//       <Button onClick={() => setNextPage(true)} color=' light pink'>Submit</Button>
-//     </Form>
-//     <Message attached='bottom' warning>
-//       <Icon name='עזרה' />
-//       רשום ?&nbsp;<a href='#'> לחץ להתחברות</a>&nbsp;
-//     </Message>
-
-
-//   </div>
-// )
-
-
-
