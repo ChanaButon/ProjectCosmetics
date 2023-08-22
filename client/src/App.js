@@ -37,49 +37,9 @@ function App() {
 
 
       <H/>
-      {/* <Register1/> */}
       <Logo />
       <Home />
-
-      {/* <App1 /> */}
-      {/* <getCalendarEvents/> */}
-      {/* <Calendar/> */}
-      {/* <Try/> */}
-      {/* <Ch/> */}
-      {/* <DatePicker /> */}
-      {/* <Button111/> */}
-      {/* {firstTime ? <Entrance setFirstTime={setFirstTime} /> : " "} */}
-
-      {/* {Home1 ? <Home setHome1={setHome1} /> : "null" } */}
-
-      {/* <Chat/> */}
-
-      {/* <ImageUploader/>  */}
       <Outlet />
-      {/* <QuestionButtons/> */}
-
-      {/* <MainPage/> */}
-
-
-
-      {/* <nav>
-        <Link to="Login">Login</Link>
-      </nav>
-      <nav>
-        <Link to="HomeClient">HomeClient</Link>
-      </nav> */}
-
-      {/* <Login/> */}
-      <br />
-      {/* <HomeClient/> */}
-      <br />
-      {/* <Check/> */}
-
-      {/* <Example/> */}
-
-
-
-      {/* <Mmm/> */}
     </div>
   );
 }
