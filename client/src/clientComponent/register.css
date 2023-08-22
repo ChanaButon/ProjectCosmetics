@@ -1,0 +1,83 @@
+.inputLabel {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .aaa {
+    padding: 10px;
+    border: 5px solid rgb(200, 128, 128);
+    border-radius: 30px;
+    /* border-radius:50px; */
+    font-size: 16px;
+    outline: none;
+    width: 200px;
+  
+  }
+  
+  .bbb {
+    margin-bottom: 10px;
+  }
+  
+  input[type="password"]:focus,
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus {
+    border-color: #1a1919;
+    box-shadow: 0 0 5px rgba(36, 69, 105, 0.5);
+  }
+
+
+  /* .inputRow {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.inputColumn {
+   flex: 2; 
+  margin-right: 2px;
+} */
+
+/* .inputColumn:last-child {
+  margin-right: 1000px;
+} */
+/* .inputRow {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .inputColumn {
+    flex: 0 0 calc(50% - 2px);
+    margin-right: 2px;
+  }
+  
+  .inputColumn:nth-child(odd) {
+    margin-right: 0;
+  } */
+
+  /* .inputRow {
+    display: flex;
+    flex-wrap: wrap;
+  }
+   */
+  .inputColumn {
+    flex: 0 0 15%;
+    /* margin-right:5; */
+  }
+  
+  .inputColumn input {
+    margin-right: 0;
+  }
+  .inputRow {
+    /* display: flex; */
+    flex-wrap: wrap;
+  }
+  
+  /* .inputColumn { */
+    /* flex: 0 0 auto; */
+    /* margin-right:5; */
+  /* } */
+  
+  
+
+  
+  
