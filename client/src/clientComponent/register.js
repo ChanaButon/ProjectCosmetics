@@ -117,7 +117,7 @@ const Register = (props) => {
       :תעודת זהות
     </label>
     <br/>
-    <input ref={IDRef}  placeholder='ID' id="lastNameInput" className={`aaa bbb ${formErrors.ID ? 'error' : ''}`}  type="text" />
+    <input ref={IDRef}  placeholder='ID' id="lastNameInput" className={`aaa bbb ${formErrors.ID ? 'error' : ''}`}  type="Number" />
     {formErrors.ID && <span className="error-text">שדה חובה</span>}
   </div>
 {/* <br/> */}
@@ -143,7 +143,7 @@ const Register = (props) => {
       :טלפון
     </label>
     <br/>
-    <input ref={PhoneRef} placeholder='Phone' id="phoneInput" className={`aaa bbb ${formErrors.phone ? 'error' : ''}`}  type="tel" />
+    <input  ref={PhoneRef} placeholder='Phone' id="phoneInput" className={`aaa bbb ${formErrors.phone ? 'error' : ''}`}  type="tel" />
     {formErrors.phone && <span className="error-text">שדה חובה</span>}
   </div>
 </div>
