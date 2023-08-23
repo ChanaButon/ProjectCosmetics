@@ -7,8 +7,8 @@ import { connect } from 'react-redux'
 import { addUser, setUser } from '../redux/actions'//יבוא של השם של הפונקציה באקשנס שאותו נרצה להפעיל
 
 import './register.css'
-
-
+import { isValidPhoneNumber } from '../validation/validationUtils.js'
+import {isValidEmail} from '../validation/validationUtils'
 
 const Register = (props) => {
   const { dispatch,aa } = props
@@ -47,19 +47,47 @@ const Register = (props) => {
 
   const checkUser = () => {
     
-    const errors = {
-      name: !nameRef.current.value,
+    setFormErrors({name: !nameRef.current.value,
       familyName: !FamilyNameRef.current.value,
       ID: !IDRef.current.value,
       password: !passwordRef.current.value,
-      mail: !MailRef.current.value,
-      phone: !PhoneRef.current.value,
-    };
+      mail: !isValidEmail(MailRef.current.value),
+      phone: !isValidPhoneNumber(PhoneRef.current.value),
+  });
+    console.log(formErrors)
 
-  if (Object.values(errors).some(error => error)) {
-    setFormErrors(errors);
-    return;
-  }
+//   const isPhoneValid = isValidPhoneNumber(PhoneRef.current.value);
+
+// if (!isPhoneValid) {
+//   setFormErrors(prevErrors => ({
+//     ...prevErrors,
+//     phone: true
+//   }));
+//   console.log(formErrors)
+
+ 
+// //}
+//    const isMailValid = isValidEmail(MailRef.current.value)
+//   if (!isMailValid)
+//   {
+//     setFormErrors(prevErrors => ({
+//       ...prevErrors,
+//       mail: true
+//     }));
+    
+//   }
+
+  // if (Object.values(errors).some(error => error)) {
+  //   setFormErrors(errors);
+  //   return
+  // }
+
+  
+    if(Object.values(formErrors).some((status) => status === true)){
+      return
+    }
+ 
+
   if (!isChecked) {
     setCheckboxError(true); // Set checkbox error to true
     return;
@@ -79,7 +107,6 @@ const Register = (props) => {
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser', user).then((res) => {
       if (res.data) {
-        console.log(res);
         //עדכון לסטור
         dispatch(setUser(res.data.newUser))
         navigate("/MainPage")
@@ -136,7 +163,7 @@ const Register = (props) => {
     </label>
     <br/>
     <input ref={MailRef}  placeholder='Gmail' id="emailInput" className={`aaa bbb ${formErrors.mail ? 'error' : ''}`}   type="email" />
-    {formErrors.mail && <span className="error-text">שדה חובה</span>}
+    {formErrors.mail && <span className="error-text">מייל לא תקין, הקש שוב</span>}
   </div>
   <div className="inputColumn">
     <label htmlFor="phoneInput" className="inputLabel">
@@ -144,7 +171,7 @@ const Register = (props) => {
     </label>
     <br/>
     <input  ref={PhoneRef} placeholder='Phone' id="phoneInput" className={`aaa bbb ${formErrors.phone ? 'error' : ''}`}  type="tel" />
-    {formErrors.phone && <span className="error-text">שדה חובה</span>}
+    {formErrors.phone && <span className="error-text">הקש מספר טלפון תקין</span>}
   </div>
 </div>
 
