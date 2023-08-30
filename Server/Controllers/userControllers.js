@@ -1,139 +1,41 @@
-const User = require('../Models/userModel')
-
-
-// const newUser=async(req, res)=> {
-//     console.log("aaa");
-
-//     let myUser1 = new User(
-//         {
-//             Name: req.body.Name,
-//             FamilyName: req.body.FamilyName,
-//             ID: req.body.ID,
-//             Password: req.body.Password,
-//             Mail: req.body.Mail,
-//             Phone: req.body.Phone,
-//             // UserType: req.body.pId
-//         })
-//     try {
-//         await myUser1.save();
-//         console.log({ newUser: myUser1 });
-//         res.json({ newUser: myUser1 });
-//         return res.json({ newUser: myUser1 })
-        
-
-//     }
-//     catch (error) {
-//         res.send("cannot save new user: " + error.message)
-//     }
-// }
-// async function newUser(userData, res) {
-//     console.log("aaa");
-    
-  
-//     try {
-//       let myUser1 = new User(userData);
-//       await myUser1.save();
-//       console.log({ newUser: myUser1 });
-//       res.json({ newUser: myUser1 });
-//       return res.json({ newUser: myUser1 });
-//     } catch (error) {
-//       res.send("cannot save new user: " + error.message);
-//     }
-//   }
-  
-//   module.exports = { createNewUser };
-  
-// const { newUser } = require('./userUtils');
-
-// משתמשים באובייקט המשתמש
-// const userData = {
-//   Name: req.body.Name,
-//   FamilyName: req.body.FamilyName,
-//   ID: req.body.ID,
-//   Password: req.body.Password,
-//   Mail: req.body.Mail,
-//   Phone: req.body.Phone,
-  // UserType: req.body.pId
-// };
-
-//פונקציה רגילה:
-
-// פונקציה רגילה שמקבלת אובייקט להוספה
-// מוסיפה למסד
-// ומחזירה רטורן רגיל או עם התוצאה -אובייקט או אם לא הצליח הודעה
-
-//פונקצית שרת שהיא - או הוספת יוזר או עסק
-//הפונקציה מקבלת req&res
-//שולחת את האובייקט שנמצא בבודי להוספה - שליחה לפונקציה
-//אם הצליח -- משיכה הלאה למה שצריך או אם צריך להחזיר - החזרה
-
-// async function createNewUser(userData) {
-//     console.log("aaa");
-  
-//     try {
-//       let myUser1 = new User(userData);
-//       await myUser1.save();
-//       console.log({ newUser: myUser1 });
-//       res.json({ newUser: myUser1 });
-//     //   return res.json({ newUser: myUser1 });
-//     } catch (error) {
-//       res.send("cannot save new user: " + error.message);
-//     }
-//   }
-  
-
-//   async function newUser(req, res) {
-//     const userData = {
-//       Name: req.body.Name,
-//       FamilyName: req.body.FamilyName,
-//       ID: req.body.ID,
-//       Password: req.body.Password,
-//       Mail: req.body.Mail,
-//       Phone: req.body.Phone,
-//       // UserType: req.body.pId
-//     };
-  
-//     createNewUser(userData);
-
-//   }
-
-  
-
-// קריאה לפונקציה עם האובייקט המשתמש והתגובה
-// newUser(userData, res);
-
-
+const UserType = require('../Models/UserType');
+const User = require('../Models/User');
 
 async function serverFunction(userData) {
     console.log("aaa");
 
-    let myUser1 = new User(
-        {
+    try {
+        // Create a new user type
+        let myUserType = new newUserType({
+            userNameType: userData.Type
+        });
+        await myUserType.save();
+        
+        // Create a new user with the user type reference
+        let myUser = new User({
             Name: userData.Name,
             FamilyName: userData.FamilyName,
             ID: userData.ID,
             Password: userData.Password,
             Mail: userData.Mail,
             Phone: userData.Phone,
-            // UserType: req.body.pId
-        })
-    try {
-        await myUser1.save();
-        console.log({ newUser: myUser1 });
-        // res.json({ newUser: myUser1 })
-        return  myUser1 
-        
+            UserType: myUserType._id // Use the ID of the created user type
+        });
 
-    }
+        await myUser.save();
 
+        console.log({ newUser: myUser });
+        return myUser;
 
-    catch (error) {
-        return null 
+    } catch (error) {
+        return null;
     }
 }
 
+
 // פונקצית שרת שמשתמשת בפונקציה newUser
 async function newUser(req, res) {
+    console.log(req.body.Type)
     try {
       const result = await serverFunction(req.body);
       res.json(result);

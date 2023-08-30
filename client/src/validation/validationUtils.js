@@ -21,3 +21,11 @@ export function isValidEmail(email) {
     return emailPattern.test(email);
   };
 
+ export function isValidId(id){
+    // Check if the input is exactly 8 digits long and contains only numbers
+    const isValidFormat = /^\d{9}$/.test(id);
+
+    // Additional validation rules can be added here based on your specific requirements
+
+    return isValidFormat;
+ }

@@ -22,9 +22,12 @@ mongoose.connect(process.env.SHIRA_CODE_MONGODB
 }).catch(err => { "myErr" + err })
 
 
-const userRouter = require('./Routes/userRoute')
+const userRouter=require('./Routes/userRoute')
+const userTypeRouter=require('./Routes/userTypeRoute')
 const productRouter=require('./Routes/productRoute')
-app.use('/user', userRouter)
+
+app.use('/User',userRouter)
+app.use('/UserType',userTypeRouter)
 app.use('/Product', productRouter)
 
 

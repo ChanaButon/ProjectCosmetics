@@ -28,9 +28,11 @@ mongoose.connect(process.env.SHIRA_CODE_MONGODB
 
 //routes
 const userRouter=require('./Routes/userRoute')
+const userTypeRouter=require('./Routes/userTypeRoute')
 const productRouter=require('./Routes/productRoute')
 
 app.use('/User',userRouter)
+app.use('/UserType',userTypeRouter)
 app.use('/Product', productRouter)
 
 

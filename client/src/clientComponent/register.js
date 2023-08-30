@@ -1,5 +1,6 @@
 
 import React, { useRef, useState } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 import { Button, Form, Icon, Message } from 'semantic-ui-react'
 import axios from 'axios'
@@ -9,6 +10,7 @@ import { addUser, setUser } from '../redux/actions'//יבוא של השם של �
 import './register.css'
 import { isValidPhoneNumber } from '../validation/validationUtils.js'
 import {isValidEmail} from '../validation/validationUtils'
+import { isValidId } from '../validation/validationUtils.js'
 
 const Register = (props) => {
   const { dispatch,aa } = props
@@ -31,12 +33,12 @@ const Register = (props) => {
   });
   const [checkboxError, setCheckboxError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-
-
-
-
+  const [isPageOpen, setIsPageOpen] = useState(true);
 
   
+  const handleExitClick = () => {
+    navigate('/'); // Navigate to the main page
+  };
 
   if (nextPage1 == true) {
 
@@ -49,38 +51,12 @@ const Register = (props) => {
     
     setFormErrors({name: !nameRef.current.value,
       familyName: !FamilyNameRef.current.value,
-      ID: !IDRef.current.value,
+      ID: !isValidId(IDRef.current.value),
       password: !passwordRef.current.value,
       mail: !isValidEmail(MailRef.current.value),
       phone: !isValidPhoneNumber(PhoneRef.current.value),
   });
     console.log(formErrors)
-
-//   const isPhoneValid = isValidPhoneNumber(PhoneRef.current.value);
-
-// if (!isPhoneValid) {
-//   setFormErrors(prevErrors => ({
-//     ...prevErrors,
-//     phone: true
-//   }));
-//   console.log(formErrors)
-
- 
-// //}
-//    const isMailValid = isValidEmail(MailRef.current.value)
-//   if (!isMailValid)
-//   {
-//     setFormErrors(prevErrors => ({
-//       ...prevErrors,
-//       mail: true
-//     }));
-    
-//   }
-
-  // if (Object.values(errors).some(error => error)) {
-  //   setFormErrors(errors);
-  //   return
-  // }
 
   
     if(Object.values(formErrors).some((status) => status === true)){
@@ -100,6 +76,7 @@ const Register = (props) => {
       Password: passwordRef.current.value,
       Mail:MailRef.current.value,
       Phone:PhoneRef.current.value,
+      Type: "client",
       
 
     }
@@ -120,6 +97,9 @@ const Register = (props) => {
 
   return (
     <div>
+      <button className="exit-button" onClick={handleExitClick}>
+      X
+    </button>
    
 <div className="inputRow">
   <div className="inputColumn">
@@ -145,7 +125,7 @@ const Register = (props) => {
     </label>
     <br/>
     <input ref={IDRef}  placeholder='ID' id="lastNameInput" className={`aaa bbb ${formErrors.ID ? 'error' : ''}`}  type="Number" />
-    {formErrors.ID && <span className="error-text">שדה חובה</span>}
+    {formErrors.ID && <span className="error-text">ת"ז לא תקינה ,הקש שוב</span>}
   </div>
 {/* <br/> */}
 <br/>
@@ -184,6 +164,9 @@ const Register = (props) => {
 
     </div>
    )
+
  } 
+
+
 
 export default connect()(Register)

@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     Mail:{type: String, require },
     Phone:{type: String, require },
     
-    // UserType: { type: mongoose.Schema.Types.ObjectId, ref: "UserType" }
+    UserType: { type: mongoose.Schema.Types.ObjectId, ref: "UserType" }
     
 
 

@@ -65,16 +65,6 @@ const checkUser = () => {
     return
   }
 
-// const isPhoneValid = isValidPhoneNumber(PhoneRef.current.value);
-
-// if (!isPhoneValid) {
-//   setFormErrors(prevErrors => ({
-//     ...prevErrors,
-//     phone: true
-//   }));
-//   return;
-// }
-// console.log(IDRef.current.value)
 if (!isChecked) {
   setCheckboxError(true); // Set checkbox error to true
   return;
