@@ -5,12 +5,16 @@ async function serverFunction(userData) {
     console.log("aaa");
 
     try {
-        // Create a new user type
-        let myUserType = new UserType({
-            userNameType: userData.Type
-        });
-        await myUserType.save();
+        // Check if a UserType with the provided userNameType exists
+        let myUserType = await UserType.findOne({ userNameType: userData.Type });
 
+        if (!myUserType) {
+            // If it doesn't exist, create a new UserType
+            myUserType = new UserType({
+                userNameType: userData.Type
+            });
+            await myUserType.save();
+        }
         // Create a new user with the user type reference
         let myUser = new User({
             Name: userData.Name,

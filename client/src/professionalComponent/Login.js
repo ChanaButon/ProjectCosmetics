@@ -83,12 +83,13 @@ if (!isChecked) {
       Mail:MailRef.current.value,
       Phone:PhoneRef.current.value,
       TreatmantName:selectedTreatments,
+      Type: "business",
       
     }
    
 
     //שליחה לשרת
-    axios.post('http://localhost:3321/Product/newProduct',product).then((res) => {
+    axios.post('http://localhost:3321/User/newUser',product).then((res) => {
       if (res.data) {
         console.log(res);
         //עדכון לסטור

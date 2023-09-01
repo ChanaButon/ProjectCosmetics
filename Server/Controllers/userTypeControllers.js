@@ -25,7 +25,20 @@ async function newUserType(req, res) {
     }
 }
 
-module.exports = { newUserType };
+
+
+const findUserByType = async (type) => {
+    try {
+        let user = await UserType.findOne({ userNameType: type });
+        console.log(user);
+        return user;
+    } catch (error) {
+        console.error("Error finding user:", error);
+        return null;
+    }
+}
+
+module.exports = { newUserType,findUserByType };
 
 
 
