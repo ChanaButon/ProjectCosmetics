@@ -94,7 +94,7 @@ if (!isChecked) {
         console.log(res);
         //עדכון לסטור
         dispatch(setUser(res.data.newProduct))
-        navigate("/MainPage")
+        navigate("/BusinessLogin",{state:{product}});
       }
     }).catch((err) => {
       console.log(err);
