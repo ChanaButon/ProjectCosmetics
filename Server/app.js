@@ -30,10 +30,14 @@ mongoose.connect(process.env.SHIRA_CODE_MONGODB
 const userRouter=require('./Routes/userRoute')
 const userTypeRouter=require('./Routes/userTypeRoute')
 const productRouter=require('./Routes/productRoute')
+const daysRouter=require('./Routes/daysRoute')
+const timeDaysRouter=require('./Routes/timeDayRoute')
 
 app.use('/User',userRouter)
 app.use('/UserType',userTypeRouter)
 app.use('/Product', productRouter)
+app.use('/days', daysRouter)
+app.use('/timeDay',timeDaysRouter)
 
 
 
