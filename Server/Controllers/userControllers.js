@@ -1,16 +1,16 @@
-const UserType = require('../Models/UserType');
-const User = require('../Models/User');
+const UserType = require('../Models/userTypeModel');
+const User = require('../Models/userModel');
 
 async function serverFunction(userData) {
     console.log("aaa");
 
     try {
         // Create a new user type
-        let myUserType = new newUserType({
+        let myUserType = new UserType({
             userNameType: userData.Type
         });
         await myUserType.save();
-        
+
         // Create a new user with the user type reference
         let myUser = new User({
             Name: userData.Name,
@@ -24,7 +24,7 @@ async function serverFunction(userData) {
 
         await myUser.save();
 
-        console.log({ newUser: myUser });
+        console.log( myUser );
         return myUser;
 
     } catch (error) {

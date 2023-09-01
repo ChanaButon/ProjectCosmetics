@@ -5,8 +5,6 @@ const productController = require('../Controllers/producrController')
 
 
 
-
-
 router.post('/newProduct', productController.newProduct)
 
 
