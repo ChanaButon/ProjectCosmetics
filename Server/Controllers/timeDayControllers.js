@@ -16,15 +16,21 @@ async function serverFunction(data) {
             });
             await myDay.save();
         }
-        // Create a new user with the user type reference
-        let myTimeDay = new timeDays({
-            Day: myDay._id,
-            Start: data.start,
-            End: data.end,
-            Status:data.status,
-        });
+        console.log(data.Start,"meo")         
+
+         
+       // Create a new timeDay document with the Date objects
+       let myTimeDay = new timeDays({
+        Day: myDay._id,
+        Start: data.Start, 
+        End: data.End,     
+        Status: data.Status,
+    });
 
         await myTimeDay.save();
+
+       
+
 
         console.log( myTimeDay );
         return myTimeDay;
