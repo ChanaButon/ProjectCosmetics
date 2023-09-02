@@ -6,8 +6,8 @@ import { Image, List } from 'semantic-ui-react'
 // import Details from '../../clientComponent/Details'
 import { useNavigate } from 'react-router-dom';
 // import { Image } from 'semantic-ui-react'
-import Login from '../../professionalComponent/Login'
-import Chat from '../jsP/Chat'
+//import Login from '../../professionalComponent/Login'
+//import Chat from '../jsP/Chat'
 
 
 

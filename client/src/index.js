@@ -19,15 +19,15 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import HomeClient from './clientComponent/HomeClient';
 import Details from './clientComponent/Details';
 import Login from './professionalComponent/Login';
-import Register from './clientComponent/register'
-import SignUp from './publicComponent/jsP/SignUp'
-import MainPage from './publicComponent/jsP/MainPage'
-import NextPageDetails from './clientComponent/NextPageDetails'
-import OwnerPage from './professionalComponent/OwnerPage'
-import Chat from './publicComponent/jsP/Chat'
-
+import Register from './clientComponent/register';
+import SignUp from './publicComponent/jsP/SignUp';
+import MainPage from './publicComponent/jsP/MainPage';
+import NextPageDetails from './clientComponent/NextPageDetails';
+import OwnerPage from './professionalComponent/OwnerPage';
+import Chat from './publicComponent/jsP/Chat';
+import BusinessLogin from './professionalComponent/BusinessLogin';
 import { Provider } from 'react-redux';
-import store from './redux/store'
+import store from './redux/store';
 
 
 
@@ -56,6 +56,7 @@ root.render(
             <Route path='NextPageDetails' element={<NextPageDetails />} />
             <Route path='OwnerPage' element={<OwnerPage />} />
             <Route path='Chat' element={<Chat />} />
+            <Route path='BusinessLogin' element={<BusinessLogin />} />
           </Route>
         </Routes>
       </BrowserRouter>
