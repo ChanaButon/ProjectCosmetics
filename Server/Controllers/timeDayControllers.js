@@ -7,40 +7,38 @@ async function serverFunction(data) {
 
     try {
         // Check if a UserType with the provided userNameType exists
-        let myDay= await days.findOne({ DayName: data.dayName });
+        let myDay= await days.findOne({ DayName: data.Day });
 
         if (!myDay) {
             // If it doesn't exist, create a new day
-            myUserType = new days({
+            myDay = new days({
                 DayName: data.dayName
             });
-            await myUserType.save();
+            await myDay.save();
         }
         // Create a new user with the user type reference
-        let myUser = new User({
-            Name: userData.Name,
-            FamilyName: userData.FamilyName,
-            ID: userData.ID,
-            Password: userData.Password,
-            Mail: userData.Mail,
-            Phone: userData.Phone,
-            UserType: myUserType._id // Use the ID of the created user type
+        let myTimeDay = new timeDays({
+            Day: myDay._id,
+            Start: data.start,
+            End: data.end,
+            Status:data.status,
         });
 
-        await myUser.save();
+        await myTimeDay.save();
 
-        console.log( myUser );
-        return myUser;
+        console.log( myTimeDay );
+        return myTimeDay;
 
     } catch (error) {
-        return null;
+        return error;
     }
 }
 
-async function newDay(req, res) {
-    console.log(req.body.dayName)
+async function newTimeDay(req, res) {
+    console.log(req.body)
     try {
       const result = await serverFunction(req.body);
+      console.log(result)
       res.json(result);
     } catch (error) {
       res.send("Error: " + error.message);
@@ -65,5 +63,5 @@ async function newDay(req, res) {
   
 
 
-module.exports = {newDay , deleteDay }
+module.exports = {newTimeDay , deleteDay }
 
