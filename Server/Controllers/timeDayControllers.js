@@ -16,7 +16,7 @@ async function serverFunction(data) {
             });
             await myDay.save();
         }
-        console.log(data.Start,"meo")         
+        console.log(data[0].Status,"meo")         
 
          
        // Create a new timeDay document with the Date objects
