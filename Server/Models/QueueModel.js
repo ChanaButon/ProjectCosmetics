@@ -9,7 +9,7 @@ const QueueSchema = mongoose.Schema({
     DateTime: {type:Date,require},
     TreatmantType: { type: mongoose.Schema.Types.ObjectId, ref: "Treatmant",require },
     Customer: {type: mongoose.Schema.Types.ObjectId, ref: "User",require },
-    Status:{type:Boolean,require},
+    //Status:{type:Boolean,require},
 
 
 
