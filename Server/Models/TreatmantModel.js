@@ -8,7 +8,7 @@ const TreatmantSchema = mongoose.Schema({
 
     TreatmantName: {type:String, require},
     Price:{type:Number},
-    TreatmantTime:{type:Date},
+    TreatmantTime:{type: Number},
     Status:{type:Boolean},
 
 

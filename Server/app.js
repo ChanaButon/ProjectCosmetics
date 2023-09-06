@@ -32,12 +32,14 @@ const userTypeRouter=require('./Routes/userTypeRoute')
 const productRouter=require('./Routes/productRoute')
 const daysRouter=require('./Routes/daysRoute')
 const timeDaysRouter=require('./Routes/timeDayRoute')
+const treatmantRouter=require('./Routes/TreatmantRoute')
 
 app.use('/User',userRouter)
 app.use('/UserType',userTypeRouter)
 app.use('/Product', productRouter)
 app.use('/days', daysRouter)
 app.use('/timeDay',timeDaysRouter)
+app.use('/treatmant',treatmantRouter)
 
 
 

@@ -32,7 +32,7 @@ async function serverFunction(userData) {
         return myUser;
 
     } catch (error) {
-        return null;
+        return error;
     }
 }
 
