@@ -79,5 +79,15 @@ const findTreatmant = async(req,res)=>
         }
 }
 
-module.exports = {newTreatmant, deleteTreatmantById,updateTreatmant,findTreatmant}
+ const getAllTreatmant =  async (req, res) => {
+  try {
+    const treatmant = await Treatmant.find({})
+    res.send(treatmant);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e.message);
+  }
+}
+
+module.exports = {newTreatmant, deleteTreatmantById,updateTreatmant,findTreatmant,getAllTreatmant}
 

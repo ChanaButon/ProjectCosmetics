@@ -5,7 +5,7 @@ const  treatmantControllers=require('../Controllers/TreatmantControllers')
 
 router.post('/newTreatmant',treatmantControllers.newTreatmant)
 router.delete('/deleteTreatmant/:id',treatmantControllers.deleteTreatmantById)
-//router.get('/findTreatmant',treatmantControllers.findTreatmantfindTreatmantById)
+router.get('/getTreatmant',treatmantControllers.getAllTreatmant)
 router.put('/updateTreatmant',treatmantControllers.updateTreatmant)
 
 
