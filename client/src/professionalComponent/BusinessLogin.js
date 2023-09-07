@@ -13,12 +13,12 @@ const BusinessLogin = () => {
   // Use the useLocation hook to get the location object
   const location = useLocation();
   const {product} = location.state || {};
-  const index = 1;
+const index = 1;
   //console.log(product)
 
 
-
-
+  
+  
   const selectedDayRef = useRef('Sunday');
   const  startTimeRef= useRef('null')
   const  finishTimeRef= useRef('null')
@@ -48,19 +48,20 @@ const BusinessLogin = () => {
         TreatmantTime: treatmentTime[treatmentName] || '', // Add treatment time
       });
     }
-  
-    setTreatmant(updatedTreatmentList);
+
+setTreatmant(updatedTreatmentList);
   };
   
 const handleTimeChange = (treatmentName, time) => {
-  setTreatmentTime((prevTime) => ({
-    ...prevTime,
-    [treatmentName]: time,
-  }));
- const a = treatmantList.find((treatment) => treatment.TreatmantName===treatmentName)
+  const parsedTime = parseFloat(time);
+    setTreatmentTime((prevTime) => ({
+      ...prevTime,
+      [treatmentName]: parsedTime,
+    }));
+    const a = treatmantList.find((treatment) => treatment.TreatmantName===treatmentName)
  console.log(a)
   handlePriceChange(treatmentName, a.Price);
-};
+  };
 
   // State to store the list of day objects
  const [dayList, setDayList] = useState([]);
@@ -102,20 +103,20 @@ const handleTimeChange = (treatmentName, time) => {
 
    }
 
- 
+
  
 
 
 
 
   const submitUser = () =>{
-
+    
     console.log(treatmantList[0])
 axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then((res) => {
   if (res.data) {
    console.log(res.data);
-  
-  //עדכון לסטור
+
+    //עדכון לסטור
   // dispatch(setUser(res.data.newProduct))
   // navigate("/BusinessLogin",{state:{product}});
   }
@@ -168,7 +169,7 @@ axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then
                 type="text"
                 placeholder="זמן טיפול"
                 onChange={(e) => handleTimeChange(treatment, e.target.value)}
-                value={treatmentTime[treatment] || ''}
+               // value={treatmentTime[treatment] || ''}
               />
               
             </li>
@@ -263,7 +264,7 @@ axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then
       
 
 
-
+      
 
 
      
