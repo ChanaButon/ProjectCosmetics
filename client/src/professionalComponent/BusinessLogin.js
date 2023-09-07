@@ -13,17 +13,11 @@ const BusinessLogin = () => {
   // Use the useLocation hook to get the location object
   const location = useLocation();
   const {product} = location.state || {};
+  const index = 1;
+  //console.log(product)
 
 
-  const AllList = async () => {
-    const treatmantServer = await fetch("http://localhost:3321/treatmant/getTreatmant");
-    const data = await treatmantServer.json();
-    setTreatmant(data);
-  };
 
-  useEffect (()=>{
-    AllList();
-  },[]);
 
   const selectedDayRef = useRef('Sunday');
   const  startTimeRef= useRef('null')
@@ -36,26 +30,37 @@ const BusinessLogin = () => {
   const [treatmantList, setTreatmant] = useState([]);
   const [treatmentTime, setTreatmentTime] = useState({});
 
-  // Function to handle changes in treatment prices
-  const handlePriceChange = (treatmant, price) => {
-    // setTreatmentPrices((prevPrices) => ({
-    //   ...prevPrices,
-    //   [treatment]: price,
-
-    // }));
-    // console.log(treatmentPrices);
-    setTreatmant([...treatmantList,{"TreatmantName":treatmant,"Price":price}])
-    console.log(treatmantList)
-
+  const handlePriceChange = (treatmentName, price) => {
+    const updatedTreatmentList = [...treatmantList];
+    const existingTreatmentIndex = updatedTreatmentList.findIndex(
+      (treatment) => treatment.TreatmantName === treatmentName
+    );
+    if (existingTreatmentIndex !== -1) {
+      console.log(treatmentTime)
+      // Update an existing treatment's price
+      updatedTreatmentList[existingTreatmentIndex].Price = price;
+      updatedTreatmentList[existingTreatmentIndex].TreatmantTime= treatmentTime[treatmentName] || ''
+    } else {
+      // Create a new treatment entry
+      updatedTreatmentList.push({
+        TreatmantName: treatmentName,
+        Price: price,
+        TreatmantTime: treatmentTime[treatmentName] || '', // Add treatment time
+      });
+    }
+  
+    setTreatmant(updatedTreatmentList);
   };
-  const handleTimeChange = (treatment, time) => {
-    setTreatmentTime((prevTime) => ({
-      ...prevTime,
-      [treatment]: time,
-
-    }));
-    console.log(treatmentTime);
-  };
+  
+const handleTimeChange = (treatmentName, time) => {
+  setTreatmentTime((prevTime) => ({
+    ...prevTime,
+    [treatmentName]: time,
+  }));
+ const a = treatmantList.find((treatment) => treatment.TreatmantName===treatmentName)
+ console.log(a)
+  handlePriceChange(treatmentName, a.Price);
+};
 
   // State to store the list of day objects
  const [dayList, setDayList] = useState([]);
@@ -104,17 +109,26 @@ const BusinessLogin = () => {
 
 
   const submitUser = () =>{
-    // Now, you can use the dayList array for further processing
-    // console.log(dayList);
 
-    // Send the dayList data to your API or perform other actions here
+    console.log(treatmantList[0])
+axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then((res) => {
+  if (res.data) {
+   console.log(res.data);
+  
+  //עדכון לסטור
+  // dispatch(setUser(res.data.newProduct))
+  // navigate("/BusinessLogin",{state:{product}});
+  }
+  }).catch((err) => {
+  console.log(err);
+  alert("אירעה שגיאה")
+  }) 
 
-    // Clear the dayList after submitting if needed
     setDayList([]);
     setFreeDayList([]);
 
     }
-    console.log(dayList)
+    //console.log(dayList)
 
     axios.post('http://localhost:3321/timeDay/newTimeDay',dayList).then((res) => {
       if (res.data) {
@@ -148,7 +162,7 @@ const BusinessLogin = () => {
                 type="text"
                 placeholder="Enter Price"
                 onChange={(e) => handlePriceChange(treatment, e.target.value)}
-                value={treatmantList["TreatmantName"] || ''}
+                //value={treatmantList[treatment] || ''}
               />
               <input
                 type="text"
