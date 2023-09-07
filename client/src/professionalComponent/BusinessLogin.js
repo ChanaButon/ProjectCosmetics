@@ -12,8 +12,8 @@ const statusOptions = ['true', 'false'];
 const BusinessLogin = () => {
   // Use the useLocation hook to get the location object
   const location = useLocation();
-  const {product} = location.state || {};
-
+  const {product,idUser} = location.state || {};
+  console.log(idUser)
   //console.log(product)
 
 
@@ -117,7 +117,7 @@ useEffect(()=>{
 
   const submitUser = () =>{
 let product = {
-  UserID : product,
+  UserID : idUser,
   
 }
     console.log(treatmantList[0])
