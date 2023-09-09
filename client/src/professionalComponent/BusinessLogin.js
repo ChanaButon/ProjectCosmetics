@@ -12,9 +12,9 @@ const statusOptions = ['true', 'false'];
 const BusinessLogin = () => {
   // Use the useLocation hook to get the location object
   const location = useLocation();
-  const {product} = location.state || {};
-const index = 1;
-  //console.log(product)
+  const {product,res} = location.state || {};
+  console.log(product)
+  console.log(res)
 
 
   
@@ -29,6 +29,7 @@ const index = 1;
   // State to manage prices for selected treatments
   const [treatmantList, setTreatmant] = useState([]);
   const [treatmentTime, setTreatmentTime] = useState({});
+  const [treatmant, settreatmant] = useState("");
 
   const handlePriceChange = (treatmentName, price) => {
     const updatedTreatmentList = [...treatmantList];
@@ -53,15 +54,20 @@ setTreatmant(updatedTreatmentList);
   };
   
 const handleTimeChange = (treatmentName, time) => {
-  const parsedTime = parseFloat(time);
-    setTreatmentTime((prevTime) => ({
-      ...prevTime,
-      [treatmentName]: parsedTime,
-    }));
-    const a = treatmantList.find((treatment) => treatment.TreatmantName===treatmentName)
- console.log(a)
-  handlePriceChange(treatmentName, a.Price);
-  };
+  console.log(time)
+  setTreatmentTime((prevTime) => ({
+    ...prevTime,
+    [treatmentName]: time,
+  }));
+  settreatmant(treatmentName)
+};
+
+useEffect(()=>{
+ const updateTreatment = treatmantList.find((treatment) => treatment.TreatmantName===treatmant)
+ if(updateTreatment){
+ handlePriceChange(treatmant, updateTreatment.Price);
+ }
+},[treatmentTime])
 
   // State to store the list of day objects
  const [dayList, setDayList] = useState([]);
@@ -110,7 +116,15 @@ const handleTimeChange = (treatmentName, time) => {
 
 
   const submitUser = () =>{
+
     
+let product = {
+  UserID : product,
+  
+  
+}
+
+
     console.log(treatmantList[0])
 axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then((res) => {
   if (res.data) {
@@ -131,7 +145,7 @@ axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then
     }
     //console.log(dayList)
 
-    axios.post('http://localhost:3321/timeDay/newTimeDay',dayList).then((res) => {
+    axios.post('http://localhost:3321/timeDay/newTimeDay',dayList[0]).then((res) => {
       if (res.data) {
         // console.log(res);
         //עדכון לסטור
@@ -169,7 +183,7 @@ axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then
                 type="text"
                 placeholder="זמן טיפול"
                 onChange={(e) => handleTimeChange(treatment, e.target.value)}
-               // value={treatmentTime[treatment] || ''}
+                //value={treatmentTime[treatment] || ''}
               />
               
             </li>
