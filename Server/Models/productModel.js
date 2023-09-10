@@ -13,7 +13,7 @@ const productSchema = mongoose.Schema({
     Customers:[{type:mongoose.Schema.Types.ObjectId, ref: "User" }],
     WorkingDay:[{type:mongoose.Schema.Types.ObjectId, ref: "Days" }],
     HoliDay:[{type:String}],
-    BrakeTime:{type:Date},
+    BrakeTime:{type:Number},
     QueueList:[{type:mongoose.Schema.Types.ObjectId, ref: "Queue" }],
     // Status:{type:Boolean,require},
 

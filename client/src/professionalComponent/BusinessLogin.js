@@ -12,9 +12,12 @@ const statusOptions = ['true', 'false'];
 const BusinessLogin = () => {
   // Use the useLocation hook to get the location object
   const location = useLocation();
-  const {product,res} = location.state || {};
-  console.log(product)
-  console.log(res)
+
+  const {product,idUser} = location.state || {};
+ // console.log(idUser)
+  //console.log(product)
+
+
 
 
   
@@ -25,6 +28,7 @@ const BusinessLogin = () => {
   const statusRef = useRef('true');
   const startDateRef = useRef('null');
   const endDateRef = useRef('null');
+  const BrakeTimeRef=useRef('null');
 
   // State to manage prices for selected treatments
   const [treatmantList, setTreatmant] = useState([]);
@@ -119,10 +123,18 @@ useEffect(()=>{
 
     
 let product = {
-  UserID : product,
-  
+  UserID : idUser,
+  Describe:businessDescription,
+  Addres:businessAddress,
+  TreatmantID:treatmantList,
+  Customers:[],
+  WorkingDay:dayList,
+  HoliDay:freeDaysList,
+  BrakeTime:BrakeTimeRef.current.value,
+  QueueList:[],
   
 }
+console.log(product);
 
 
     console.log(treatmantList[0])
@@ -253,7 +265,7 @@ axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then
             ))}
         </u1>
 
-      <input   placeholder="BrakeTime" id="BrakeTimeInput" className={`aaa bbb`} type="number"/>
+      <input   ref={BrakeTimeRef} placeholder="BrakeTime" id="BrakeTimeInput" className={`aaa bbb`} type="number"/>
 
 
 

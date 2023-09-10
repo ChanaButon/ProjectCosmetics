@@ -91,10 +91,10 @@ if (!isChecked) {
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser',product).then((res) => {
       if (res.data) {
-        console.log(res.data._id);
+        const idUser = res.data._id;
         //עדכון לסטור
         dispatch(setUser(res.data.newProduct))
-        navigate("/BusinessLogin",{state:{product,res}});
+        navigate("/BusinessLogin",{state:{product,idUser}});
       }
     }).catch((err) => {
       console.log(err);
