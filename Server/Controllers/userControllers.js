@@ -66,6 +66,7 @@ const deleteUserById = async (req, res) => {
 }
 const findUserById = async (req, res) => {
     try {
+        console.log(req.params)
         let user = await User.findById(req.params.id);
         console.log(user);
         res.json({ id: user });
@@ -78,10 +79,6 @@ const findUserById = async (req, res) => {
 
 const findUserByIdAndCode = async (req, res) => {
 
-    
-
-    
-    
     try {console.log(req.body)
         const { ID, Password } = req.body;
         let user;
@@ -104,33 +101,16 @@ const findUserByIdAndCode = async (req, res) => {
     }
 };
 
+const getAllUser =  async (req, res) => {
+    try {
+      const users = await User.find({})
+      res.send(users);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send(e.message);
+    }
+  }
+  
 
-// const findUserByIdAndCode = (req, res) => {
-    // console.log('in findUserByName');
-    // console.log(req.body);
-    // console.log(req.body);
-
-//     Users.findOne({ ID: req.body, Password: req.body }).then((response) => {
-//         if(response){
-
-//             res.json({ status: true, user: response, ID: req.body.ID, Password: req.body.Password })
-//         }
-//         else{
-//             // throw
-//             res.json({ status: false, message: 'not found' });
-//         }
-//     }).catch((err) => {
-
-//         res.json({ status: false, message: "my error: " + err });
-//     })
-// }
-
-
-
-
-
-
-
-
-module.exports = {newUser, deleteUserById, findUserById,findUserByIdAndCode }
+module.exports = {newUser, deleteUserById, findUserById,findUserByIdAndCode,getAllUser }
 

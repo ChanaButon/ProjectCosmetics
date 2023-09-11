@@ -3,7 +3,7 @@ import React, { useState ,useRef, useEffect} from 'react';
 import { useLocation } from 'react-router-dom'; // Import the useLocation hook
 import axios from 'axios'
 //import { connect } from 'react-redux'
-
+import './BusinessLogin.css'
 
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -121,7 +121,7 @@ useEffect(()=>{
 
   const submitUser = () =>{
 
-    
+console.log(typeof(freeDaysList))
 let product = {
   UserID : idUser,
   Describe:businessDescription,
@@ -137,8 +137,7 @@ let product = {
 console.log(product);
 
 
-    console.log(treatmantList[0])
-axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then((res) => {
+axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
   if (res.data) {
    console.log(res.data);
 
@@ -269,23 +268,6 @@ axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then
 
 
 
-{/* <h2>Location Icon</h2>
-<input
-  placeholder="Location Icon URL"
-  value={locationIconUrl}
-  onChange={(e) => setLocationIconUrl(e.target.value)}
-/> */}
-
-
-
-{/* Display the location icon
-{locationIconUrl && (
-  <img
-    src={locationIconUrl}
-    alt="Location Icon"
-    style={{ width: '50px', height: '50px' }}
-  />
-)} */}
 
       
 

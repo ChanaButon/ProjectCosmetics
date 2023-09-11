@@ -1,7 +1,7 @@
 
 
 import img from '../../images/IMG_8090.JPG'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, List } from 'semantic-ui-react'
 // import Details from '../../clientComponent/Details'
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +17,24 @@ export default function ListExampleCelled  ()  {
   const [visible, setVisible] = useState(true);
   const navigate=useNavigate()
 
+  const getAllProducts = async () => {
+    const response = await fetch('http://localhost:3321/product/getProducts');
+    const data = await response.json();
+    setProductsData(data)
+    console.log(data)
+
+    const response1 = await fetch('http://localhost:3321/User/getUserbyID');
+     const data11 = await response1.json();
+    setUserData(data11)
+    console.log(data11)
+  };
+
+  const [productsData, setProductsData] = useState([]);
+  const [userData, setUserData] = useState([]);
   
+  useEffect(()=>{
+    getAllProducts();
+  },[])
   const nextPageDetails = () => {
         
     navigate("/NextPageDetails")
@@ -34,6 +51,8 @@ export default function ListExampleCelled  ()  {
         navigate("/Chat")
         setVisible(false)
         }
+  
+  
 
   return(
     <div>
