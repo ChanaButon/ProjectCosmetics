@@ -67,8 +67,8 @@ const deleteUserById = async (req, res) => {
 const findUserById = async (req, res) => {
     try {
         console.log(req.params)
-        let user = await User.findById(req.params.id);
-        console.log(user);
+        let user = await User.findOne({_id:req.params.id});
+        console.log(user,"meo");
         res.json({ id: user });
     }
     catch (error) {

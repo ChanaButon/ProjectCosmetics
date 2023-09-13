@@ -7,13 +7,13 @@ import { Image, List } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom';
 // import { Image } from 'semantic-ui-react'
 //import Login from '../../professionalComponent/Login'
-//import Chat from '../jsP/Chat'
+import axios from 'axios'
 
 
+const  ListExampleCelled = () => {
 
-export default function ListExampleCelled  ()  {
-
-
+  const [productsData, setProductsData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [visible, setVisible] = useState(true);
   const navigate=useNavigate()
 
@@ -22,6 +22,7 @@ export default function ListExampleCelled  ()  {
     const data = await response.json();
     setProductsData(data)
     console.log(data)
+    console.log(productsData)
 
     const response1 = await fetch('http://localhost:3321/User/getUserbyID');
      const data11 = await response1.json();
@@ -29,12 +30,21 @@ export default function ListExampleCelled  ()  {
     console.log(data11)
   };
 
-  const [productsData, setProductsData] = useState([]);
-  const [userData, setUserData] = useState([]);
   
-  useEffect(()=>{
-    getAllProducts();
-  },[])
+  
+  useEffect(() => {
+    getAllProducts().then(() => {
+      console.log(productsData); // Move this line here
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(productsData); // This will log the updated productsData
+    if (productsData.length>0){
+      detail();
+    }
+  }, [productsData]);
+  
   const nextPageDetails = () => {
         
     navigate("/NextPageDetails")
@@ -52,7 +62,23 @@ export default function ListExampleCelled  ()  {
         setVisible(false)
         }
   
-  
+  const detail = ()=>{
+    productsData.map((elemnt)=>{
+    axios.get(`http://localhost:3321/User/findUserById/${elemnt.UserID}`).then((res) => {
+      if (res.data) {
+       console.log(res.data);
+    
+        //עדכון לסטור
+      // dispatch(setUser(res.data.newProduct))
+      // navigate("/BusinessLogin",{state:{product}});
+      }
+      }).catch((err) => {
+      console.log(err);
+      alert("אירעה שגיאה")
+      }) 
+    })
+
+  }
 
   return(
     <div>
@@ -95,6 +121,8 @@ export default function ListExampleCelled  ()  {
 )
 
 }
+
+export default  ListExampleCelled
 
 
 
