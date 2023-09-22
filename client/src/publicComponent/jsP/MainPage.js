@@ -59,25 +59,26 @@ const  ListExampleCelled = () => {
         setVisible(false)
         }
   
-  const detail = ()=>{
-    console.log("meo")
-    productsData.map((elemnt)=>{
-    axios.get(`http://localhost:3321/User/findUserById/${elemnt.UserID}`).then((res) => {
-      if (res.data) {
-        let d = res.data
-       console.log(d);
-       userData.push(d)
-       console.log(userData[0].id.Name)
-       //setUserData([...userData,{d}])
-      }
-      }).catch((err) => {
-      console.log(err);
-      alert("אירעה שגיאה")
-      }) 
-    })
-    
-
-  }
+  
+        const detail = async () => {
+          console.log("meo");
+          const userPromises = productsData.map(async (element) => {
+            try {
+              const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
+              if (res.data) {
+                const d = res.data;
+                console.log(d);
+                return d;
+              }
+            } catch (err) {
+              console.log(err);
+              alert("אירעה שגיאה");
+            }
+          });
+      
+          const userDataResults = await Promise.all(userPromises);
+          setUserData(userDataResults);
+        };
 
   return(
     <div>
@@ -98,8 +99,9 @@ const  ListExampleCelled = () => {
           userData.map((user) =>
              (
               <div className="userDetail" key={user._id}>
-                <h1>{user.id.Name}</h1>
-                <h1>meo</h1>
+                <h1>{user.id.Name} {user.id.FamilyName}</h1>
+                {/* <h1>{user.id.FamilyName}</h1> */}
+                
                 </div>
                 
                
