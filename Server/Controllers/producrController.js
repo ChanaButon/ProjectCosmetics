@@ -1,12 +1,13 @@
-const User = require('../Models/userModel')
 const Treat = require('../Models/TreatmantModel')
 const Product = require('../Models/productModel')
-const serverFunction = require('./userControllers')
+const timeDays = require('../Models/timeDayModel');
+const Days = require('../Models/daysModel');
 
 
 
 async function newProduct(req, res) {
-  console.log("eeeeeeeee");
+  console.log("product");
+  console.log(req.body)
   try {
 
     const result = await serverFunction1(req.body);
@@ -21,49 +22,83 @@ async function newProduct(req, res) {
 }
 
 
-async function serverFunction1(userData) {
-  console.log(userData);
+async function serverFunction1(data) {
+  console.log(data);
 
-  try {
-    // יצירת משתמש במודל "User"
-    let myUser = new User({
-      Name: userData.Name,
-      FamilyName: userData.FamilyName,
-      ID: userData.ID,
-      Password: userData.Password,
-      Mail: userData.Mail,
-      Phone: userData.Phone,
-    });
+     // Create an array to store treatment references
+     const treatmentReferences = [];
 
-    // שמירת המשתמש במודל "User"
-    await myUser.save();
+     // Create treatments and collect their references
+     for (const treatData of data.TreatmantID) {
+       let myName = new Treat({
+        TreatmantName: treatData.TreatmantName,
+        Price:treatData.Price,
+        TreatmantTime:treatData.TreatmantTime
+       });
+       await myName.save();
+       treatmentReferences.push(myName._id);
+     }
+  //   console.log(treatmentReferences)
 
-    console.log(myUser);
-    let myName = new Treat({
-      TreatmantName: userData.TreatmantName,
-    })
-    console.log(myProduct);
 
-    await myName.save();
+     const workDayReferences = [];
+
+     // Create treatments and collect their references
+     for (const day of data.WorkingDay) {
+      let weekDay = await Days.findOne({ DayName: day.Day });
+
+      if (!weekDay) {
+          // If it doesn't exist, create a new UserType
+          weekDay = new Days({
+            DayName: day.Day
+          });
+          await weekDay.save();
+      }
+       let myDay = new timeDays({
+        Day:weekDay._id,
+        Start:day.Start,
+        End:day.End,
+        Status:day.Status,
+       
+       });
+       await myDay.save();
+       workDayReferences.push(myDay._id);
+     }
+     console.log(workDayReferences)
+
 
     // יצירת מוצר במודל "Product" עם שיוך למשתמש המתאים
     let myProduct = new Product({
-      UserID: myUser._id, // שיוך למזהה הייחודי של המשתמש במודל "User"
-      TreatmantID: myName._id,
+      UserID: data.UserID,
+      Describe: data.Describe,
+      Addres:data.Addres,
+      TreatmantID:treatmentReferences,
+      Customers:data.Customers,
+      WorkingDay:workDayReferences,
+      HoliDay:data.HoliDay,
+      BrakeTime:data.BrakeTime,
+      QueueList:data.QueueList
     });
     await myProduct.save();
     console.log(myProduct);
     // שמירת המוצר במודל "Product"
 
 
-    console.log();
-    return { newUser: myUser, newProduct: myProduct }
+   // console.log();
+    return {  newProduct: myProduct }
     //res.send({ newUser: myUser, newProduct: myProduct });
-  } catch (error) {
-    return "cannot save new user: " + error.message
-    //res.send();
+  } 
+  
+
+  const getAllProduct =  async (req, res) => {
+    try {
+      const product = await Product.find({})
+      res.send(product);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send(e.message);
+    }
   }
-}
+  
 
-
-module.exports = { newProduct }
+module.exports = { newProduct,getAllProduct }

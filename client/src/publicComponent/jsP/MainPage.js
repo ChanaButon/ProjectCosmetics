@@ -1,16 +1,46 @@
 import img from '../../images/IMG_8090.JPG'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, List } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom';
+// import { Image } from 'semantic-ui-react'
+//import Login from '../../professionalComponent/Login'
+import axios from 'axios'
 
 
+const  ListExampleCelled = () => {
 
-export default function ListExampleCelled  ()  {
-
-
+  const [productsData, setProductsData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [visible, setVisible] = useState(true);
   const navigate=useNavigate()
 
+  const getAllProducts = async () => {
+    const response = await fetch('http://localhost:3321/product/getProducts');
+    const data = await response.json();
+    setProductsData(data)
+    console.log(data)
+    console.log(productsData)
+
+    // const response1 = await fetch('http://localhost:3321/User/getUserbyID');
+    //  const data11 = await response1.json();
+    // setUserData(data11)
+    // console.log(data11)
+  };
+
+  
+  
+  useEffect(() => {
+    getAllProducts().then(() => {
+      console.log(productsData); // Move this line here
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(productsData); // This will log the updated productsData
+    if (productsData.length>0){
+      detail();
+    }
+  }, [productsData]);
   
   const nextPageDetails = () => {
         
@@ -28,34 +58,32 @@ export default function ListExampleCelled  ()  {
         navigate("/Chat")
         setVisible(false)
         }
+  
+  const detail = ()=>{
+    console.log("meo")
+    productsData.map((elemnt)=>{
+    axios.get(`http://localhost:3321/User/findUserById/${elemnt.UserID}`).then((res) => {
+      if (res.data) {
+        let d = res.data
+       console.log(d);
+       userData.push(d)
+       console.log(userData[0].id.Name)
+       //setUserData([...userData,{d}])
+      }
+      }).catch((err) => {
+      console.log(err);
+      alert("אירעה שגיאה")
+      }) 
+    })
+    
+
+  }
 
   return(
     <div>
       <button onClick={OwnerPage}>מעבר לדף העיסקי</button>
-
-    <List celled>
-    <List.Item onClick={Chat}>
-      <Image  avatar src={img} />
-      <List.Content>
-        <List.Header>דליה</List.Header>
-        גבות  
-      </List.Content>
-    </List.Item>
-    <List.Item onClick={Chat}>
-      <Image avatar src={img} />
-      <List.Content>
-        <List.Header>אפרת</List.Header>הלחמת ריסים
-      </List.Content>
-    </List.Item>
-    <List.Item onClick={Chat}>
-      <Image avatar src={img} />
-      {/* <img ></img> */}
-      <List.Content>
-        <List.Header>חני</List.Header>
-        טיפול פנים
-      </List.Content>
-    </List.Item>
-  </List>
+      
+    
 {visible ? <div>      
 
 <h1> :התורים הקרובים שלך</h1>
@@ -65,11 +93,25 @@ export default function ListExampleCelled  ()  {
   </div> : <div />}  
 {/* <button onClick={nextPageDetails} >התורים הקרובים שלך</button> */}
 {/* <button>לשינוי/ביטול תור</button> */}
-
+<div>
+      {userData &&
+          userData.map((user) =>
+             (
+              <div className="userDetail" key={user._id}>
+                <h1>{user.id.Name}</h1>
+                <h1>meo</h1>
+                </div>
+                
+               
+            ) 
+          )}
+      </div>
     </div>
 )
 
 }
+
+export default  ListExampleCelled
 
 
 

@@ -12,8 +12,8 @@ const productSchema = mongoose.Schema({
     TreatmantID:[{type:mongoose.Schema.Types.ObjectId, ref: "Treatmant" }],
     Customers:[{type:mongoose.Schema.Types.ObjectId, ref: "User" }],
     WorkingDay:[{type:mongoose.Schema.Types.ObjectId, ref: "Days" }],
-    HoliDay:[{type:String}],
-    BrakeTime:{type:Date},
+    HoliDay:[{type:Object}],
+    BrakeTime:{type:Number},
     QueueList:[{type:mongoose.Schema.Types.ObjectId, ref: "Queue" }],
     // Status:{type:Boolean,require},
 

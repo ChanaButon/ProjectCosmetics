@@ -3,7 +3,7 @@ import React, { useState ,useRef, useEffect} from 'react';
 import { useLocation } from 'react-router-dom'; // Import the useLocation hook
 import axios from 'axios'
 //import { connect } from 'react-redux'
-
+import './BusinessLogin.css'
 
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -12,19 +12,23 @@ const statusOptions = ['true', 'false'];
 const BusinessLogin = () => {
   // Use the useLocation hook to get the location object
   const location = useLocation();
+
   const {product,idUser} = location.state || {};
-  console.log(idUser)
+ // console.log(idUser)
   //console.log(product)
 
 
 
 
+  
+  
   const selectedDayRef = useRef('Sunday');
   const  startTimeRef= useRef('null')
   const  finishTimeRef= useRef('null')
   const statusRef = useRef('true');
   const startDateRef = useRef('null');
   const endDateRef = useRef('null');
+  const BrakeTimeRef=useRef('null');
 
   // State to manage prices for selected treatments
   const [treatmantList, setTreatmant] = useState([]);
@@ -49,8 +53,8 @@ const BusinessLogin = () => {
         TreatmantTime: treatmentTime[treatmentName] || '', // Add treatment time
       });
     }
-  
-    setTreatmant(updatedTreatmentList);
+
+setTreatmant(updatedTreatmentList);
   };
   
 const handleTimeChange = (treatmentName, time) => {
@@ -109,23 +113,35 @@ useEffect(()=>{
 
    }
 
- 
+
  
 
 
 
 
   const submitUser = () =>{
+
+console.log(typeof(freeDaysList))
 let product = {
   UserID : idUser,
+  Describe:businessDescription,
+  Addres:businessAddress,
+  TreatmantID:treatmantList,
+  Customers:[],
+  WorkingDay:dayList,
+  HoliDay:freeDaysList,
+  BrakeTime:BrakeTimeRef.current.value,
+  QueueList:[],
   
 }
-    console.log(treatmantList[0])
-axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then((res) => {
+console.log(product);
+
+
+axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
   if (res.data) {
    console.log(res.data);
-  
-  //עדכון לסטור
+
+    //עדכון לסטור
   // dispatch(setUser(res.data.newProduct))
   // navigate("/BusinessLogin",{state:{product}});
   }
@@ -248,32 +264,15 @@ axios.post('http://localhost:3321/treatmant/newTreatmant',treatmantList[0]).then
             ))}
         </u1>
 
-      <input   placeholder="BrakeTime" id="BrakeTimeInput" className={`aaa bbb`} type="number"/>
+      <input   ref={BrakeTimeRef} placeholder="BrakeTime" id="BrakeTimeInput" className={`aaa bbb`} type="number"/>
 
 
 
-{/* <h2>Location Icon</h2>
-<input
-  placeholder="Location Icon URL"
-  value={locationIconUrl}
-  onChange={(e) => setLocationIconUrl(e.target.value)}
-/> */}
-
-
-
-{/* Display the location icon
-{locationIconUrl && (
-  <img
-    src={locationIconUrl}
-    alt="Location Icon"
-    style={{ width: '50px', height: '50px' }}
-  />
-)} */}
 
       
 
 
-
+      
 
 
      
