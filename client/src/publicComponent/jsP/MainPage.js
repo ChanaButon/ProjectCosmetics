@@ -12,7 +12,8 @@ const  ListExampleCelled = () => {
   const [productsData, setProductsData] = useState([]);
   const [userData, setUserData] = useState([]);
   const [visible, setVisible] = useState(true);
-  const navigate=useNavigate()
+  const navigate=useNavigate();
+  const [detaill,setdetail]=useState([]);
 
   const getAllProducts = async () => {
     const response = await fetch('http://localhost:3321/product/getProducts');
@@ -59,39 +60,40 @@ const  ListExampleCelled = () => {
         setVisible(false)
         }
   
-  const detail = ()=>{
-    console.log("meo")
-    productsData.map((elemnt)=>{
-    axios.get(`http://localhost:3321/User/findUserById/${elemnt.UserID}`).then((res) => {
-      if (res.data) {
-        let d = res.data
-       console.log(d);
-       userData.push(d)
-       console.log(userData[0].id.Name)
-       //setUserData([...userData,{d}])
-      }
-      }).catch((err) => {
-      console.log(err);
-      alert("אירעה שגיאה")
-      }) 
-    })
-    
-    
-
-  }
+  
+        const detail = async () => {
+          console.log("meo");
+          const userPromises = productsData.map(async (element) => {
+            try {
+              const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
+              //element.TreatmantID.map(async(treat)=>{
+              //  console.log(treat)
+             // const res1 = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
+             // const res1 = await axios.get(`http://localhost:3321/treatmant/findTreatById/${treat}`);
+             // console.log(res1)
+              //})
+              
+              if (res.data) {
+                const d = res.data;
+                console.log(d);
+                return d;
+              }
+            } catch (err) {
+              console.log(err);
+              alert("אירעה שגיאה");
+            }
+          });
+      
+          const userDataResults = await Promise.all(userPromises);
+          setUserData(userDataResults);
+        };
 
   return(
     <div>
       <button onClick={OwnerPage}>מעבר לדף העיסקי</button>
       
     
-{visible ? <div>      
 
-<h1> :התורים הקרובים שלך</h1>
-<h2>יום שני 14:00</h2>
-  <button onClick={nextPageDetails} className="button1">לשינוי/ביטול תור </button>
-
-  </div> : <div />}  
 {/* <button onClick={nextPageDetails} >התורים הקרובים שלך</button> */}
 {/* <button>לשינוי/ביטול תור</button> */}
 <div>
@@ -99,15 +101,26 @@ const  ListExampleCelled = () => {
           userData.map((user) =>
              (
               <div className="userDetail" key={user._id}>
-                <h1>{user.id.Name}</h1>
-                <h1>meo</h1>
+                <h1 onClick={Chat}>{user.id.Name} {user.id.FamilyName}</h1>
+                {/* <h1>{user.id.FamilyName}</h1> */}
+                
                 </div>
                 
                
             ) 
           )}
       </div>
+
+
+      {visible ? <div>      
+
+<h1> :התורים הקרובים שלך</h1>
+<h2>יום שני 14:00</h2>
+  <button onClick={nextPageDetails} className="button1">לשינוי/ביטול תור </button>
+
+  </div> : <div />}  
     </div>
+
 )
 
 }

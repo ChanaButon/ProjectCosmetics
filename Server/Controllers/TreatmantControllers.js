@@ -89,5 +89,18 @@ const findTreatmant = async(req,res)=>
   }
 }
 
-module.exports = {newTreatmant, deleteTreatmantById,updateTreatmant,findTreatmant,getAllTreatmant}
+const findTreatById = async (req, res) => {
+  try {
+    console("12345679876543212345678765432345678")
+      console.log(req.params)
+      let treat = await Treatmant.findOne({_id:req.params.id});
+      console.log(treat,"treat");
+      res.json({ id: treat });
+  }
+  catch (error) {
+      res.send("cannot find user: " + error.message)
+  }
+}
+
+module.exports = {newTreatmant, deleteTreatmantById,updateTreatmant,findTreatmant,getAllTreatmant,findTreatById}
 
