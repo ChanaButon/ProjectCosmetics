@@ -2,10 +2,10 @@
 import React, { useRef, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { Button, Form, Icon, Message } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { addUser, setUser } from '../redux/actions'//יבוא של השם של הפונקציה באקשנס שאותו נרצה להפעיל
+import {  setUser } from '../redux/actions'//יבוא של השם של הפונקציה באקשנס שאותו נרצה להפעיל
 
 import './register.css'
 import { isValidPhoneNumber } from '../validation/validationUtils.js'
@@ -13,7 +13,7 @@ import {isValidEmail} from '../validation/validationUtils'
 import { isValidId } from '../validation/validationUtils.js'
 
 const Register = (props) => {
-  const { dispatch,aa } = props
+  const { dispatch } = props
   const navigate = useNavigate()
   const [nextPage1, setNextPage] = useState(false)
   const nameRef = useRef('null')
@@ -33,7 +33,7 @@ const Register = (props) => {
   });
   const [checkboxError, setCheckboxError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [isPageOpen, setIsPageOpen] = useState(true);
+ // const [isPageOpen, setIsPageOpen] = useState(true);
 
   
   const handleExitClick = () => {

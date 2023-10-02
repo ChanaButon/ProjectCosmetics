@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 // import { Image } from 'semantic-ui-react'
 //import Login from '../../professionalComponent/Login'
 import axios from 'axios'
+import H from './googleCalendar/googleCalnedar';
+import DateTimePicker from 'react-datetime-picker';// import './h.css';
+import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 
 
 const  ListExampleCelled = () => {
@@ -14,6 +17,33 @@ const  ListExampleCelled = () => {
   const [visible, setVisible] = useState(true);
   const navigate=useNavigate();
   const [detaill,setdetail]=useState([]);
+  const [start, setStart] = useState(new Date);
+  const [end, setEnd] = useState(new Date);
+  const [eventName, setEventName] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+
+  const session = useSession();
+  const supabase = useSupabaseClient();
+  const { isLoading } = useSessionContext();
+
+  if (isLoading) {
+    return <></>
+  }
+
+  async function googleSignIn() {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/calendar'
+      }
+    });
+
+    if (error) {
+      alert("error");
+      console.log(error);
+    }
+    Chat()
+  }
 
   const getAllProducts = async () => {
     const response = await fetch('http://localhost:3321/product/getProducts');
@@ -101,7 +131,10 @@ const  ListExampleCelled = () => {
           userData.map((user) =>
              (
               <div className="userDetail" key={user._id}>
-                <h1 onClick={Chat}>{user.id.Name} {user.id.FamilyName}</h1>
+                {/* <h1 onClick={Chat}>{user.id.Name} {user.id.FamilyName}</h1> */}
+                <h1 onClick={googleSignIn}>{user.id.Name} {user.id.FamilyName}</h1>
+
+                {/* <H/> */}
                 {/* <h1>{user.id.FamilyName}</h1> */}
                 
                 </div>
@@ -130,52 +163,3 @@ export default  ListExampleCelled
 
 
   
-
-
-
-
-
-
-
-
-// import React from 'react'
-// import { Image, List } from 'semantic-ui-react'
-
-// const ListExampleSizes = () => {
-//   const sizes = [ 'huge']
-
-//   return (
-//     <div>
-//       {sizes.map((size) => (
-//         <div key={size}>
-//           <List divided horizontal size={size}>
-//             <List.Item>
-//               <Image avatar src='/images/avatar/small/helen.jpg' />
-//               <List.Content>
-//                 <List.Header>Helen</List.Header>
-//               </List.Content>
-//             </List.Item>
-//             <List.Item>
-//               <Image avatar src='/images/avatar/small/christian.jpg' />
-//               <List.Content>
-//                 <List.Header>Christian</List.Header>
-//               </List.Content>
-              
-//             </List.Item>
-//             <List.Item>
-//               <Image avatar src='/images/avatar/small/daniel.jpg' />
-//               <List.Content>
-//                 <List.Header>Daniel</List.Header>
-//                 טיפול פנים
-//               </List.Content>
-//             </List.Item>
-//           </List>
-
-//           <br />
-//         </div>
-//       ))}
-//     </div>
-//   )
-// }
-
-// export default ListExampleSizes

@@ -1,16 +1,43 @@
 import React, { useState } from "react";
 import './style.css'
-
+import { googleSignIn } from './googleCalendar/googleCalnedar';
+import DateTimePicker from 'react-datetime-picker';
+import axios from 'axios';
+// import './h.css';
+import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 
 function QuestionButtons() {
   // State to store the selected question
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 const [activeButton, setActiveButton] = useState(null);
+
+const [start, setStart] = useState(new Date);
+const [end, setEnd] = useState(new Date);
+const [eventName, setEventName] = useState("");
+const [eventDescription, setEventDescription] = useState("");
+
+const session = useSession();
+const supabase = useSupabaseClient();
+const { isLoading } = useSessionContext();
   // Function to handle button click
   const handleButtonClick = (question) => {
     setSelectedQuestion(question);
   };
 
+  async function googleSignIn() {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/calendar'
+      }
+    });
+
+    if (error) {
+      alert("error");
+      console.log(error);
+    }
+  }
+  
   // Function to render dynamic buttons based on selected question
   const renderButtons = () => {
     switch (selectedQuestion) {
@@ -45,8 +72,8 @@ const [activeButton, setActiveButton] = useState(null);
 
   return (
     <div style={{ display: "inline-flex", flexDirection: "column" }}>
-
-
+      <button onClick={googleSignIn}>Sign In</button>
+      <DateTimePicker  size={200}/>
       <div className="chat-container">
         <div className="chat-header ">
           <h2>CHAT</h2>
