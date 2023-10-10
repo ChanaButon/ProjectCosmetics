@@ -51,11 +51,6 @@ const  ListExampleCelled = () => {
     setProductsData(data)
     console.log(data)
     console.log(productsData)
-
-    // const response1 = await fetch('http://localhost:3321/User/getUserbyID');
-    //  const data11 = await response1.json();
-    // setUserData(data11)
-    // console.log(data11)
   };
 
   
@@ -83,15 +78,15 @@ const  ListExampleCelled = () => {
         
       navigate("/OwnerPage")
       setVisible(false)
-      }
-      const Chat = () => {
-        
-        navigate("/Chat")
-        setVisible(false)
-        }
-  
-  
-        const detail = async () => {
+    }
+    const Chat = (userid) => {
+     navigate("/Chat",{state:{userid}});
+    //  navigate("/Chat")
+      console.log(userid)
+      setVisible(false)
+    }
+    
+    const detail = async () => {
           console.log("meo");
           const userPromises = productsData.map(async (element) => {
             try {
@@ -131,8 +126,8 @@ const  ListExampleCelled = () => {
           userData.map((user) =>
              (
               <div className="userDetail" key={user._id}>
-                {/* <h1 onClick={Chat}>{user.id.Name} {user.id.FamilyName}</h1> */}
-                <h1 onClick={googleSignIn}>{user.id.Name} {user.id.FamilyName}</h1>
+                <h1 onClick={()=>Chat(user.id._id)}>{user.id.Name} {user.id.FamilyName}</h1>
+                {/* <h1 onClick={googleSignIn}>{user.id.Name} {user.id.FamilyName}</h1> */}
 
                 {/* <H/> */}
                 {/* <h1>{user.id.FamilyName}</h1> */}
