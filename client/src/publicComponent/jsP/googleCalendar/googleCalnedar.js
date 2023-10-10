@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import axios from 'axios';
 // import './h.css';
-
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 
 
@@ -21,7 +20,7 @@ import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth
     return <></>
   }
 
-  async function googleSignIn() {
+   async function googleSignIn() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -86,9 +85,9 @@ import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth
 
             <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
             <p>End of your event</p>
-            <DateTimePicker onChange={setEnd} value={end} />
+            <DateTimePicker onChange={setEnd} value={end} size={200}/>
             <p>Event Name</p>
-            <input type="text" onChange={(e) => setEventName(e.target.value)} />
+            <input type="text" onChange={(e) => setEventName(e.target.value) } />
             <p>Event Description</p>
             <input type="text" onChange={(e) => setEventDescription(e.target.value)} />
             <hr />
@@ -105,3 +104,4 @@ import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth
 
 
 export default H;
+//export { googleSignIn };

@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 // import { Image } from 'semantic-ui-react'
 //import Login from '../../professionalComponent/Login'
 import axios from 'axios'
+import H from './googleCalendar/googleCalnedar';
+import DateTimePicker from 'react-datetime-picker';// import './h.css';
+import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 
 
 const  ListExampleCelled = () => {
@@ -14,6 +17,34 @@ const  ListExampleCelled = () => {
   const [visible, setVisible] = useState(true);
   const navigate=useNavigate();
   const [detaill,setdetail]=useState([]);
+  const [start, setStart] = useState(new Date);
+  const [end, setEnd] = useState(new Date);
+  const [eventName, setEventName] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+  const [tretment,setTretment]=useState("");
+
+  const session = useSession();
+  const supabase = useSupabaseClient();
+  const { isLoading } = useSessionContext();
+
+  if (isLoading) {
+    return <></>
+  }
+
+  async function googleSignIn() {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/calendar'
+      }
+    });
+
+    if (error) {
+      alert("error");
+      console.log(error);
+    }
+    Chat()
+  }
 
   const getAllProducts = async () => {
     const response = await fetch('http://localhost:3321/product/getProducts');
@@ -21,30 +52,39 @@ const  ListExampleCelled = () => {
     setProductsData(data)
     console.log(data)
     console.log(productsData)
-    console.log(data[0].TreatmantID[0])
-  }
-
-    const findTreatmentNames = (treatmentIds) => {
-      const treatmentNames = [];
-      // Assuming treatmentsData is an array containing treatment objects with 'id' and 'name' properties
-      treatmentIds.forEach((treatmentId) => {
-        const foundTreatment = treatmentsData.find((treatment) => treatment.id === treatmentId);
-        if (foundTreatment) {
-          treatmentNames.push(foundTreatment.name);
-        }
-      });
     
-      return treatmentNames;
-    };
+    const mio =data[0].TreatmantID[0];
+    // setTretment(mio)
+    console.log(mio);
 
-  return treatmentNames;
+    const userPromises = data[0].TreatmantID.map(async (element) => {
+    try {
+      const res1 = await axios.get(`http://localhost:3321/treatmant/findTreatById/${element}`);
+
+      //element.TreatmantID.map(async(treat)=>{
+      //  console.log(treat)
+     // const res1 = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
+     // const res1 = await axios.get(`http://localhost:3321/treatmant/findTreatById/${treat}`);
+     // console.log(res1)
+      //})
+      
+      if (res1.data) {
+        const d = res1.data;
+        console.log(d);
+        return d;
+      }
+    } catch (err) {
+      console.log(err);
+      alert("אירעה שגיאה");
+    }
+  });
+
+  const tretment = await Promise.all(userPromises);
+  setTretment(tretment);
+
+  console.log(tretment);
 };
 
-    // const response1 = await fetch('http://localhost:3321/User/getUserbyID');
-    //  const data11 = await response1.json();
-    // setUserData(data11)
-    // console.log(data11)
-  
 
   
   
@@ -79,80 +119,57 @@ const  ListExampleCelled = () => {
         }
   
   
-        // const detail = async () => {
-        //   console.log("meo");
-        //   const userPromises = productsData.map(async (element) => {
-        //     try {
-        //       const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
-        //       //element.TreatmantID.map(async(treat)=>{
-        //       //  console.log(treat)
-        //      // const res1 = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
-        //     // const res1 = await axios.get(`http://localhost:3321/treatmant/findTreatById/${treat}`);
-        //      // console.log(res1)
-        //       //})
-              
-        //       if (res.data) {
-        //         const d = res.data;
-        //         console.log(d);
-        //         return d;
-        //       }
-        //     } catch (err) {
-        //       console.log(err);
-        //       alert("אירעה שגיאה");
-        //     }
-        //   });
-      
-        //   const userDataResults = await Promise.all(userPromises);
-        //   setUserData(userDataResults);
-        // };
-
-
         const detail = async () => {
+          console.log("meo");
           const userPromises = productsData.map(async (element) => {
             try {
-              const userResponse = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
-              const treatmentResponse = await axios.get(`http://localhost:3321/treatmant/findTreatById/${element.TreatmantID[0]}`);
-        
-              if (userResponse.data && treatmentResponse.data) {
-                const user = userResponse.data;
-                const treatment = treatmentResponse.data;
-        
-                const userDataItem = {
-                  name: user.id.Name,
-                  familyName: user.id.FamilyName,
-                  treatment: treatment.name, // Assuming the treatment object has a 'name' property
-                };
-        
-                return userDataItem;
+              const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
+              //element.TreatmantID.map(async(treat)=>{
+              //  console.log(treat)
+             // const res1 = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
+             // const res1 = await axios.get(`http://localhost:3321/treatmant/findTreatById/${treat}`);
+             // console.log(res1)
+              //})
+              
+              if (res.data) {
+                const d = res.data;
+                console.log(d);
+                return d;
               }
             } catch (err) {
               console.log(err);
               alert("אירעה שגיאה");
             }
           });
-        
+      
           const userDataResults = await Promise.all(userPromises);
           setUserData(userDataResults);
         };
-        
 
   return(
     <div>
-
       <button onClick={OwnerPage}>מעבר לדף העיסקי</button>
       
     
 
-  {/* <button onClick={nextPageDetails} >התורים הקרובים שלך</button> */}
+{/* <button onClick={nextPageDetails} >התורים הקרובים שלך</button> */}
 {/* <button>לשינוי/ביטול תור</button> */}
 <div>
-{userData &&
-    userData.map((user, index) => (
-      <div className="userDetail" key={index}>
-        <h1 onClick={Chat}>{user.name} {user.familyName}</h1>
-        <p>Treatment: {user.treatment}</p>
-      </div>
-    ))}
+      {userData &&
+          userData.map((user) =>
+             (
+              <div className="userDetail" key={user._id}>
+                <h1 onClick={Chat}>{user.id.Name} {user.id.FamilyName}</h1>
+                {/* <h1 onClick={googleSignIn}>{user.id.Name} {user.id.FamilyName}</h1> */}
+
+                {/* <H/> */}
+                {/* <h1>{user.id.FamilyName}</h1> */}
+                
+                </div>
+                
+               
+            ) 
+          )}
       </div>
 
 
@@ -162,54 +179,11 @@ const  ListExampleCelled = () => {
 <h2>יום שני 14:00</h2>
   <button onClick={nextPageDetails} className="button1">לשינוי/ביטול תור </button>
 
-  </div> : <div />}
+  </div> : <div />}  
     </div>
 
-  )
+)
+
+      }
+
 export default  ListExampleCelled
-
-
-
-  
-
-// import React from 'react'
-// import { Image, List } from 'semantic-ui-react'
-
-// const ListExampleSizes = () => {
-//   const sizes = [ 'huge']
-
-//   return (
-//     <div>
-//       {sizes.map((size) => (
-//         <div key={size}>
-//           <List divided horizontal size={size}>
-//             <List.Item>
-//               <Image avatar src='/images/avatar/small/helen.jpg' />
-//               <List.Content>
-//                 <List.Header>Helen</List.Header>
-//               </List.Content>
-//             </List.Item>
-//             <List.Item>
-//               <Image avatar src='/images/avatar/small/christian.jpg' />
-//               <List.Content>
-//                 <List.Header>Christian</List.Header>
-//               </List.Content>
-              
-//             </List.Item>
-//             <List.Item>
-//               <Image avatar src='/images/avatar/small/daniel.jpg' />
-//               <List.Content>
-//                 <List.Header>Daniel</List.Header>
-//                 טיפול פנים
-//               </List.Content>
-//             </List.Item>
-//           </List>
-
-//           <br />
-//         </div>
-//       ))}
-//     </div>
-//   )
-// }
-
-// export default ListExampleSizes
