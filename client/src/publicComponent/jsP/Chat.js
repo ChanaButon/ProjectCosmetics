@@ -10,11 +10,11 @@ function QuestionButtons() {
   	
 const location = useLocation();
 const {userid} = location.state || {};
-console.log(userid)
+// console.log(userid)
   // State to store the selected question
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 const [activeButton, setActiveButton] = useState(null);
-const [user1, setuser] = useState();
+const [user1, setuser] = useState(false);
 const [start, setStart] = useState(new Date);
 const [end, setEnd] = useState(new Date);
 const [eventName, setEventName] = useState("");
@@ -23,6 +23,7 @@ const [selectedDate, setSelectedDate] = useState(new Date());
 const session = useSession();
 const supabase = useSupabaseClient();
 const { isLoading } = useSessionContext();
+const [dayList, setDayList] = useState([]);
  // Calculate the date two weeks from now
  const twoWeeksFromNow = new Date();
  twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
@@ -35,46 +36,56 @@ const { isLoading } = useSessionContext();
   setSelectedDate(date);
 }
 
-const detailDay = ()=>{
-  //setSelectedDate(date);
-///  user.
-  // fetch(`http://localhost:3321/timeDay/findDayById/${id}`, {method: 'GET', headers: {'Content-Type': 'application/json',},}).then(response=>{return response.json();}).then(data=>{console.log(data)})
-}
+
 
 const detail = ()=>{
-  fetch('http://localhost:3321/product/getProducts', {method: 'GET', headers: {'Content-Type': 'application/json',},})
-.then(response => {
+  fetch('http://localhost:3321/product/getProducts', {method: 'GET', headers: {'Content-Type': 'application/json',},}).then(response => {
   if (response.ok) {
     return response.json();
   }
   throw new Error('Network response was not ok.');
 })
-.then(data => {
+.then(async data => {
   console.log(data);
-  data.map((a)=>{
-    if (a.UserID===userid){
-      console.log(a)
-      // a.WorkingDay.map((b)=>{
-      //   console.log(b)
-      //   detailDay(b)
-      //})
-    setuser(a)
-    }
-  })
+  const foundUser = data.find(a => a.UserID === userid);
+  if (foundUser) {
+    console.log(foundUser);
+    setuser(foundUser);
+    const dayPromises = foundUser.WorkingDay.map(async (b) => {
+      const dayResponse = await fetch(`http://localhost:3321/timeDay/findDayById:${b}`, { method: 'GET' });
+      const dayData = await dayResponse.json();
+      return dayData;
+    });
+
+    const dayResults = await Promise.all(dayPromises);
+    setDayList(dayResults);
+    console.log(dayList);
+
+    const dayWeek = dayResults.map(async(elemnt)=>{
+      const dayWeekResponse = await fetch(`http://localhost:3321/days/findDayWeekById:${elemnt.id.Day}`, { method: 'GET' });
+      const dayWeekData = await dayWeekResponse.json();
+      return dayWeekData;
+
+    })
+    const dayWeekResults = await Promise.all(dayWeek);
+    console.log(dayWeekResults)
+
+
+  }
+  
 })
 .catch(error => {
   console.error('There has been a problem with your fetch operation:', error);
 });
-console.log(user1)
 };
 
 useEffect(() => {
-  detail();
-  if(user1!==undefined){
-    console.log(user1)
-  }
+  detail()
 }, []);
 
+useEffect(() => {
+  console.log(dayList); // This will log the updated dayList when it changes
+}, [dayList]);
 
   async function googleSignIn() {
     const { error } = await supabase.auth.signInWithOAuth({

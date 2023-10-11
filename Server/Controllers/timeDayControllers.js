@@ -72,7 +72,8 @@ async function newTimeDay(req, res) {
     try {
         console.log("jhhchio knmut ימים")
         console.log(req.params)
-        let timeDay = await timeDays.findOne({_id:req.params.id});
+        const id = req.params.id.replace(':', ''); // This removes the colon
+        let timeDay = await timeDays.findOne({_id : id});
         console.log(timeDay,"timeday");
         res.json({ id: timeDay });
     }
