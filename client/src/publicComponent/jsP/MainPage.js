@@ -84,6 +84,8 @@ const  ListExampleCelled = () => {
 
 
 
+
+
 useEffect(() => {
   getAllProducts().then(() => {
     console.log(productsData);
@@ -98,19 +100,24 @@ useEffect(() => {
   }, [productsData]);
 
   useEffect(() => {
+    // console.log(tretment)
+    // console.log(tretment[0].id.TreatmantName)
     if (userData.length > 0 && tretment.length > 0) {
+      //console.log(tretment[0].id.TreatmantName)
+     // console.log(tretment.id.UserID)
       const personDict = userData.reduce((acc, user) => {
         const treatments = tretment
-          .filter((treatm) => treatm.id.UserID === user.id._id)
+         // .filter((treatm) => treatm.id.UserID === user.id._id)
           .map((filteredTreatm) => filteredTreatm.id.TreatmantName);
+        console.log(treatments[0])
         acc[user.id.Name] = treatments;
         console.log(treatments)
-        return acc;
+        return acc; 
       }, {});
       setShowPerson(personDict);
     }
   }, [userData, tretment]);
-  
+
   // Now the showPerson state variable contains the dictionary.
   console.log(showPerson);
 
