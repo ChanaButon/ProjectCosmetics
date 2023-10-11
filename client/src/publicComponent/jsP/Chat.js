@@ -2,7 +2,7 @@ import React, { useEffect,useState } from "react";
 import './style.css'
 import { googleSignIn } from './googleCalendar/googleCalnedar';
 import DateTimePicker from 'react-datetime-picker';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import Calendar from 'react-calendar';
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 import { useLocation } from 'react-router-dom';
@@ -15,6 +15,7 @@ const {userid} = location.state || {};
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 const [activeButton, setActiveButton] = useState(null);
 const [user1, setuser] = useState(false);
+const [allDetail, setallDetail] = useState({});
 const [start, setStart] = useState(new Date);
 const [end, setEnd] = useState(new Date);
 const [eventName, setEventName] = useState("");
@@ -24,6 +25,7 @@ const session = useSession();
 const supabase = useSupabaseClient();
 const { isLoading } = useSessionContext();
 const [dayList, setDayList] = useState([]);
+const [dayweekList, setDayweekList] = useState([]);
  // Calculate the date two weeks from now
  const twoWeeksFromNow = new Date();
  twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
@@ -37,55 +39,69 @@ const [dayList, setDayList] = useState([]);
 }
 
 
+const updateDetail = ()=>{
+  console.log("hiii")
+  const connectedList = dayweekList.map(dayweekItem => {
+  const correspondingDay = dayList.find(dayItem => dayItem.id.Day === dayweekItem.id._id);
+  if (correspondingDay) {
+    return {
+      ...correspondingDay.id,
+      "Day":dayweekItem.id.DayName
+    };
+  }})
+console.log(connectedList)
+setallDetail(user1)
+setallDetail((prev) => ({ ...prev, WorkingDay: connectedList }))
+}
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:3321/product/getProducts', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json',},
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const foundUser = data.find(a => a.UserID === userid);
+        setuser(foundUser)
+        if (foundUser) {
+          const dayPromises = foundUser.WorkingDay.map(async (b) => {
+            const dayResponse = await fetch(`http://localhost:3321/timeDay/findDayById:${b}`, { method: 'GET' });
+            const dayData = await dayResponse.json();
+            return dayData;
+          });
+          const dayResults = await Promise.all(dayPromises);
+          setDayList(dayResults);
 
-const detail = ()=>{
-  fetch('http://localhost:3321/product/getProducts', {method: 'GET', headers: {'Content-Type': 'application/json',},}).then(response => {
-  if (response.ok) {
-    return response.json();
-  }
-  throw new Error('Network response was not ok.');
-})
-.then(async data => {
-  console.log(data);
-  const foundUser = data.find(a => a.UserID === userid);
-  if (foundUser) {
-    console.log(foundUser);
-    setuser(foundUser);
-    const dayPromises = foundUser.WorkingDay.map(async (b) => {
-      const dayResponse = await fetch(`http://localhost:3321/timeDay/findDayById:${b}`, { method: 'GET' });
-      const dayData = await dayResponse.json();
-      return dayData;
-    });
+          const dayWeek = dayResults.map(async(elemnt)=>{
+            const dayWeekResponse = await fetch(`http://localhost:3321/days/findDayWeekById:${elemnt.id.Day}`, { method: 'GET' });
+            const dayWeekData = await dayWeekResponse.json();
+            return dayWeekData;
+          })
+            const dayWeekResults = await Promise.all(dayWeek);
+            setDayweekList(dayWeekResults)
+        }
+      } else {
+        throw new Error('Network response was not ok.');
+      }
+    } catch (error) {
+      console.error('There has been a problem with your fetch operation:', error);
+    }
+  };
 
-    const dayResults = await Promise.all(dayPromises);
-    setDayList(dayResults);
-    console.log(dayList);
+  fetchData(); // Call the async function directly inside useEffect
 
-    const dayWeek = dayResults.map(async(elemnt)=>{
-      const dayWeekResponse = await fetch(`http://localhost:3321/days/findDayWeekById:${elemnt.id.Day}`, { method: 'GET' });
-      const dayWeekData = await dayWeekResponse.json();
-      return dayWeekData;
+}, []); // Empty dependency array means this effect runs once after the initial render
 
-    })
-    const dayWeekResults = await Promise.all(dayWeek);
-    console.log(dayWeekResults)
-
-
-  }
-  
-})
-.catch(error => {
-  console.error('There has been a problem with your fetch operation:', error);
-});
-};
 
 useEffect(() => {
-  detail()
-}, []);
+  if(dayweekList.length>0){
+    updateDetail()
+  }
+  console.log(allDetail)
 
-useEffect(() => {
-  console.log(dayList); // This will log the updated dayList when it changes
-}, [dayList]);
+}, [dayweekList]);
+
 
   async function googleSignIn() {
     const { error } = await supabase.auth.signInWithOAuth({
