@@ -1,0 +1,37 @@
+/* styles.css */
+
+/* Style the DateTimePicker container */
+.react-datetime-picker {
+    width: 200px; /* Set the width of the DateTimePicker */
+  }
+  
+  /* Style the input field inside the DateTimePicker */
+  .react-datetime-picker__inputGroup {
+    width: 100%; /* Make the input field fill the container */
+    border: 1px solid #ccc; /* Add a border */
+    padding: 8px; /* Add some padding */
+    font-size: 14px; /* Set the font size */
+    border-radius: 4px; /* Optional: Add border radius */
+  }
+  
+  /* Style the calendar popup */
+  .react-calendar {
+    background-color: white; /* Set the background color of the calendar */
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 4px; /* Optional: Add border radius */
+  }
+  
+  /* Style the calendar days */
+  .react-calendar__month-view__days__day {
+    font-size: 14px; /* Set the font size of the calendar days */
+    padding: 8px; /* Add some padding to the days */
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
+  
+  /* Style the selected day */
+  .react-calendar__tile--active {
+    background-color: #007bff; /* Set the background color of the selected day */
+    color: white; /* Set the text color of the selected day */
+    border-radius: 50%; /* Optional: Add border radius to make it circular */
+  }
+  

@@ -8,7 +8,7 @@ import axios from 'axios'
 import H from './googleCalendar/googleCalnedar';
 import DateTimePicker from 'react-datetime-picker';// import './h.css';
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
-
+import './MainPage.css'
 
 const  ListExampleCelled = () => {
 
@@ -21,7 +21,8 @@ const  ListExampleCelled = () => {
   const [end, setEnd] = useState(new Date);
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
-  const [tretment,setTretment]=useState("");
+  const [tretment,setTretment]=useState([]);
+  const [showPerson,setShowPerson]=useState({});
 
   const session = useSession();
   const supabase = useSupabaseClient();
@@ -50,49 +51,44 @@ const  ListExampleCelled = () => {
     const response = await fetch('http://localhost:3321/product/getProducts');
     const data = await response.json();
     setProductsData(data)
-    console.log(data)
-    console.log(productsData)
+    // console.log(data)
+    // console.log(productsData)
     
-    const mio =data[0].TreatmantID[0];
-    // setTretment(mio)
-    console.log(mio);
+    // const mio =data[0].TreatmantID[0];
+    // // setTretment(mio)
+    // console.log(mio);
 
-    const userPromises = data[0].TreatmantID.map(async (element) => {
-    try {
-      const res1 = await axios.get(`http://localhost:3321/treatmant/findTreatById/${element}`);
+    
+    const allTreatments = [];
 
-      //element.TreatmantID.map(async(treat)=>{
-      //  console.log(treat)
-     // const res1 = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
-     // const res1 = await axios.get(`http://localhost:3321/treatmant/findTreatById/${treat}`);
-     // console.log(res1)
-      //})
-      
-      if (res1.data) {
-        const d = res1.data;
-        console.log(d);
-        return d;
+  // Map over each data object and its TreatmantID elements
+  data.forEach(async (dataItem) => {
+    const treatmentsPromises = dataItem.TreatmantID.map(async (element) => {
+      try {
+        const res1 = await axios.get(`http://localhost:3321/treatmant/findTreatById:${element}`);
+        if (res1.data) {
+          return res1.data;
+        }
+      } catch (err) {
+        console.log(err);
+        alert("אירעה שגיאה");
       }
-    } catch (err) {
-      console.log(err);
-      alert("אירעה שגיאה");
-    }
+    });
+
+    const treatments = await Promise.all(treatmentsPromises);
+    allTreatments.push(...treatments);
   });
 
-  const tretment = await Promise.all(userPromises);
-  setTretment(tretment);
-
-  console.log(tretment);
+  setTretment(allTreatments);
 };
 
 
-  
-  
-  useEffect(() => {
-    getAllProducts().then(() => {
-      console.log(productsData); // Move this line here
-    });
-  }, []);
+
+useEffect(() => {
+  getAllProducts().then(() => {
+    console.log(productsData);
+  });
+}, []);
 
   useEffect(() => {
     console.log(productsData); // This will log the updated productsData
@@ -100,6 +96,24 @@ const  ListExampleCelled = () => {
       detail();
     }
   }, [productsData]);
+
+  useEffect(() => {
+    if (userData.length > 0 && tretment.length > 0) {
+      const personDict = userData.reduce((acc, user) => {
+        const treatments = tretment
+          .filter((treatm) => treatm.id.UserID === user.id._id)
+          .map((filteredTreatm) => filteredTreatm.id.TreatmantName);
+        acc[user.id.Name] = treatments;
+        console.log(treatments)
+        return acc;
+      }, {});
+      setShowPerson(personDict);
+    }
+  }, [userData, tretment]);
+  
+  // Now the showPerson state variable contains the dictionary.
+  console.log(showPerson);
+
   
   const nextPageDetails = () => {
         
@@ -111,25 +125,20 @@ const  ListExampleCelled = () => {
         
       navigate("/OwnerPage")
       setVisible(false)
-      }
-      const Chat = () => {
-        
-        navigate("/Chat")
-        setVisible(false)
-        }
-  
-  
-        const detail = async () => {
+    }
+    const Chat = (userid) => {
+     navigate("/Chat",{state:{userid}});
+    //  navigate("/Chat")
+      console.log(userid)
+      setVisible(false)
+    }
+    
+    const detail = async () => {
           console.log("meo");
           const userPromises = productsData.map(async (element) => {
             try {
               const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
-              //element.TreatmantID.map(async(treat)=>{
-              //  console.log(treat)
-             // const res1 = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
-             // const res1 = await axios.get(`http://localhost:3321/treatmant/findTreatById/${treat}`);
-             // console.log(res1)
-              //})
+              
               
               if (res.data) {
                 const d = res.data;
@@ -144,7 +153,17 @@ const  ListExampleCelled = () => {
       
           const userDataResults = await Promise.all(userPromises);
           setUserData(userDataResults);
+
+         
+
+
+
         };
+
+
+
+
+
 
   return(
     <div>
@@ -152,34 +171,37 @@ const  ListExampleCelled = () => {
       
     
 
-{/* <button onClick={nextPageDetails} >התורים הקרובים שלך</button> */}
-{/* <button>לשינוי/ביטול תור</button> */}
-<div>
-      {userData &&
-          userData.map((user) =>
-             (
-              <div className="userDetail" key={user._id}>
-                <h1 onClick={Chat}>{user.id.Name} {user.id.FamilyName}</h1>
-                {/* <h1 onClick={googleSignIn}>{user.id.Name} {user.id.FamilyName}</h1> */}
+      // Inside your ListExampleCelled component
 
-                {/* <H/> */}
-                {/* <h1>{user.id.FamilyName}</h1> */}
-                
-                </div>
-                
-               
-            ) 
-          )}
+<div className="container">
+  {userData &&
+    userData.map((user) => (
+      <div className="userDetail" key={user._id}>
+        <h1 onClick={() => Chat(user.id._id)}>{user.id.Name}</h1>
+        {tretment &&
+          tretment
+            .filter((treatm) => treatm.id.UserID === user.id._id)
+            .map((filteredTreatm) => (
+              <div className="tretmentDetail" key={filteredTreatm._id}>
+                <h2>{filteredTreatm.id.TreatmantName}</h2>
+              </div>
+            ))}
       </div>
+    ))}
+  {visible && (
+    <div>
+      <h1>:התורים הקרובים שלך</h1>
+      <h2>יום שני 14:00</h2>
+      <button onClick={nextPageDetails} className="button1">
+        לשינוי/ביטול תור
+      </button>
+    </div>
+  )}
 
 
-      {visible ? <div>      
+ 
 
-<h1> :התורים הקרובים שלך</h1>
-<h2>יום שני 14:00</h2>
-  <button onClick={nextPageDetails} className="button1">לשינוי/ביטול תור </button>
-
-  </div> : <div />}  
+  </div> : <div />
     </div>
 
 )

@@ -90,10 +90,12 @@ const findTreatmant = async(req,res)=>
 }
 
 const findTreatById = async (req, res) => {
+  console.log(req.params)
   try {
-    console("12345679876543212345678765432345678")
+    console.log("12345679876543212345678765432345678")
       console.log(req.params)
-      let treat = await Treatmant.findOne({_id:req.params.id});
+      const id = req.params.id.replace(':', ''); // This removes the colon
+      let treat = await Treatmant.findOne({_id:id});
       console.log(treat,"treat");
       res.json({ id: treat });
   }

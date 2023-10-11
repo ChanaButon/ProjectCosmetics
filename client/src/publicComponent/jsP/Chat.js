@@ -1,28 +1,80 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import './style.css'
 import { googleSignIn } from './googleCalendar/googleCalnedar';
 import DateTimePicker from 'react-datetime-picker';
 import axios from 'axios';
-// import './h.css';
+import Calendar from 'react-calendar';
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
-
+import { useLocation } from 'react-router-dom';
 function QuestionButtons() {
+  	
+const location = useLocation();
+const {userid} = location.state || {};
+console.log(userid)
   // State to store the selected question
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 const [activeButton, setActiveButton] = useState(null);
-
+const [user1, setuser] = useState();
 const [start, setStart] = useState(new Date);
 const [end, setEnd] = useState(new Date);
 const [eventName, setEventName] = useState("");
 const [eventDescription, setEventDescription] = useState("");
-
+const [selectedDate, setSelectedDate] = useState(new Date());
 const session = useSession();
 const supabase = useSupabaseClient();
 const { isLoading } = useSessionContext();
-  // Function to handle button click
-  const handleButtonClick = (question) => {
-    setSelectedQuestion(question);
-  };
+ // Calculate the date two weeks from now
+ const twoWeeksFromNow = new Date();
+ twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
+
+ // Function to handle button click
+ const handleButtonClick = (question) => {
+   setSelectedQuestion(question);
+ };
+ const handleDateChange = (date) => {
+  setSelectedDate(date);
+}
+
+const detailDay = ()=>{
+  //setSelectedDate(date);
+///  user.
+  // fetch(`http://localhost:3321/timeDay/findDayById/${id}`, {method: 'GET', headers: {'Content-Type': 'application/json',},}).then(response=>{return response.json();}).then(data=>{console.log(data)})
+}
+
+const detail = ()=>{
+  fetch('http://localhost:3321/product/getProducts', {method: 'GET', headers: {'Content-Type': 'application/json',},})
+.then(response => {
+  if (response.ok) {
+    return response.json();
+  }
+  throw new Error('Network response was not ok.');
+})
+.then(data => {
+  console.log(data);
+  data.map((a)=>{
+    if (a.UserID===userid){
+      console.log(a)
+      // a.WorkingDay.map((b)=>{
+      //   console.log(b)
+      //   detailDay(b)
+      //})
+    setuser(a)
+    }
+  })
+})
+.catch(error => {
+  console.error('There has been a problem with your fetch operation:', error);
+});
+console.log(user1)
+};
+
+useEffect(() => {
+  detail();
+  if(user1!==undefined){
+    console.log(user1)
+  }
+}, []);
+
 
   async function googleSignIn() {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -73,12 +125,12 @@ const { isLoading } = useSessionContext();
   return (
     <div style={{ display: "inline-flex", flexDirection: "column" }}>
       <button onClick={googleSignIn}>Sign In</button>
-      <DateTimePicker  size={200}/>
       <div className="chat-container">
         <div className="chat-header ">
           <h2>CHAT</h2>
         </div>
 
+        <Calendar onChange={handleDateChange} value={selectedDate} minDate={new Date()} maxDate={twoWeeksFromNow} />
 
         <div className="chat-body">
           <h3>Select a time:</h3>
@@ -89,37 +141,6 @@ const { isLoading } = useSessionContext();
         {renderButtons()}
       </div>
     </div>
-
-
-    // <div style={{ display: "inline-flex", flexDirection: "column" }}>
-    // <div className="chat-container">
-    // <div className="chat-header">
-    // <h2>CHAT</h2>
-    // </div>
-    // <div className="chat-body">
-    // {
-
-    // }
-    // <div className="message-bubble me">
-    // <p>Hi, I'm good. Thanks for asking!</p>
-    // </div>
-    // {/* <div class="message-bubble other">
-    // <p>That's great to hear! I was wondering if you had time to chat about the project we're working on?</p>
-    // </div> */}
-    // <div className="message-bubble me">
-    // <p>Sure, let's chat about it now.</p>
-    // </div>
-    // </div>
-    // <div className="chat-input">
-    // {/* <input type="text" placeholder="Type your message here"> */}
-    // {/* <button>Send</button> */}
-    // </div>
-    // </div>
-
-
-
-
-
 
 
   );
