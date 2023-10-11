@@ -41,8 +41,22 @@ async function newDay(req, res) {
           res.send('Error: ' + error.message);
       }
   }
+
+  
+  const findDayWeekById = async (req, res) => {
+    try {
+        console.log(req.params)
+        const id = req.params.id.replace(':', ''); // This removes the colon
+        let timeDay = await Days.findOne({_id : id});
+        console.log(timeDay,"timeday");
+        res.json({ id: timeDay });
+    }
+    catch (error) {
+        res.send("cannot find Day: " + error.message)
+    }
+  }
   
 
 
-module.exports = {newDay , deleteDay }
+module.exports = {newDay , deleteDay, findDayWeekById }
 
