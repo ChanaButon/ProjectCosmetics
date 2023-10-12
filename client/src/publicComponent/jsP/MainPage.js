@@ -27,10 +27,8 @@ const  ListExampleCelled = () => {
   const session = useSession();
   const supabase = useSupabaseClient();
   const { isLoading } = useSessionContext();
+  
 
-  if (isLoading) {
-    return <></>
-  }
 
   async function googleSignIn() {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -51,7 +49,7 @@ const  ListExampleCelled = () => {
     const response = await fetch('http://localhost:3321/product/getProducts');
     const data = await response.json();
     setProductsData(data)
-    console.log(data)
+    // console.log(data)
     // console.log(productsData)
     
     // const mio =data[0].TreatmantID[0];
@@ -84,51 +82,7 @@ const  ListExampleCelled = () => {
 
 
 
-
-
-useEffect(() => {
-  getAllProducts()
-//console.log(productsData);
   
-}, []);
-
-  useEffect(() => {
-    console.log(productsData); // This will log the updated productsData
-    if (productsData.length>0){
-      detail();
-    }
-  }, [productsData]);
-
-  useEffect(() => {
-    
-    console.log(userData.length)
-    if (productsData.length > 0 && userData.length>0){
-      updateDetail()
-    }
-  }, [userData]);
-
-  useEffect(() => {
-    // console.log(tretment)
-    // console.log(tretment[0].id.TreatmantName)
-    if (userData.length > 0 && tretment.length > 0) {
-      //console.log(tretment[0].id.TreatmantName)
-     // console.log(tretment.id.UserID)
-     console.log(userData)
-      const personDict = userData.reduce((acc, user) => {
-        const treatments = tretment
-         // .filter((treatm) => treatm.id.UserID === user.id._id)
-          .map((filteredTreatm) => filteredTreatm.id.TreatmantName);
-        console.log(treatments[0])
-        acc[user.id.Name] = treatments;
-        console.log(treatments)
-        return acc; 
-      }, {});
-      setShowPerson(personDict);
-    }
-  }, [userData, tretment]);
-
-  // Now the showPerson state variable contains the dictionary.
-  console.log(showPerson);
 
   const updateDetail = () => {
     console.log("hi")
@@ -151,10 +105,13 @@ useEffect(() => {
     console.log(connectedList)
     const listTreat = []
     const userTreat = connectedList.map(element=>{
+      const listTreat = []
       console.log(element)
       element.TreatmantID.forEach((treat=>{
-        console.log(tretment)
+        // console.log(treat)
+        // console.log(tretment)
         const treatfind = tretment.find(a=>a.id._id===treat)
+        console.log(treatfind)
         if (treatfind) {
           const flattenedObject = {
             _id: treatfind.id._id,
@@ -163,14 +120,20 @@ useEffect(() => {
             TreatmantTime: treatfind.id.TreatmantTime
           };
           listTreat.push(flattenedObject);
-          console.log(listTreat)
+          //console.log(listTreat)
+
         }
       }))
+      console.log(listTreat)
+      console.log({ ...element, "TreatmantID": listTreat })
+      // setProductsData((prevUser) => ({ ...connectedList, TreatmantID: listTreat }));
     })
-    console.log(userTreat)
+    console.log(listTreat)
     // setProductsData(user)
     // setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList }));
   };
+  
+
   
   const nextPageDetails = () => {
         
@@ -197,7 +160,7 @@ useEffect(() => {
               const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
               if (res.data) {
                 const d = res.data;
-                // console.log(d);
+                console.log(d);
                 return d;
               }
             } catch (err) {
@@ -209,15 +172,30 @@ useEffect(() => {
           const userDataResults = await Promise.all(userPromises);
           setUserData(userDataResults);
 
-         
-
-
-
         };
 
 
+    useEffect(() => {
+ getAllProducts()
+}, []);
 
+useEffect(() => {
+    
+  console.log(userData.length)
+  if (productsData.length > 0 && userData.length>0){
+    updateDetail()
+  }
+}, [userData]);
 
+  useEffect(() => {
+    console.log(productsData); // This will log the updated productsData
+    if (productsData.length>0){
+      detail();
+    }
+  }, [productsData]);
+  if (isLoading) {
+    return <></>
+  }
 
 
   return(

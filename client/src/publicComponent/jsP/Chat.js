@@ -135,10 +135,7 @@ const QuestionButtons = () => {
   };
 
   const determineEarliestTime = (timeOfDay) => {
-    // Implement logic to determine the user's earliest available time for the selected time of day
-    // You can use the deatailUserList.WorkingDay data for this
-    // Example: if timeOfDay is "morning," find the earliest morning time
-
+    
     if (deatailUserList.WorkingDay) {
       // Example logic (you may need to adjust this):
       const workingTimes = deatailUserList.WorkingDay.filter(day => day.TimeOfDay === timeOfDay);
