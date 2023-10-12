@@ -149,6 +149,25 @@ useEffect(() => {
       return null;
     }).filter(item => item !== null);
     console.log(connectedList)
+    const listTreat = []
+    const userTreat = connectedList.map(element=>{
+      console.log(element)
+      element.TreatmantID.forEach((treat=>{
+        console.log(tretment)
+        const treatfind = tretment.find(a=>a.id._id===treat)
+        if (treatfind) {
+          const flattenedObject = {
+            _id: treatfind.id._id,
+            TreatmantName: treatfind.id.TreatmantName,
+            Price: treatfind.id.Price,
+            TreatmantTime: treatfind.id.TreatmantTime
+          };
+          listTreat.push(flattenedObject);
+          console.log(listTreat)
+        }
+      }))
+    })
+    console.log(userTreat)
     // setProductsData(user)
     // setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList }));
   };
