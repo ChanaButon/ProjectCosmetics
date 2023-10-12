@@ -12,6 +12,7 @@ import './MainPage.css'
 
 const  ListExampleCelled = () => {
 
+  const [finData, setfinData] = useState([]);
   const [productsData, setProductsData] = useState([]);
   const [userData, setUserData] = useState([]);
   const [visible, setVisible] = useState(true);
@@ -103,7 +104,7 @@ const  ListExampleCelled = () => {
       return null;
     }).filter(item => item !== null);
     console.log(connectedList)
-    const listTreat = []
+    const listuser = []
     const userTreat = connectedList.map(element=>{
       const listTreat = []
       console.log(element)
@@ -126,9 +127,12 @@ const  ListExampleCelled = () => {
       }))
       console.log(listTreat)
       console.log({ ...element, "TreatmantID": listTreat })
-      // setProductsData((prevUser) => ({ ...connectedList, TreatmantID: listTreat }));
+      listuser.push({ ...element, "TreatmantID": listTreat })
+      console.log(listuser)
     })
-    console.log(listTreat)
+    console.log(listuser)
+    setfinData(listuser)
+    //setProductsData(listuser);
     // setProductsData(user)
     // setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList }));
   };
@@ -175,10 +179,13 @@ const  ListExampleCelled = () => {
         };
 
 
-    useEffect(() => {
+useEffect(() => {
  getAllProducts()
+ console.log(finData)
 }, []);
-
+// useEffect(() => {
+//   console.log(finData)
+//  }, [finData]);
 useEffect(() => {
     
   console.log(userData.length)
