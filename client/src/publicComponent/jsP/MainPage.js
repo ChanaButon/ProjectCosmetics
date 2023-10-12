@@ -51,7 +51,7 @@ const  ListExampleCelled = () => {
     const response = await fetch('http://localhost:3321/product/getProducts');
     const data = await response.json();
     setProductsData(data)
-    console.log(data)
+    // console.log(data)
     // console.log(productsData)
     
     // const mio =data[0].TreatmantID[0];
@@ -87,9 +87,9 @@ const  ListExampleCelled = () => {
 
 
 useEffect(() => {
-  getAllProducts()
-//console.log(productsData);
-  
+  getAllProducts().then(() => {
+    console.log(productsData);
+  });
 }, []);
 
   useEffect(() => {
@@ -101,19 +101,9 @@ useEffect(() => {
 
   useEffect(() => {
     
-    console.log(userData.length)
-    if (productsData.length > 0 && userData.length>0){
-      updateDetail()
-    }
-  }, [userData]);
-
-  useEffect(() => {
-    // console.log(tretment)
-    // console.log(tretment[0].id.TreatmantName)
     if (userData.length > 0 && tretment.length > 0) {
       //console.log(tretment[0].id.TreatmantName)
      // console.log(tretment.id.UserID)
-     console.log(userData)
       const personDict = userData.reduce((acc, user) => {
         const treatments = tretment
          // .filter((treatm) => treatm.id.UserID === user.id._id)
@@ -130,28 +120,7 @@ useEffect(() => {
   // Now the showPerson state variable contains the dictionary.
   console.log(showPerson);
 
-  const updateDetail = () => {
-    console.log("hi")
-    const connectedList = productsData.map(element => {
-    const corresponding = userData.find(e => e.id._id === element.UserID);
-    console.log(corresponding.id)
-      if (corresponding) {
-        console.log({
-          ...element,
-          "Name": corresponding.id.Name,"Family":corresponding.id.FamilyName
-        })
-        return {
-          ...element,
-          "Name": corresponding.id.Name,"Family":corresponding.id.FamilyName
-        };
-       
-      }
-      return null;
-    }).filter(item => item !== null);
-    console.log(connectedList)
-    // setProductsData(user)
-    // setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList }));
-  };
+  
   
   const nextPageDetails = () => {
         
@@ -176,9 +145,11 @@ useEffect(() => {
           const userPromises = productsData.map(async (element) => {
             try {
               const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
+              
+              
               if (res.data) {
                 const d = res.data;
-                // console.log(d);
+                console.log(d);
                 return d;
               }
             } catch (err) {
