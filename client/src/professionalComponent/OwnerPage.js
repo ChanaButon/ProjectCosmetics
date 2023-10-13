@@ -2,9 +2,18 @@ import React, { useState } from "react";
 // import Details from "../clientComponent/Details";
 // import Home from "../publicComponent/jsP/Home";
 import HomeClient from "../clientComponent/HomeClient";
-export default function ImageUploader() {
+
+
+
+
+
+ function ImageUploader() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+ // const [currentPage, setCurrentPage] = useState('calendar'); // Default to 'calendar'
+
+
+
 
   function fileSelectedHandler(event) {
     setSelectedFile(event.target.files[0]);
@@ -30,16 +39,25 @@ export default function ImageUploader() {
       .catch((error) => {
         // Handle errors
       });
-  }
+
+ 
 
   return (
     <div>
+
+      
       <input type="file" onChange={fileSelectedHandler} />
       {previewUrl && (
         <img src={previewUrl} alt="Preview" style={{ maxWidth: "10%" }} />
       )}
       {selectedFile && <button onClick={fileUploadHandler}>Upload</button>}
       <HomeClient/>
+      
+      
+
     </div>
   );
 }
+
+ }
+export default ImageUploader
