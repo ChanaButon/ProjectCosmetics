@@ -40,6 +40,7 @@ const QuestionButtons = () => {
         const data = await response.json();
         const foundUser = data.find(a => a.UserID === userid);
         setUser(foundUser)
+        console.log(data,userid)
         if (foundUser) {
           const dayPromises = foundUser.WorkingDay.map(async (b) => {
             const dayResponse = await fetch(`http://localhost:3321/timeDay/findDayById:${b}`);
@@ -56,6 +57,7 @@ const QuestionButtons = () => {
           });
           const dayWeekResults = await Promise.all(dayWeekPromises);
           setDayweekList(dayWeekResults);
+          console.log(dayWeekResults)
         }
       } else {
         throw new Error('Network response was not ok.');
@@ -82,6 +84,7 @@ const QuestionButtons = () => {
     }).filter(item => item !== null);
     setDeatailUserList(user)
     setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList }));
+    console.log({ ...user, WorkingDay: connectedList })
   };
 
   useEffect(() => {
@@ -89,9 +92,9 @@ const QuestionButtons = () => {
       updateDetail();
     }
     if(deatailUserList.length!==0){
+      setIsDataLoaded(true);
       console.log(deatailUserList)
       console.log("yessssssssssssssssss")
-      setIsDataLoaded(true);
     }
   }, [dayweekList]);
 

@@ -202,7 +202,7 @@ useEffect(() => {
   if (isLoading) {
     return <></>
   }
-
+  
 
   return(
     <div>
@@ -213,22 +213,17 @@ useEffect(() => {
       // Inside your ListExampleCelled component
 
 <div className="container">
-  {userData &&
-    userData.map((user) => (
-      <div className="userDetail" key={user._id}>
-        <h1 onClick={() => Chat(user.id._id)}>{user.id.Name}</h1>
-
-        {tretment &&
-          tretment
-            .filter((treatm) => treatm.id.UserID === user.id._id)
-            .map((filteredTreatm) => (
-              <div className="tretmentDetail" key={filteredTreatm._id}>
-                <h2>{filteredTreatm.id.TreatmantName}</h2>
-                <p>"meo"</p>
-              </div>
-            ))}
-      </div>
-    ))}
+{finData &&
+  finData.map((user) => (
+    <div className="userDetail" key={user._id}>
+      <h1 onClick={() => Chat(user.UserID)}>{user.Name}</h1>
+      {user.TreatmantID && user.TreatmantID.map((filteredTreatm) => (
+        <div className="tretmentDetail" key={filteredTreatm._id}>
+          <h2>{filteredTreatm.TreatmantName}</h2>
+        </div>
+      ))}
+    </div>
+  ))}
   {visible && (
     <div>
       <h1>:התורים הקרובים שלך</h1>
