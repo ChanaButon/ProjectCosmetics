@@ -6,19 +6,10 @@ const Treatmant = require('../Models/TreatmantModel');
 async function serverFunction(data) {
     console.log("Queue");
     try {
-      let myTreatmant= await Treatmant.findOne({ TreatmantName: data.TreatmantType });
-      let myUser= await User.findOne({ ID: data.Customer });
+      let myTreatmant= await Treatmant.findOne({ _id: data.TreatmantType });
+      let myUser= await User.findOne({_id: data.Customer });
 
-      // if (!myDay) {
-      //     // If it doesn't exist, create a new day
-      //     myDay = new days({
-      //         DayName: data.dayName
-      //     });
-      //     await myDay.save();
-      // }
-
-        // Create a new Queue 
-
+      console.log(myTreatmant,myUser)
         let myQueue = new Queue({
           DateTime: data.DateTime ,
           TreatmantType:myTreatmant._id,
@@ -37,7 +28,7 @@ async function serverFunction(data) {
 
 
 async function newQueue(req, res) {
-    console.log(req.body)
+    console.log(req.body,"תוררררר")
     try {
       const result = await serverFunction(req.body);
       res.json(result);
@@ -90,5 +81,33 @@ const findTreatmant = async(req,res)=>
         }
 }
 
-module.exports = {newQueue,}
+const getQueuesByDateAndStatus = async (req, res) => {
+  try {
+    // Extract the target date from the request parameters and parse it to a Date object
+    const targetDate = new Date(req.params.date);
+    // Set the time to the start of the day (00:00:00)
+    targetDate.setHours(0, 0, 0, 0);
+
+    // Calculate the end of the day (23:59:59)
+    const endOfDay = new Date(targetDate);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    // Find queues with Status: true and DateTime falling within the target date
+    const filteredQueues = await Queue.find({
+      Status: true,
+      DateTime: {
+        $gte: targetDate,
+        $lte: endOfDay
+      }
+    });
+
+    console.log(filteredQueues);
+    res.json(filteredQueues);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
+module.exports = {newQueue,getQueuesByDateAndStatus}
 
