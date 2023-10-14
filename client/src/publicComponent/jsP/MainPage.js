@@ -5,12 +5,17 @@ import { useNavigate } from 'react-router-dom';
 // import { Image } from 'semantic-ui-react'
 //import Login from '../../professionalComponent/Login'
 import axios from 'axios'
+import { useLocation } from 'react-router-dom';
 import H from './googleCalendar/googleCalnedar';
 import DateTimePicker from 'react-datetime-picker';// import './h.css';
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 import './MainPage.css'
 
 const  ListExampleCelled = () => {
+
+  const location = useLocation();
+  const { userSend } = location.state || {};
+  console.log(userSend)
 
   const [finData, setfinData] = useState([]);
   const [productsData, setProductsData] = useState([]);
@@ -150,8 +155,9 @@ const  ListExampleCelled = () => {
       navigate("/OwnerPage")
       setVisible(false)
     }
-    const Chat = (userid) => {
-     navigate("/Chat",{state:{userid}});
+    const Chat = (userid,filteredTreatm) => {
+      console.log(userid,filteredTreatm)
+     navigate("/Chat",{state:{userid,filteredTreatm}});
     //  navigate("/Chat")
       console.log(userid)
       setVisible(false)
@@ -220,7 +226,7 @@ useEffect(() => {
       <h1 onClick={() => Chat(user._id)}>{user.Name}</h1>
       {user.TreatmantID && user.TreatmantID.map((filteredTreatm) => (
         <div className="tretmentDetail" key={filteredTreatm._id}>
-          <h2>{filteredTreatm.TreatmantName}</h2>
+          <h2 onClick={() => Chat(user._id,filteredTreatm,)}>{filteredTreatm.TreatmantName}</h2>
         </div>
       ))}
     </div>

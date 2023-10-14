@@ -68,11 +68,12 @@ const ImageUploader = () => {
         // Handle errors
       });
 
- 
+    }
 
   return (
     <div>
-      <Calendar onChange={onDateChange} value={selectedDate} />
+      
+      <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/>
       <h2>Appointments for {selectedDate.toDateString()}:</h2>
       <ul>
         {filteredAppointments.map(appointment => (
@@ -84,7 +85,7 @@ const ImageUploader = () => {
           </li>
         ))}
       </ul>
-      <h1 >kjjkl</h1>
+      
       <input type="file" onChange={fileSelectedHandler} />
       {previewUrl && (
         <img src={previewUrl} alt="Preview" style={{ maxWidth: "10%" }} />
@@ -94,5 +95,5 @@ const ImageUploader = () => {
     </div>
   );
 };
-}
+
 export default ImageUploader

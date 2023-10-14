@@ -48,6 +48,7 @@ const Register = (props) => {
     
     axios.post('http://localhost:3321/User/getUser', user).then((res) => {
       console.log(res.data);
+      const userSend = res.data;
       if (res.data.status == false) {
 
         alert("not found")
@@ -56,7 +57,8 @@ const Register = (props) => {
 
         //עדכון לסטור
         dispatch(setUser(res.data.getUser))
-        navigate("/MainPage")
+        navigate("/MainPage",{state:{userSend}});
+        console.log(userSend)
       }
     }
   ).catch ((err) => {
