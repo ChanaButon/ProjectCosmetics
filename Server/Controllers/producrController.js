@@ -103,6 +103,7 @@ async function serverFunction1(data) {
   const updateProduct = async (req, res) => {
     console.log(req.body._id);
     const updateProduct ={...req.body};
+    console.log(...req.body)
     try {
       const result = await Product.findOneAndUpdate({_id:req.body._id}, updateProduct, {new:true})
       if(!result){
