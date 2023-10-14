@@ -116,4 +116,4 @@ async function serverFunction1(data) {
   }
   
 
-module.exports = { newProduct,getAllProduct }
+module.exports = { newProduct,getAllProduct,updateProduct }
