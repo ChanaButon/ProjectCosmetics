@@ -7,11 +7,13 @@ import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Calendar from 'react-calendar';
+import EarliestAvailableTime from "./EarliestAvailableTime";
+import addToQueueApi from './api';
 
 const QuestionButtons = () => {
   const location = useLocation();
   const { userid } = location.state || {};
-
+  const [earliestTime, setEarliestTime] = useState("Loading...");
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [isDateSelected, setIsDateSelected] = useState(false);
   const [selectedTimeOfDay, setSelectedTimeOfDay] = useState(null);
@@ -21,6 +23,7 @@ const QuestionButtons = () => {
   const [dayList, setDayList] = useState([]);
   const [dayweekList, setDayweekList] = useState([]);
   const [deatailUserList, setDeatailUserList] = useState([]);
+  const [addToQueue, setAddToQueue] = useState(false);
 
   const supabase = useSupabaseClient();
   const { isLoading } = useSessionContext();
@@ -37,6 +40,7 @@ const QuestionButtons = () => {
         const data = await response.json();
         const foundUser = data.find(a => a.UserID === userid);
         setUser(foundUser)
+        console.log(data,userid)
         if (foundUser) {
           const dayPromises = foundUser.WorkingDay.map(async (b) => {
             const dayResponse = await fetch(`http://localhost:3321/timeDay/findDayById:${b}`);
@@ -53,6 +57,7 @@ const QuestionButtons = () => {
           });
           const dayWeekResults = await Promise.all(dayWeekPromises);
           setDayweekList(dayWeekResults);
+          console.log(dayWeekResults)
         }
       } else {
         throw new Error('Network response was not ok.');
@@ -79,6 +84,7 @@ const QuestionButtons = () => {
     }).filter(item => item !== null);
     setDeatailUserList(user)
     setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList }));
+    console.log({ ...user, WorkingDay: connectedList })
   };
 
   useEffect(() => {
@@ -86,9 +92,9 @@ const QuestionButtons = () => {
       updateDetail();
     }
     if(deatailUserList.length!==0){
+      setIsDataLoaded(true);
       console.log(deatailUserList)
       console.log("yessssssssssssssssss")
-      setIsDataLoaded(true);
     }
   }, [dayweekList]);
 
@@ -118,11 +124,11 @@ const QuestionButtons = () => {
       );
     } else if (isDateSelected && selectedTimeOfDay !== null) {
       // Determine the user's earliest available time for the selected time of day
-      const earliestTime = determineEarliestTime(selectedTimeOfDay);
+      // const earliestTime = determineEarliestTime(selectedTimeOfDay);
       return (
         <div className="chat-body">
           <h3>Selected Time of Day: {selectedTimeOfDay}</h3>
-          <h3>Earliest Available Time: {earliestTime}</h3>
+          <h3>Earliest Available Time: </h3>
         </div>
       );
     } else {
@@ -133,34 +139,20 @@ const QuestionButtons = () => {
       );
     }
   };
-
-  const determineEarliestTime = (timeOfDay) => {
-    
-    if (deatailUserList.WorkingDay) {
-      // Example logic (you may need to adjust this):
-      const workingTimes = deatailUserList.WorkingDay.filter(day => day.TimeOfDay === timeOfDay);
-      if (workingTimes.length > 0) {
-        const earliestTime = Math.min(...workingTimes.map(day => day.Start));
-        return earliestTime;
-      }
+  
+  const addToQueueHandler = async () => {
+    try {
+      const message = await addToQueueApi(user.id, selectedDate, selectedTimeOfDay);
+      console.log(message); // Handle the success message (e.g., show a success notification to the user)
+    } catch (error) {
+      console.error('Error adding user to the queue:', error); // Handle errors (e.g., show an error message to the user)
     }
-
-    return "Not Available"; // If no working times are available for the selected time of day
   };
   
   
-  const events = () => {
-    if (isDataLoaded) {
-      const workingDayEvents = deatailUserList.WorkingDay.map(day => ({
-        title: 'Working Day',
-        start: moment().day(day.Day).hour(day.Start).toDate(),
-        end: moment().day(day.Day).hour(day.End).minute(0).toDate(),
-      }));
-      console.log(workingDayEvents);
-      return workingDayEvents;
-    }
-    return [];
-  };
+  
+  
+ 
   
   
   
@@ -176,6 +168,7 @@ const QuestionButtons = () => {
 
   const handleDateSelection = (date) => {
     setSelectedDate(date);
+    console.log(date)
     setIsDateSelected(true);
   };
 
@@ -187,6 +180,13 @@ const QuestionButtons = () => {
         <h2>CHAT</h2>
       </div>
       {renderButtons()}
+        {isDateSelected && selectedTimeOfDay !== null && (
+          <EarliestAvailableTime selectedDate={selectedDate} workingDayList={deatailUserList.WorkingDay} />
+        
+          )}
+           {isDateSelected && selectedTimeOfDay !== null && (
+            <button onClick={addToQueueHandler}>Add to Queue</button>)}
+
     </div>
   </div>
 

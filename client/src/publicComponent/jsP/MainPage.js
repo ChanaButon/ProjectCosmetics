@@ -187,7 +187,6 @@ const  ListExampleCelled = () => {
 
 useEffect(() => {
  getAllProducts()
- console.log(finData)
 }, []);
 // useEffect(() => {
 //   console.log(finData)
@@ -223,7 +222,7 @@ useEffect(() => {
 {finData &&
   finData.map((user) => (
     <div className="userDetail" key={user._id}>
-      <h1 onClick={() => Chat(user._id)}>{user.Name}</h1>
+      <h1 onClick={() => Chat(user.UserID)}>{user.Name}</h1>
       {user.TreatmantID && user.TreatmantID.map((filteredTreatm) => (
         <div className="tretmentDetail" key={filteredTreatm._id}>
           <h2 onClick={() => Chat(user._id,filteredTreatm,)}>{filteredTreatm.TreatmantName}</h2>
