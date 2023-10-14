@@ -13,6 +13,7 @@ import addToQueueApi from './api';
 const QuestionButtons = () => {
   const location = useLocation();
   const { userid } = location.state || {};
+  console.log(userid)
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [isDateSelected, setIsDateSelected] = useState(false);
@@ -38,7 +39,8 @@ const QuestionButtons = () => {
       const response = await fetch('http://localhost:3321/product/getProducts');
       if (response.ok) {
         const data = await response.json();
-        const foundUser = data.find(a => a.UserID === userid);
+        const foundUser = data.find(a => a._id === userid);
+        console.log(foundUser,data,userid)
         setUser(foundUser)
         console.log(data,userid)
         if (foundUser) {
@@ -158,6 +160,8 @@ const QuestionButtons = () => {
   
   const tileDisabled = ({ activeStartDate, date, view }) => {
     if (view === 'month' && isDataLoaded) {
+      console.log("meo")
+
       const workingDay = deatailUserList.WorkingDay.map(day => day.Day);
       const workingDayNumbers = workingDay.map(dayName => moment().day(dayName).day());
       const dayOfWeek = date.getDay();

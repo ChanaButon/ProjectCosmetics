@@ -99,6 +99,21 @@ async function serverFunction1(data) {
       res.status(500).send(e.message);
     }
   }
+
+  const updateProduct = async (req, res) => {
+    console.log(req.body._id);
+    const updateProduct ={...req.body};
+    try {
+      const result = await Product.findOneAndUpdate({_id:req.body._id}, updateProduct, {new:true})
+      if(!result){
+        res.status(404).send({message: "no such product with the specific id"})
+      }
+      res.send(result);
+    } catch (e) {
+      console.log(e);
+      res.send(e.message);
+    }
+  }
   
 
 module.exports = { newProduct,getAllProduct }

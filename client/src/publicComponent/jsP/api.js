@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const addToQueue = async (userId, selectedDate, selectedTimeOfDay) => {
+const addToQueue = async (selectedDate,treatmant, customerId) => {
   try {
     const data = {
-      userId: userId,
-      selectedDate: selectedDate,
-      selectedTimeOfDay: selectedTimeOfDay,
+      DateTime:selectedDate,
+      TreatmantType:treatmant,
+      Customer:customerId,
     };
 
     const response = await axios.post('http://localhost:3321/newQueue', data);
