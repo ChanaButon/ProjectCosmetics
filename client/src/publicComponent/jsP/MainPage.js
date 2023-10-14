@@ -211,13 +211,8 @@ useEffect(() => {
   
 
   return(
-    <div>
-      <button onClick={OwnerPage}>מעבר לדף העיסקי</button>
-      
-    
-
-      // Inside your ListExampleCelled component
-
+  <div>
+  <button onClick={OwnerPage}>מעבר לדף העיסקי</button>
 <div className="container">
 {finData &&
   finData.map((user) => (
