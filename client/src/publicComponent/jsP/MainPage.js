@@ -156,7 +156,7 @@ const  ListExampleCelled = () => {
       setVisible(false)
     }
     const Chat = (userid,filteredTreatm,userSend) => {
-      console.log(userid,filteredTreatm,userSend)
+      // console.log(userid,filteredTreatm,userSend)
      navigate("/Chat",{state:{userid,filteredTreatm,userSend}});
     //  navigate("/Chat")
       console.log(userid)

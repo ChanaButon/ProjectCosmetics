@@ -12,8 +12,7 @@ import addToQueueApi from './api';
 
 const QuestionButtons = () => {
   const location = useLocation();
-  const { userid } = location.state || {};
-  console.log(userid)
+  const { userid,filteredTreatm,userSend } = location.state || {};
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [isDateSelected, setIsDateSelected] = useState(false);
@@ -40,9 +39,7 @@ const QuestionButtons = () => {
       if (response.ok) {
         const data = await response.json();
         const foundUser = data.find(a => a._id === userid);
-        console.log(foundUser,data,userid)
         setUser(foundUser)
-        console.log(data,userid)
         if (foundUser) {
           const dayPromises = foundUser.WorkingDay.map(async (b) => {
             const dayResponse = await fetch(`http://localhost:3321/timeDay/findDayById:${b}`);
@@ -86,7 +83,7 @@ const QuestionButtons = () => {
     }).filter(item => item !== null);
     setDeatailUserList(user)
     setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList }));
-    console.log({ ...user, WorkingDay: connectedList })
+    // console.log({ ...user, WorkingDay: connectedList })
   };
 
   useEffect(() => {
@@ -144,7 +141,7 @@ const QuestionButtons = () => {
   
   const addToQueueHandler = async () => {
     try {
-      const message = await addToQueueApi(user.id, selectedDate, selectedTimeOfDay);
+      const message = await addToQueueApi(selectedDate,filteredTreatm,userSend._id);
       console.log(message); // Handle the success message (e.g., show a success notification to the user)
     } catch (error) {
       console.error('Error adding user to the queue:', error); // Handle errors (e.g., show an error message to the user)
@@ -160,8 +157,6 @@ const QuestionButtons = () => {
   
   const tileDisabled = ({ activeStartDate, date, view }) => {
     if (view === 'month' && isDataLoaded) {
-      console.log("meo")
-
       const workingDay = deatailUserList.WorkingDay.map(day => day.Day);
       const workingDayNumbers = workingDay.map(dayName => moment().day(dayName).day());
       const dayOfWeek = date.getDay();
