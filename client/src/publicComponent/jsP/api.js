@@ -4,14 +4,15 @@ const addToQueue = async (selectedDate,treatmant, customerId) => {
   try {
     const data = {
       DateTime:selectedDate,
-      TreatmantType:treatmant,
+      TreatmantType:treatmant._id,
       Customer:customerId,
     };
+    console.log(data)
 
-    const response = await axios.post('http://localhost:3321/newQueue', data);
+    const response = await axios.post('http://localhost:3321/queue/newQueue', data);
     if (response.data) {
       console.log(response.data);
-      return response.data.message; // Assuming your server sends a success message back
+      return "התור נוסף בהצלחה" // Assuming your server sends a success message back
     } else {
       throw new Error('Error adding user to the queue.');
     }

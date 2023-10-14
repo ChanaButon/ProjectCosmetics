@@ -28,6 +28,7 @@ async function serverFunction(data) {
 
 
 async function newQueue(req, res) {
+  console.log("תוררררר")
     console.log(req.body,"תוררררר")
     try {
       const result = await serverFunction(req.body);
@@ -109,5 +110,15 @@ const getQueuesByDateAndStatus = async (req, res) => {
   }
 };
 
-module.exports = {newQueue,getQueuesByDateAndStatus}
+const getAllQueue =  async (req, res) => {
+  try {
+    const queue = await Queue.find({})
+    res.send(queue);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e.message);
+  }
+}
+
+module.exports = {newQueue,getQueuesByDateAndStatus,getAllQueue}
 
