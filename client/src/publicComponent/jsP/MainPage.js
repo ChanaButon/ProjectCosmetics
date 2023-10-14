@@ -155,9 +155,9 @@ const  ListExampleCelled = () => {
       navigate("/OwnerPage")
       setVisible(false)
     }
-    const Chat = (userid,filteredTreatm) => {
-      console.log(userid,filteredTreatm)
-     navigate("/Chat",{state:{userid,filteredTreatm}});
+    const Chat = (userid,filteredTreatm,userSend) => {
+      console.log(userid,filteredTreatm,userSend)
+     navigate("/Chat",{state:{userid,filteredTreatm,userSend}});
     //  navigate("/Chat")
       console.log(userid)
       setVisible(false)
@@ -225,7 +225,7 @@ useEffect(() => {
       <h1 onClick={() => Chat(user.UserID)}>{user.Name}</h1>
       {user.TreatmantID && user.TreatmantID.map((filteredTreatm) => (
         <div className="tretmentDetail" key={filteredTreatm._id}>
-          <h2 onClick={() => Chat(user._id,filteredTreatm,)}>{filteredTreatm.TreatmantName}</h2>
+          <h2 onClick={() => Chat(user._id,filteredTreatm,userSend.user)}>{filteredTreatm.TreatmantName}</h2>
         </div>
       ))}
     </div>
