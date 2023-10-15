@@ -187,26 +187,55 @@ const  ListExampleCelled = () => {
         const queues = async () => {
          
           
-            try {
-              const res = await axios.get(`http://localhost:3321/queue/getQueueByCustomer${userSend.user._id}`);
-              if (res.data) {
-                const queue = res.data;
-                console.log(queue);
-                myQueue.push(...queue);
-                console.log(myQueue)
-                setMyQueue(myQueue)
-                console.log(queue)
-               // dateTimequeue.push(...queue.DateTime)
-                console.log(dateTimequeue)
-                return queue;
-              }
-            } catch (err) {
-              console.log(err);
-              alert("אירעה שגיאה");
+          try {
+            const res = await axios.get(`http://localhost:3321/queue/getQueueByCustomer${userSend.user._id}`);
+            if (res.data) {
+              const queue = res.data;
+              console.log(queue);
+              setMyQueue(queue); // Update the state with the fetched data
+              console.log(queue);
+              
+              return queue
             }
-            
+          } catch (err) {
+            console.log(err);
+            alert("אירעה שגיאה");
+          }
+          
 
-          };
+        };
+
+        const findTretmentQueue = async () =>{
+
+          console.log(myQueue)
+          
+
+          const userQueue = myQueue.map(element=>{
+              console.log(element.TreatmantType)
+              console.log(tretment[0].id._id)
+              const treatfind = tretment.find(a=>a.id._id===element.TreatmantType)
+              console.log(treatfind)
+              if (treatfind) {
+                const flattenedObject = {
+                  _id: treatfind.id._id,
+                  TreatmantName: treatfind.id.TreatmantName,
+                  Price: treatfind.id.Price,
+                  TreatmantTime: treatfind.id.TreatmantTime
+                };
+                //listTreat.push(flattenedObject);
+                console.log(flattenedObject)
+      
+              }
+            })
+          //   console.log(listTreat)
+          //   console.log({ ...element, "TreatmantID": listTreat })
+          //   listuser.push({ ...element, "TreatmantID": listTreat })
+          //   console.log(listuser)
+          // })
+          // console.log(listuser)
+          // setfinData(listuser)
+
+        }
       
           // const userDataResults = await Promise.all(userPromises);
           // setUserData(userDataResults);
@@ -217,6 +246,11 @@ const  ListExampleCelled = () => {
 useEffect(() => {
  getAllProducts()
  queues()
+ if (myQueue.length>0)
+ {
+  findTretmentQueue()
+ }
+
 }, []);
 
 // useEffect(() => {
@@ -236,6 +270,14 @@ useEffect(() => {
       detail();
     }
   }, [productsData]);
+  useEffect(() => {
+   
+    if (myQueue.length>0)
+    {
+     findTretmentQueue()
+    }
+   
+   }, [myQueue]);
 
   if (isLoading) {
     return (<></>)
