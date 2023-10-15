@@ -156,9 +156,8 @@ const  ListExampleCelled = () => {
       navigate("/OwnerPage")
       setVisible(false)
     }
-    const Chat = (userid,filteredTreatm,userSend) => {
-      console.log(userid,filteredTreatm,userSend)
-     navigate("/Chat",{state:{userid,filteredTreatm,userSend}});
+    const Chat = (userid,filteredTreatm,allTreat,userSend) => {
+     navigate("/Chat",{state:{userid,filteredTreatm,allTreat,userSend}});
     //  navigate("/Chat")
       console.log(userid)
       setVisible(false)
@@ -253,7 +252,7 @@ return(
       <h1 >{user.Name}</h1>
       {user.TreatmantID && user.TreatmantID.map((filteredTreatm) => (
         <div className="tretmentDetail" key={filteredTreatm._id}>
-          <h2 onClick={() => Chat(user._id,filteredTreatm,userSend.user)}>{filteredTreatm.TreatmantName}</h2>
+          <h2 onClick={() => Chat(user._id,filteredTreatm,user.TreatmantID,userSend.user)}>{filteredTreatm.TreatmantName}</h2>
         </div>
       ))}
     </div>

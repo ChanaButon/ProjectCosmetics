@@ -12,7 +12,7 @@ import addToQueueApi from './api';
 
 const QuestionButtons = () => {
   const location = useLocation();
-  const { userid,filteredTreatm,userSend } = location.state || {};
+  const { userid,filteredTreatm,allTreat,userSend } = location.state || {};
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [isDateSelected, setIsDateSelected] = useState(false);
@@ -82,8 +82,7 @@ const QuestionButtons = () => {
       return null;
     }).filter(item => item !== null);
     setDeatailUserList(user)
-    setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList }));
-    // console.log({ ...user, WorkingDay: connectedList })
+    setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList,TreatmantID:allTreat }));
   };
 
   useEffect(() => {
@@ -133,7 +132,7 @@ const QuestionButtons = () => {
     } else {
       return (
         <div className="calendar-container">
-          <Calendar onChange={handleDateSelection} value={selectedDate} minDate={new Date()} maxDate={twoWeeksFromNow} tileDisabled={tileDisabled} locale="en-US" />
+          <Calendar onChange={handleDateSelection} value={selectedDate} minDate={new Date()} maxDate={twoWeeksFromNow} tileDisabled={tileDisabled} locale="en-US"  />
         </div>
       );
     }
@@ -190,7 +189,7 @@ const QuestionButtons = () => {
       </div>
       {renderButtons()}
         {isDateSelected && selectedTimeOfDay !== null && (
-          <EarliestAvailableTime selectedDate={selectedDate} workingDayList={deatailUserList.WorkingDay}  onEarliestTimeChange={handleEarliestTimeChange} />
+          <EarliestAvailableTime selectedDate={selectedDate} deatailUserList={deatailUserList} selectedTimeOfDay = {selectedTimeOfDay} onEarliestTimeChange={handleEarliestTimeChange} />
         
           )}
            {isDateSelected && selectedTimeOfDay !== null && (

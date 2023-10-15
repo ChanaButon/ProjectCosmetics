@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-const EarliestAvailableTime = ({ selectedDate, workingDayList, onEarliestTimeChange }) => {
+const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay, onEarliestTimeChange }) => {
   const [earliestTime, setEarliestTime] = useState("Loading...");
-
+  const workingDayList = deatailUserList.WorkingDay;
+  const QueueList = deatailUserList.QueueList;
+  console.log(selectedTimeOfDay)
+  console.log(deatailUserList)
   useEffect(() => {
     const fetchEarliestTime = async () => {
       console.log(selectedDate)
@@ -11,15 +14,18 @@ const EarliestAvailableTime = ({ selectedDate, workingDayList, onEarliestTimeCha
           const dayOfWeekOptions = { weekday: 'long' };
           const dayOfWeekFormatter = new Intl.DateTimeFormat('en-US', dayOfWeekOptions);
           const formattedDayOfWeek = dayOfWeekFormatter.format(selectedDate);
-
-          const listQueue = await fetch(`http://localhost:3321/queue/getQueueDate:${selectedDate}`);
+          const params = new URLSearchParams({
+            selectedDate: selectedDate.toISOString(), // Convert to ISO string or any suitable format
+            QueueList: JSON.stringify(QueueList)
+          });
+          const listQueue = await fetch(`http://localhost:3321/queue/getQueueDate?${params.toString()}`);
           if (!listQueue.ok) {
             throw new Error('Failed to fetch data');
           }
 
           const responseListQueue = await listQueue.json();
           console.log(responseListQueue);
-
+          calculateAviableQueue(responseListQueue)
           const workingTimes = workingDayList
             .filter(day => day.Day.toLowerCase() === formattedDayOfWeek.toLowerCase());
 
@@ -48,9 +54,24 @@ const EarliestAvailableTime = ({ selectedDate, workingDayList, onEarliestTimeCha
     };
 
     fetchEarliestTime();
+
+    const calculateAviableQueue = (responseListQueue)=>{
+      if (selectedTimeOfDay==="morning"){
+    
+      }else if(selectedTimeOfDay==="noon"){
+    
+      }else if(selectedTimeOfDay==="evening"){
+    
+      }
+    
+    }
   }, [selectedDate, workingDayList, onEarliestTimeChange]);
 
   return <span>{earliestTime}</span>;
 };
+
+
+
+
 
 export default EarliestAvailableTime;
