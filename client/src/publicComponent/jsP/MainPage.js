@@ -21,6 +21,7 @@ const  ListExampleCelled = () => {
   const [productsData, setProductsData] = useState([]);
   const [userData, setUserData] = useState([]);
   const [visible, setVisible] = useState(true);
+  const[myQueue,setMyQueue] = useState([]);
   const navigate=useNavigate();
   const [detaill,setdetail]=useState([]);
   const [start, setStart] = useState(new Date);
@@ -156,7 +157,7 @@ const  ListExampleCelled = () => {
       setVisible(false)
     }
     const Chat = (userid,filteredTreatm,userSend) => {
-      // console.log(userid,filteredTreatm,userSend)
+      console.log(userid,filteredTreatm,userSend)
      navigate("/Chat",{state:{userid,filteredTreatm,userSend}});
     //  navigate("/Chat")
       console.log(userid)
@@ -164,7 +165,7 @@ const  ListExampleCelled = () => {
     }
     
     const detail = async () => {
-          console.log("meo");
+          
           const userPromises = productsData.map(async (element) => {
             try {
               const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
@@ -183,11 +184,47 @@ const  ListExampleCelled = () => {
           setUserData(userDataResults);
 
         };
+        
+        const queues = async () => {
+          const allQueue = []
+          
+            try {
+              const res = await axios.get(`http://localhost:3321/queue/getQueueByCustomer${userSend.user._id}`);
+              if (res.data) {
+                const queue = res.data;
+                console.log(queue);
+                allQueue.push(...queue);
+                console.log(allQueue)
+                return queue;
+              }
+            } catch (err) {
+              console.log(err);
+              alert("אירעה שגיאה");
+            }
+
+            
+            setMyQueue(allQueue)
+            console.log(allQueue)
+
+          };
+      
+          // const userDataResults = await Promise.all(userPromises);
+          // setUserData(userDataResults);
+
+        
+        
+
+
+
+
+
 
 
 useEffect(() => {
  getAllProducts()
+ queues()
 }, []);
+
 // useEffect(() => {
 //   console.log(finData)
 //  }, [finData]);
@@ -205,10 +242,11 @@ useEffect(() => {
       detail();
     }
   }, [productsData]);
+
   if (isLoading) {
-    return <></>
+    return (<></>)
   }
-  
+
 
   return(
   <div>
@@ -242,7 +280,5 @@ useEffect(() => {
     </div>
 
 )
-
-      }
-
+  }
 export default  ListExampleCelled
