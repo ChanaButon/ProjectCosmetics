@@ -101,11 +101,16 @@ async function serverFunction1(data) {
   }
 
   const updateProduct = async (req, res) => {
-    console.log(req.body._id);
+    console.log("updateeeeeeeeeeeeeeeeeeeeee")
+    //console.log(req.body._id);
+    let product = await Product.findOne({ _id: req.body._id });
     const updateProduct ={...req.body};
-    console.log(...req.body)
+    product.Customers.push(updateProduct.Customers)
+    product.QueueList.push(updateProduct.QueueList)
+
+    console.log(product)
     try {
-      const result = await Product.findOneAndUpdate({_id:req.body._id}, updateProduct, {new:true})
+      const result = await Product.findOneAndUpdate({_id:req.body._id}, product, {new:true})
       if(!result){
         res.status(404).send({message: "no such product with the specific id"})
       }

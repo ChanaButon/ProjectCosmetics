@@ -140,8 +140,15 @@ const QuestionButtons = () => {
   };
   
   const addToQueueHandler = async () => {
+    const [hourString, minuteString] = earliestTime.split(":");
+    const hour = parseInt(hourString, 10);
+    const minute = parseInt(minuteString, 10);
+    const date = selectedDate; 
+    date.setHours(hour); 
+    date.setMinutes(minute)
+    console.log(date);
     try {
-      const message = await addToQueueApi(selectedDate,filteredTreatm,userSend._id);
+      const message = await addToQueueApi(date,filteredTreatm,userSend._id,deatailUserList._id);
       console.log(message); // Handle the success message (e.g., show a success notification to the user)
     } catch (error) {
       console.error('Error adding user to the queue:', error); // Handle errors (e.g., show an error message to the user)
@@ -167,8 +174,11 @@ const QuestionButtons = () => {
 
   const handleDateSelection = (date) => {
     setSelectedDate(date);
-    console.log(date)
     setIsDateSelected(true);
+  };
+  const handleEarliestTimeChange = (time) => {
+    // console.log( selectedDate.setHours(time))
+    setEarliestTime(time);
   };
 
   return (
@@ -180,7 +190,7 @@ const QuestionButtons = () => {
       </div>
       {renderButtons()}
         {isDateSelected && selectedTimeOfDay !== null && (
-          <EarliestAvailableTime selectedDate={selectedDate} workingDayList={deatailUserList.WorkingDay} />
+          <EarliestAvailableTime selectedDate={selectedDate} workingDayList={deatailUserList.WorkingDay}  onEarliestTimeChange={handleEarliestTimeChange} />
         
           )}
            {isDateSelected && selectedTimeOfDay !== null && (

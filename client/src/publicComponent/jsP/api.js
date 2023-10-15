@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const addToQueue = async (selectedDate,treatmant, customerId) => {
+const addToQueue = async (selectedDate,treatmant, customerId,productId) => {
   try {
     const data = {
       DateTime:selectedDate,
@@ -12,7 +12,17 @@ const addToQueue = async (selectedDate,treatmant, customerId) => {
     const response = await axios.post('http://localhost:3321/queue/newQueue', data);
     if (response.data) {
       console.log(response.data);
+      const data1 = {
+       _id:productId,
+        Customers:customerId,
+        QueueList:response.data._id,
+      };
+      console.log(data1)
+     const response1 = await axios.put('http://localhost:3321/product/updateProduct', data1);
+     if(response.data){
+      console.log(response1.data);
       return "התור נוסף בהצלחה" // Assuming your server sends a success message back
+     }
     } else {
       throw new Error('Error adding user to the queue.');
     }
