@@ -84,8 +84,10 @@ const findTreatmant = async(req,res)=>
 
 const getQueuesByDateAndStatus = async (req, res) => {
   try {
-    // Extract the target date from the request parameters and parse it to a Date object
-    const targetDate = new Date(req.params.date);
+    // Extract the query parameters
+    const targetDate = new Date(req.query.selectedDate);
+    const queueList = JSON.parse(req.query.QueueList);
+
     // Set the time to the start of the day (00:00:00)
     targetDate.setHours(0, 0, 0, 0);
 
@@ -93,12 +95,15 @@ const getQueuesByDateAndStatus = async (req, res) => {
     const endOfDay = new Date(targetDate);
     endOfDay.setHours(23, 59, 59, 999);
 
-    // Find queues with Status: true and DateTime falling within the target date
+    // Find queues with Status: true, DateTime falling within the target date, and matching Queue IDs
     const filteredQueues = await Queue.find({
       Status: true,
       DateTime: {
         $gte: targetDate,
         $lte: endOfDay
+      },
+      _id: {
+        $in: queueList
       }
     });
 
@@ -109,6 +114,7 @@ const getQueuesByDateAndStatus = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
+
 
 const getQueueByIdCustomer = async(req,res)=>{
   console.log(req.params)
