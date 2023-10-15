@@ -212,9 +212,9 @@ const  ListExampleCelled = () => {
               if(new Date(element.DateTime) > currentDate){
                 // console.log()
                 const a = new Date(element.DateTime)
-                // console.log(a.setHours(a.getHours()+3))
+                console.log({ ...element,"DateTime1":a.toLocaleString(), "TreatmantType": flattenedObject })
                // console.log(a.getHours()+3,a.getMinutes())
-              userQueue.push({ ...element, "TreatmantType": flattenedObject })
+              userQueue.push({ ...element,"DateTime":a.toLocaleString(), "TreatmantType": flattenedObject })
               }
             })
             console.log(userQueue)
@@ -289,11 +289,12 @@ return(
       finQueue.map((element) => (
         <div className="userQueue">
           <h1>{element.DateTime}-{element.TreatmantType.TreatmantName}</h1>
-        </div>
-      ))}
-    <button onClick={nextPageDetails} className="button1">
+          <button onClick={nextPageDetails} className="button1">
       לשינוי/ביטול תור
     </button>
+        </div>
+      ))}
+    
     
   </div>)}
 </div>
