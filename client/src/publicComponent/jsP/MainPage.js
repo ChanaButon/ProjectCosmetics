@@ -21,7 +21,7 @@ const  ListExampleCelled = () => {
   const [productsData, setProductsData] = useState([]);
   const [userData, setUserData] = useState([]);
   const [visible, setVisible] = useState(true);
-  const[myQueue,setMyQueue] = useState([]);
+  const [myQueue, setMyQueue] = useState([]);
   const navigate=useNavigate();
   const [detaill,setdetail]=useState([]);
   const [start, setStart] = useState(new Date);
@@ -192,13 +192,9 @@ const  ListExampleCelled = () => {
               if (res.data) {
                 const queue = res.data;
                 console.log(queue);
-                myQueue.push(...queue);
-                console.log(myQueue)
-                setMyQueue(myQueue)
-                console.log(queue)
-               // dateTimequeue.push(...queue.DateTime)
-                console.log(dateTimequeue)
-                return queue;
+                setMyQueue(queue); // Update the state with the fetched data
+                console.log(queue);
+                return queue
               }
             } catch (err) {
               console.log(err);
