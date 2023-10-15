@@ -15,8 +15,6 @@ const  ListExampleCelled = () => {
 
   const location = useLocation();
   const { userSend } = location.state || {};
-  console.log(userSend)
-
   const [finData, setfinData] = useState([]);
   const [productsData, setProductsData] = useState([]);
   const [userData, setUserData] = useState([]);
@@ -29,6 +27,8 @@ const  ListExampleCelled = () => {
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [tretment,setTretment]=useState([]);
+  const [finQueue,setFinQueue]=useState([]);
+  const currentDate = new Date(); // Current date and time
   const [dateTimequeue,setdateTimequeue]=useState({});
 
   const session = useSession();
@@ -81,10 +81,13 @@ const  ListExampleCelled = () => {
     });
 
     const treatments = await Promise.all(treatmentsPromises);
+    if(treatments.length===1){
     allTreatments.push(...treatments);
+  }else{
+    allTreatments.push(...treatments);
+  }
+  setTretment([...allTreatments])
   });
-
-  setTretment(allTreatments);
 };
 
 
@@ -92,15 +95,9 @@ const  ListExampleCelled = () => {
   
 
   const updateDetail = () => {
-    console.log("hi")
     const connectedList = productsData.map(element => {
     const corresponding = userData.find(e => e.id._id === element.UserID);
-    console.log(corresponding.id)
       if (corresponding) {
-        console.log({
-          ...element,
-          "Name": corresponding.id.Name,"Family":corresponding.id.FamilyName
-        })
         return {
           ...element,
           "Name": corresponding.id.Name,"Family":corresponding.id.FamilyName
@@ -109,16 +106,12 @@ const  ListExampleCelled = () => {
       }
       return null;
     }).filter(item => item !== null);
-    console.log(connectedList)
     const listuser = []
     const userTreat = connectedList.map(element=>{
       const listTreat = []
-      console.log(element)
       element.TreatmantID.forEach((treat=>{
         // console.log(treat)
-        // console.log(tretment)
         const treatfind = tretment.find(a=>a.id._id===treat)
-        console.log(treatfind)
         if (treatfind) {
           const flattenedObject = {
             _id: treatfind.id._id,
@@ -131,12 +124,8 @@ const  ListExampleCelled = () => {
 
         }
       }))
-      console.log(listTreat)
-      console.log({ ...element, "TreatmantID": listTreat })
       listuser.push({ ...element, "TreatmantID": listTreat })
-      console.log(listuser)
     })
-    console.log(listuser)
     setfinData(listuser)
     //setProductsData(listuser);
     // setProductsData(user)
@@ -170,7 +159,6 @@ const  ListExampleCelled = () => {
               const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
               if (res.data) {
                 const d = res.data;
-                console.log(d);
                 return d;
               }
             } catch (err) {
@@ -187,32 +175,65 @@ const  ListExampleCelled = () => {
         const queues = async () => {
          
           
-            try {
-              const res = await axios.get(`http://localhost:3321/queue/getQueueByCustomer${userSend.user._id}`);
-              if (res.data) {
-                const queue = res.data;
-                console.log(queue);
-                setMyQueue(queue); // Update the state with the fetched data
-                console.log(queue);
-                return queue
-              }
-            } catch (err) {
-              console.log(err);
-              alert("אירעה שגיאה");
+          try {
+            const res = await axios.get(`http://localhost:3321/queue/getQueueByCustomer${userSend.user._id}`);
+            if (res.data) {
+              const queue = res.data;
+              setMyQueue(queue); // Update the state with the fetched data              
+              return queue
             }
-            
+          } catch (err) {
+            console.log(err);
+            alert("אירעה שגיאה");
+          }
+          
 
-          };
+        };
+
+        const findTretmentQueue = async () =>{
+          console.log(myQueue)
+          let flattenedObject = []
+          const userQueue = []
+          myQueue.map(element=>{
+              // console.log(myQueue)
+              // console.log(tretment)
+              const treatfind = tretment.find(a=>a.id._id===element.TreatmantType)
+              console.log(treatfind)
+              if (treatfind) {
+                flattenedObject = {
+                  _id: treatfind.id._id,
+                  TreatmantName: treatfind.id.TreatmantName,
+                  Price: treatfind.id.Price,
+                  TreatmantTime: treatfind.id.TreatmantTime
+                };
       
-          // const userDataResults = await Promise.all(userPromises);
-          // setUserData(userDataResults);
+              }
+              // console.log({ ...element, "TreatmantType": flattenedObject })
+              if(new Date(element.DateTime) > currentDate){
+                // console.log()
+                const a = new Date(element.DateTime)
+                // console.log(a.setHours(a.getHours()+3))
+               // console.log(a.getHours()+3,a.getMinutes())
+              userQueue.push({ ...element, "TreatmantType": flattenedObject })
+              }
+            })
+            console.log(userQueue)
+            setFinQueue(userQueue)
 
+        }
+      
+          
 
 
 
 useEffect(() => {
  getAllProducts()
  queues()
+ if (myQueue.length>0)
+ {
+  findTretmentQueue()
+ }
+
 }, []);
 
 // useEffect(() => {
@@ -220,18 +241,26 @@ useEffect(() => {
 //  }, [finData]);
 useEffect(() => {
     
-  console.log(userData.length)
   if (productsData.length > 0 && userData.length>0){
     updateDetail()
   }
 }, [userData]);
 
   useEffect(() => {
-    console.log(productsData); // This will log the updated productsData
     if (productsData.length>0){
+      console.log(productsData);
       detail();
     }
   }, [productsData]);
+  useEffect(() => {
+    
+    if (myQueue.length>0 && tretment.length>0 )
+    {
+      console.log(tretment)
+     findTretmentQueue()
+    }
+   
+   }, [myQueue,tretment]);
 
   if (isLoading) {
     return (<></>)
@@ -256,10 +285,10 @@ return(
  {visible && (
   <div className="queue">
     <h1>:התורים הקרובים שלך</h1>
-    {myQueue &&
-      myQueue.map((element) => (
+    {finQueue &&
+      finQueue.map((element) => (
         <div className="userQueue">
-          <h1>{element.DateTime}</h1>
+          <h1>{element.DateTime}-{element.TreatmantType.TreatmantName}</h1>
         </div>
       ))}
     <button onClick={nextPageDetails} className="button1">
