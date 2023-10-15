@@ -29,7 +29,7 @@ const  ListExampleCelled = () => {
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [tretment,setTretment]=useState([]);
-  const [showPerson,setShowPerson]=useState({});
+  const [dateTimequeue,setdateTimequeue]=useState({});
 
   const session = useSession();
   const supabase = useSupabaseClient();
@@ -186,36 +186,31 @@ const  ListExampleCelled = () => {
         };
         
         const queues = async () => {
-          const allQueue = []
+         
           
             try {
               const res = await axios.get(`http://localhost:3321/queue/getQueueByCustomer${userSend.user._id}`);
               if (res.data) {
                 const queue = res.data;
                 console.log(queue);
-                allQueue.push(...queue);
-                console.log(allQueue)
+                myQueue.push(...queue);
+                console.log(myQueue)
+                setMyQueue(myQueue)
+                console.log(queue)
+               // dateTimequeue.push(...queue.DateTime)
+                console.log(dateTimequeue)
                 return queue;
               }
             } catch (err) {
               console.log(err);
               alert("אירעה שגיאה");
             }
-
             
-            setMyQueue(allQueue)
-            console.log(allQueue)
 
           };
       
           // const userDataResults = await Promise.all(userPromises);
           // setUserData(userDataResults);
-
-        
-        
-
-
-
 
 
 
@@ -248,7 +243,7 @@ useEffect(() => {
   }
 
 
-  return(
+return(
   <div>
   <button onClick={OwnerPage}>מעבר לדף העיסקי</button>
 <div className="container">
@@ -263,22 +258,24 @@ useEffect(() => {
       ))}
     </div>
   ))}
-  {visible && (
-    <div>
-      <h1>:התורים הקרובים שלך</h1>
-      <h2>יום שני 14:00</h2>
-      <button onClick={nextPageDetails} className="button1">
-        לשינוי/ביטול תור
-      </button>
-    </div>
-  )}
-
-
+ {visible && (
+  <div className="queue">
+    <h1>:התורים הקרובים שלך</h1>
+    {myQueue &&
+      myQueue.map((element) => (
+        <div className="userQueue">
+          <h1>{element.DateTime}</h1>
+        </div>
+      ))}
+    <button onClick={nextPageDetails} className="button1">
+      לשינוי/ביטול תור
+    </button>
+    
+  </div>)}
+</div>
+</div>)
+};
  
 
-  </div> : <div />
-    </div>
 
-)
-  }
 export default  ListExampleCelled
