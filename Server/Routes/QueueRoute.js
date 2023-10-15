@@ -7,6 +7,7 @@ router.post('/newQueue',queueControllers.newQueue)
 router.get('/getQueueDate:date',queueControllers.getQueuesByDateAndStatus)
 // router.post('/getUser',userControllers.findUserByIdAndCode)
 router.get('/getQueue',queueControllers.getAllQueue)
+router.get('/getQueueByCustomer:id',queueControllers.getQueueByIdCustomer)
 
 
 
