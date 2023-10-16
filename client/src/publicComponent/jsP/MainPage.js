@@ -134,9 +134,12 @@ const  ListExampleCelled = () => {
   
 
   
-  const nextPageDetails = () => {
-        
-    navigate("/NextPageDetails")
+  const nextPageDetails = (element) => {
+    
+    console.log(element)
+    navigate("/NextPageDetails",{state:{element}})
+
+    console.log(finQueue)
     setVisible(false)
     }
 
@@ -219,6 +222,7 @@ const  ListExampleCelled = () => {
             })
             console.log(userQueue)
             setFinQueue(userQueue)
+            console.log(finQueue)
 
         }
       
@@ -289,7 +293,7 @@ return(
       finQueue.map((element) => (
         <div className="userQueue">
           <h1>{element.DateTime}-{element.TreatmantType.TreatmantName}</h1>
-          <button onClick={nextPageDetails} className="button1">
+          <button onClick={ () =>nextPageDetails(element)} className="button1">
       לשינוי/ביטול תור
     </button>
         </div>
