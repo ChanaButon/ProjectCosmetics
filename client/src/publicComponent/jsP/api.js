@@ -33,33 +33,21 @@ const addToQueue = async (selectedDate,treatmant, customerId,productId) => {
   }
 };
 
-export default addToQueue;
+const findTretmentQueue = async (list, tretment) => {
+  // console.log(list, tretment);
+  const newQueue = [];
+  list.map((element) => {
+    const treatfind = tretment.find((a) => a._id === element.TreatmantType);
+    console.log(treatfind);
+
+    if (new Date(element.DateTime) > currentDate) {
+      const a = new Date(element.DateTime);
+      newQueue.push({ ...element, "DateTime": a.toLocaleString(), "TreatmantType": treatfind });
+    }
+  });
+  console.log(newQueue);
+  return newQueue; 
+};
 
 
-export const findTretmentQueue = async (list,tretment) =>{
-  console.log(list)
-  let flattenedObject = []
-  const userQueue = []
-  list.map(element=>{
-      const treatfind = tretment.find(a=>a.id._id===element.TreatmantType)
-      console.log(treatfind)
-      if (treatfind) {
-        flattenedObject = {
-          _id: treatfind.id._id,
-          TreatmantName: treatfind.id.TreatmantName,
-          Price: treatfind.id.Price,
-          TreatmantTime: treatfind.id.TreatmantTime
-        };
-
-      }
-      // console.log({ ...element, "TreatmantType": flattenedObject })
-      if(new Date(element.DateTime) > currentDate){
-        // console.log()
-        const a = new Date(element.DateTime)
-        console.log({ ...element,"DateTime1":a.toLocaleString(), "TreatmantType": flattenedObject })
-       // console.log(a.getHours()+3,a.getMinutes())
-      userQueue.push({ ...element,"DateTime":a.toLocaleString(), "TreatmantType": flattenedObject })
-      }
-    })
-    console.log(userQueue)
-}
+export { addToQueue, findTretmentQueue };

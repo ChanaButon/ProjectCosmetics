@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
+import {  findTretmentQueue } from "./api"
+const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay,allTreat, onEarliestTimeChange }) => {
   const [earliestTime, setEarliestTime] = useState("Loading...");
+  // console.log(deatailUserList.BrakeTime)
   const workingDayList = deatailUserList.WorkingDay;
   const QueueList = deatailUserList.QueueList;
-  console.log(selectedTimeOfDay)
-  console.log(deatailUserList)
+  const date = new Date(selectedDate);
+  const dayNumber = date.getDay();
+  const dayName = daysOfWeek[dayNumber];
+  const dayTime = deatailUserList.WorkingDay.find(a=>a.Day===dayName)
+  console.log(dayTime.Start,dayTime.End)
   useEffect(() => {
     const fetchEarliestTime = async () => {
-      console.log(selectedDate)
       try {
         if (workingDayList) {
           const dayOfWeekOptions = { weekday: 'long' };
@@ -55,8 +60,13 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
 
     fetchEarliestTime();
 
-    const calculateAviableQueue = (responseListQueue)=>{
+    const calculateAviableQueue = async (responseListQueue)=>{
       console.log(responseListQueue)
+      const treatmentQueueResult = await findTretmentQueue(responseListQueue, allTreat);
+      console.log("Treatment Queue Result:", treatmentQueueResult);
+    
+      //const Results = await Promise.all(treatmentQueueResult);
+      //console.log("Results:", Results);
       if (selectedTimeOfDay==="morning"){
     
       }else if(selectedTimeOfDay==="noon"){

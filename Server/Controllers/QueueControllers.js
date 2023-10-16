@@ -42,8 +42,9 @@ async function newQueue(req, res) {
 
 const deleteQueueById = async (req, res) => {
     console.log(req.params.id)
+    const id = req.params.id.replace(':', ''); // This removes the colon
     try {
-        let user = await Queue.findByIdAndDelete(req.params.id)
+        let user = await Queue.findByIdAndDelete(id)
         res.send("Queue deleted!!" + user)
     }
     catch {
@@ -141,5 +142,5 @@ const getAllQueue =  async (req, res) => {
   }
 }
 
-module.exports = {newQueue,getQueuesByDateAndStatus,getAllQueue,getQueueByIdCustomer,updateQueue}
+module.exports = {newQueue,getQueuesByDateAndStatus,getAllQueue,getQueueByIdCustomer,updateQueue,deleteQueueById}
 
