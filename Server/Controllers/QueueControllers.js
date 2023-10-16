@@ -40,14 +40,14 @@ async function newQueue(req, res) {
   
 
 
-const deleteTreatmantById = async (req, res) => {
+const deleteQueueById = async (req, res) => {
     console.log(req.params.id)
     try {
-        let user = await Treatmant.findByIdAndDelete(req.params.id)
-        res.send("treatmant deleted!!" + user)
+        let user = await Queue.findByIdAndDelete(req.params.id)
+        res.send("Queue deleted!!" + user)
     }
     catch {
-        res.send('cant find this treatmant')
+        res.send('cant find this Queue')
     }
 }
 
