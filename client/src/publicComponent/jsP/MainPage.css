@@ -1,0 +1,40 @@
+.custom-list {
+  list-style-position: inside; /* Place bullet points outside */
+  direction: rtl; /* Set text direction to right-to-left */
+  padding: 0;
+  }
+  /* MainPage.css */
+
+Style for the container
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Style for user details */
+.userDetail {
+  margin-bottom: 20px;
+}
+
+
+
+/* Style for treatment details */
+.treatmentDetail {
+  margin-bottom: 10px;
+}
+
+/* Style for the queue section */
+.queue {
+  margin-top: 30px;
+}
+
+/* Style for user queues */
+.userQueue {
+  margin-bottom: 10px;
+}
+
+
+.button1:hover {
+  background-color: #f2f8f3;
+}

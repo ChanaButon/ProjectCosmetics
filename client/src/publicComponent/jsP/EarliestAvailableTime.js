@@ -56,6 +56,7 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
     fetchEarliestTime();
 
     const calculateAviableQueue = (responseListQueue)=>{
+      console.log(responseListQueue)
       if (selectedTimeOfDay==="morning"){
     
       }else if(selectedTimeOfDay==="noon"){

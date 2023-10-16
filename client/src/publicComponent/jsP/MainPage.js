@@ -278,12 +278,15 @@ return(
 {finData &&
   finData.map((user) => (
     <div className="userDetail" key={user._id}>
-      <h1 >{user.Name}</h1>
+      <ul className="custom-list">
+      <h3 >{user.Name}</h3>
       {user.TreatmantID && user.TreatmantID.map((filteredTreatm) => (
         <div className="tretmentDetail" key={filteredTreatm._id}>
-          <h2 onClick={() => Chat(user._id,filteredTreatm,user.TreatmantID,userSend.user)}>{filteredTreatm.TreatmantName}</h2>
+          <li onClick={() => Chat(user._id,filteredTreatm,user.TreatmantID,userSend.user)}>{filteredTreatm.TreatmantName}</li>
         </div>
+        
       ))}
+      </ul>
     </div>
   ))}
  {visible && (

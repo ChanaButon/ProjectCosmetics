@@ -53,13 +53,13 @@ const deleteTreatmantById = async (req, res) => {
 
 
 
-const updateTreatmant = async (req, res) => {
+const updateQueue = async (req, res) => {
     console.log(req.body._id);
-    const updatedTreatmant ={...req.body};
+    const updatedQueue ={...req.body};
     try {
-      const result = await Treatmant.findOneAndUpdate({_id:req.body._id}, updatedTreatmant, {new:true})
+      const result = await Queue.findOneAndUpdate({_id:req.body._id}, updateQueue, {new:true})
       if(!result){
-        res.status(404).send({message: "no such Treatmant with the specific id"})
+        res.status(404).send({message: "no such Queue with the specific id"})
       }
       res.send(result);
     } catch (e) {
@@ -141,5 +141,5 @@ const getAllQueue =  async (req, res) => {
   }
 }
 
-module.exports = {newQueue,getQueuesByDateAndStatus,getAllQueue,getQueueByIdCustomer}
+module.exports = {newQueue,getQueuesByDateAndStatus,getAllQueue,getQueueByIdCustomer,updateQueue}
 
