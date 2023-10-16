@@ -56,14 +56,6 @@ const  ListExampleCelled = () => {
     const response = await fetch('http://localhost:3321/product/getProducts');
     const data = await response.json();
     setProductsData(data)
-    // console.log(data)
-    // console.log(productsData)
-    
-    // const mio =data[0].TreatmantID[0];
-    // // setTretment(mio)
-    // console.log(mio);
-
-    
     const allTreatments = [];
 
   // Map over each data object and its TreatmantID elements

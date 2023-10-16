@@ -1,4 +1,5 @@
 import axios from 'axios';
+const currentDate = new Date(); // Current date and time
 
 const addToQueue = async (selectedDate,treatmant, customerId,productId) => {
   try {
@@ -35,13 +36,11 @@ const addToQueue = async (selectedDate,treatmant, customerId,productId) => {
 export default addToQueue;
 
 
-const findTretmentQueue = async () =>{
-  console.log(myQueue)
+export const findTretmentQueue = async (list,tretment) =>{
+  console.log(list)
   let flattenedObject = []
   const userQueue = []
-  myQueue.map(element=>{
-      // console.log(myQueue)
-      // console.log(tretment)
+  list.map(element=>{
       const treatfind = tretment.find(a=>a.id._id===element.TreatmantType)
       console.log(treatfind)
       if (treatfind) {
@@ -63,6 +62,4 @@ const findTretmentQueue = async () =>{
       }
     })
     console.log(userQueue)
-    setFinQueue(userQueue)
-
 }

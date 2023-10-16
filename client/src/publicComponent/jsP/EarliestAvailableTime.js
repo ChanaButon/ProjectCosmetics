@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay, onEarliestTimeChange }) => {
+const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay,allTreat, onEarliestTimeChange }) => {
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const workingDayList = deatailUserList.WorkingDay;
   const QueueList = deatailUserList.QueueList;

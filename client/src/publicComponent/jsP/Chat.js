@@ -13,6 +13,7 @@ import addToQueueApi from './api';
 const QuestionButtons = () => {
   const location = useLocation();
   const { userid,filteredTreatm,allTreat,userSend } = location.state || {};
+  console.log(allTreat)
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [isDateSelected, setIsDateSelected] = useState(false);
@@ -184,7 +185,7 @@ const QuestionButtons = () => {
       </div>
       {renderButtons()}
         {isDateSelected && selectedTimeOfDay !== null && (
-          <EarliestAvailableTime selectedDate={selectedDate} deatailUserList={deatailUserList} selectedTimeOfDay = {selectedTimeOfDay} onEarliestTimeChange={handleEarliestTimeChange} />
+          <EarliestAvailableTime selectedDate={selectedDate} deatailUserList={deatailUserList} selectedTimeOfDay = {selectedTimeOfDay} allTreat= {allTreat} onEarliestTimeChange={handleEarliestTimeChange} />
         
           )}
            {isDateSelected && selectedTimeOfDay !== null && (
