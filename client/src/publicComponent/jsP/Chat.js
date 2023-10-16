@@ -156,11 +156,6 @@ const QuestionButtons = () => {
   
   
   
-  
- 
-  
-  
-  
   const tileDisabled = ({ activeStartDate, date, view }) => {
     if (view === 'month' && isDataLoaded) {
       const workingDay = deatailUserList.WorkingDay.map(day => day.Day);
