@@ -8,7 +8,8 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Calendar from 'react-calendar';
 import EarliestAvailableTime from "./EarliestAvailableTime";
-import addToQueue from './api';
+import {  addToQueue } from "./api"
+
 
 const QuestionButtons = () => {
   const location = useLocation();
@@ -189,7 +190,7 @@ const QuestionButtons = () => {
         
           )}
            {isDateSelected && selectedTimeOfDay !== null && (
-            <button onClick={addToQueueHandler}>Add to Queue</button>)}
+            <button onClick={addToQueueHandler}>הוסף תור</button>)}
 
     </div>
   </div>
