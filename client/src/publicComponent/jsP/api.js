@@ -1,7 +1,7 @@
 import axios from 'axios';
 const currentDate = new Date(); // Current date and time
 
-const addToQueue = async (selectedDate,treatmant, customerId,productId) => {
+const addToQueueApi = async (selectedDate,treatmant, customerId,productId) => {
   try {
     const data = {
       DateTime:selectedDate,
@@ -50,4 +50,4 @@ const findTretmentQueue = async (list, tretment) => {
 };
 
 
-export { addToQueue, findTretmentQueue };
+export { addToQueueApi, findTretmentQueue };

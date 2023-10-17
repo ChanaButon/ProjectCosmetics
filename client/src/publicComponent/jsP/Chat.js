@@ -8,7 +8,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Calendar from 'react-calendar';
 import EarliestAvailableTime from "./EarliestAvailableTime";
-import addToQueue from './api';
+import {  addToQueueApi } from "./api"
 
 const QuestionButtons = () => {
   const location = useLocation();
@@ -138,6 +138,7 @@ const QuestionButtons = () => {
     }
   };
   
+  
   const addToQueueHandler = async () => {
     console.log("מקשרררררררררררררררררררררררר")
     const [hourString, minuteString] = earliestTime.split(":");
@@ -148,7 +149,7 @@ const QuestionButtons = () => {
     date.setMinutes(minute)
     console.log(date);
     try {
-      const message = await addToQueue(date,filteredTreatm,userSend._id,deatailUserList._id);
+      const message = await addToQueueApi(date,filteredTreatm,userSend._id,deatailUserList._id);
       console.log(message); // Handle the success message (e.g., show a success notification to the user)
     } catch (error) {
       console.error('Error adding user to the queue:', error); // Handle errors (e.g., show an error message to the user)
