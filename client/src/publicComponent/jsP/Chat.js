@@ -190,7 +190,7 @@ const QuestionButtons = () => {
         
           )}
            {isDateSelected && selectedTimeOfDay !== null && (
-            <button onClick={addToQueueHandler}>Add to Queue</button>)}
+            <button onClick={addToQueueHandler}>הוסף תור</button>)}
 
     </div>
   </div>
