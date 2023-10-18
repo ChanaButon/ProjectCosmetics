@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {  findTretmentQueue } from "./api"
 const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const timeDay = {
+  "morning": { value: 0, status: false },
+  "noon": { value: 0, status: false },
+  "evening": { value: 0, status: false }
+};
 
 const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay,allTreat, onEarliestTimeChange }) => {
   const [earliestTime, setEarliestTime] = useState("Loading...");
@@ -30,7 +35,7 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
 
           const responseListQueue = await listQueue.json();
           console.log(responseListQueue);
-          calculateAviableQueue(responseListQueue)
+          calculateAviableQueue(responseListQueue,dayTime.Start,dayTime.End)
           const workingTimes = workingDayList
             .filter(day => day.Day.toLowerCase() === formattedDayOfWeek.toLowerCase());
 
@@ -60,13 +65,43 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
 
     fetchEarliestTime();
 
-    const calculateAviableQueue = async (responseListQueue)=>{
-      console.log(responseListQueue)
+    const calculateAviableQueue = async (responseListQueue,start,end)=>{
+      const [startHour, startMinute] = start.split(":").map(Number);
+      const [endHour, endMinute] = end.split(":").map(Number);
+      const workStartMinutes = startHour * 60 +  startMinute;
+      const workEndMinutes = endHour * 60 + endMinute;
+      timeInDay(workStartMinutes,workEndMinutes)
+      // console.log(workStartMinutes,workEndMinutes)
+        // Filter queues within working hours
       const treatmentQueueResult = await findTretmentQueue(responseListQueue, allTreat);
-      console.log("Treatment Queue Result:", treatmentQueueResult);
+      const filteredQueues = treatmentQueueResult.filter(queue => {
+      const queueTimeMinutes = time(queue.DateTime)
+        return queueTimeMinutes >= workStartMinutes && queueTimeMinutes <= workEndMinutes;
+    });
     
-      //const Results = await Promise.all(treatmentQueueResult);
-      //console.log("Results:", Results);
+    console.log(filteredQueues)
+    const availableSlots = [];
+    let lastEndTime = workStartMinutes;
+    
+    for (const queue of filteredQueues) {
+      const queueTimeMinutes = time(queue.DateTime);
+      console.log(queueTimeMinutes)
+      if (queueTimeMinutes - lastEndTime > 0) {
+        console.log("222")
+        availableSlots.push({ start: lastEndTime, end: queueTimeMinutes});
+        console.log(availableSlots)
+      }
+      lastEndTime = queueTimeMinutes + queue.TreatmantType.TreatmantTime ; // Consider queue duration for next iteration
+    }
+     // If there are no queues, the whole working duration is available
+  if (filteredQueues.length === 0||availableSlots.length===0) {
+    console.log("11")
+    availableSlots.push({ start: workStartMinutes, end: workEndMinutes });
+  }
+  console.log(availableSlots)
+  // Earliest available time is the start time of the first gap
+  const earliestSlot = availableSlots[0];
+  console.log(earliestSlot)
       if (selectedTimeOfDay==="morning"){
     
       }else if(selectedTimeOfDay==="noon"){
@@ -76,6 +111,54 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
       }
     
     }
+
+    const time = (date)=>{
+      console.log(date)
+      const [datePart, timePart] = date.split(', ');
+      const [hourString, minuteString] = timePart.split(':');
+      const hour = parseInt(hourString, 10);
+      const minutes = parseInt(minuteString, 10);       
+      const queueTimeMinutes =  hour* 60 + minutes;
+      return queueTimeMinutes
+    }
+
+    const timeInDay = (start, end) => {
+      console.log(start, end);
+      
+      if (start < 720 && end <= 720) {
+          timeDay["morning"].value = start;
+          timeDay["morning"].status = true;
+      } else if (start > 1080 && end <= 1080) {
+          timeDay["noon"].value = start;
+          timeDay["noon"].status = true;
+      } else if (start >= 1080) {
+          timeDay["evening"].value = start;
+          timeDay["evening"].status = true;
+      } else if (start < 720 && end > 1080) {
+          timeDay["morning"].value = start;
+          timeDay["morning"].status = true;
+          timeDay["noon"].value = 720;
+          timeDay["noon"].status = true;
+          timeDay["evening"].value = 1080;
+          timeDay["evening"].status = true;
+      } else if (start < 1080 && end > 1080) {
+          timeDay["noon"].value = start;
+          timeDay["noon"].status = true;
+          timeDay["evening"].value = 1080;
+          timeDay["evening"].status = true;
+      }else if (start < 720 && end < 1080 && end > 720) {
+        console.log("מייאו")
+        timeDay["morning"].value = start;
+        timeDay["morning"].status = true;
+        timeDay["noon"].value = 720;
+        timeDay["noon"].status = true;
+    }  
+      else {
+          console.log("Invalid time range");
+      }
+      console.log(timeDay)
+  };
+  
   }, [selectedDate, workingDayList, onEarliestTimeChange]);
 
   return <span>{earliestTime}</span>;
