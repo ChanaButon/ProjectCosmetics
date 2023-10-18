@@ -7,9 +7,8 @@ const timeDay = {
   "evening": { value: 0, status: false }
 };
 
-const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay,allTreat, onEarliestTimeChange }) => {
+const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDay, allTreat, onEarliestTimeChange, onTimeSelection }) => {
   const [earliestTime, setEarliestTime] = useState("Loading...");
-  // console.log(deatailUserList.BrakeTime)
   const workingDayList = deatailUserList.WorkingDay;
   const QueueList = deatailUserList.QueueList;
   const date = new Date(selectedDate);
@@ -35,32 +34,40 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
 
           const responseListQueue = await listQueue.json();
           console.log(responseListQueue);
-          calculateAviableQueue(responseListQueue,dayTime.Start,dayTime.End)
-          const workingTimes = workingDayList
-            .filter(day => day.Day.toLowerCase() === formattedDayOfWeek.toLowerCase());
-
-          if (workingTimes.length > 0) {
-            const earliestTime = Math.min(...workingTimes.map(day => {
-              const [hours, minutes] = day.Start.split(':').map(Number);
-              return hours * 60 + minutes;
-            }));
-            const formattedEarliestTime = `${Math.floor(earliestTime / 60).toString().padStart(2, '0')}:${(earliestTime % 60).toString().padStart(2, '0')}`;
-            setEarliestTime(formattedEarliestTime);
-
-            if (formattedEarliestTime !== "Not Available") {
-              // Call the callback function with earliestTime when it's available
-              onEarliestTimeChange(formattedEarliestTime);
+          const fin =await calculateAviableQueue(responseListQueue,dayTime.Start,dayTime.End)
+          console.log(timeDay,fin)
+          if(selectedTimeOfDay==="morning"){
+            if( timeDay["morning"].status === true){
+              setEarliestTime(convertToDate(timeDay["morning"].value,selectedDate))
+              // setEarliestTime(timeDay["morning"].value)
+            }else{
+              setEarliestTime("אין תור זמין בשעות הבוקר")
             }
-          } else {
-            setEarliestTime("Not Available");
-            onEarliestTimeChange("Not Available");
+          }else if(selectedTimeOfDay==="noon"){
+            if( timeDay["noon"].status === true){
+              setEarliestTime(convertToDate(timeDay["noon"].value,selectedDate))
+              // setEarliestTime(timeDay["noon"].value)
+            }else{
+              setEarliestTime("אין תור זמין בשעות הצהריים")
+            }
+          }else{
+            if( timeDay["evening"].status === true){
+              setEarliestTime(convertToDate(timeDay["evening"].value,selectedDate))
+              // setEarliestTime(timeDay["evening"].value)
+            }else{
+              setEarliestTime("אין תור זמין בשעות הערב")
+            }
           }
+          console.log(earliestTime)
+          onTimeSelection(earliestTime);
         }
       } catch (error) {
         console.error(error);
         setEarliestTime("Not Available");
         onEarliestTimeChange("Not Available");
       }
+      onTimeSelection(earliestTime);
+
     };
 
     fetchEarliestTime();
@@ -71,44 +78,47 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
       const workStartMinutes = startHour * 60 +  startMinute;
       const workEndMinutes = endHour * 60 + endMinute;
       timeInDay(workStartMinutes,workEndMinutes)
-      // console.log(workStartMinutes,workEndMinutes)
-        // Filter queues within working hours
       const treatmentQueueResult = await findTretmentQueue(responseListQueue, allTreat);
+      // console.log(treatmentQueueResult)
       const filteredQueues = treatmentQueueResult.filter(queue => {
       const queueTimeMinutes = time(queue.DateTime)
+      console.log(queueTimeMinutes)
         return queueTimeMinutes >= workStartMinutes && queueTimeMinutes <= workEndMinutes;
     });
     
-    console.log(filteredQueues)
-    const availableSlots = [];
-    let lastEndTime = workStartMinutes;
-    
-    for (const queue of filteredQueues) {
-      const queueTimeMinutes = time(queue.DateTime);
-      console.log(queueTimeMinutes)
-      if (queueTimeMinutes - lastEndTime > 0) {
-        console.log("222")
-        availableSlots.push({ start: lastEndTime, end: queueTimeMinutes});
-        console.log(availableSlots)
-      }
-      lastEndTime = queueTimeMinutes + queue.TreatmantType.TreatmantTime ; // Consider queue duration for next iteration
-    }
-     // If there are no queues, the whole working duration is available
-  if (filteredQueues.length === 0||availableSlots.length===0) {
-    console.log("11")
-    availableSlots.push({ start: workStartMinutes, end: workEndMinutes });
-  }
-  console.log(availableSlots)
-  // Earliest available time is the start time of the first gap
-  const earliestSlot = availableSlots[0];
-  console.log(earliestSlot)
-      if (selectedTimeOfDay==="morning"){
-    
-      }else if(selectedTimeOfDay==="noon"){
-    
-      }else if(selectedTimeOfDay==="evening"){
-    
-      }
+    const sortedQueues = filteredQueues.sort((a,b)=>{
+      return time(a.DateTime) - time(b.DateTime);
+    })
+    console.log(sortedQueues)
+
+        sortedQueues.forEach((queue) => {
+          const queueStartTime = time(queue.DateTime);
+          const queueEndTime = queueStartTime + queue.TreatmantType.TreatmantTime;
+          // console.log(queueEndTime,workEndMinutes,queueStartTime,workStartMinutes)
+          if (queueEndTime <= workEndMinutes && queueStartTime >= workStartMinutes) {
+            if(queueStartTime< 720){
+              timeDay["morning"].value = queueEndTime;
+              if(queueEndTime>=720){
+                timeDay["morning"].status = false;
+                timeDay["noon"].value = timeDay["noon"].value+queueEndTime-720;
+              }
+            }else if(queueStartTime<1080){
+              timeDay["noon"].value = queueEndTime;
+              if(queueEndTime>=1080){
+                timeDay["noon"].status = false;
+                timeDay["evening"].value = timeDay["evening"].value+queueEndTime-1080;
+              }
+            }else{
+              timeDay["evening"].value=queueEndTime;
+              if(queueEndTime <= workEndMinutes){
+                timeDay["evening"].status = false;
+              }
+            }
+          }
+          return 
+        });
+
+ 
     
     }
 
@@ -120,6 +130,16 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
       const minutes = parseInt(minuteString, 10);       
       const queueTimeMinutes =  hour* 60 + minutes;
       return queueTimeMinutes
+    }
+
+    const convertToDate = (minuteTime,date1)=>{
+      const millisecondsSinceMidnight = minuteTime * 60 * 1000;
+      const dateTime = new Date(date1);
+      const localTimezoneOffset = dateTime.getTimezoneOffset() * 60 * 1000;
+      const adjustedTime = dateTime.getTime() - localTimezoneOffset + millisecondsSinceMidnight;
+      const newDateTime = new Date(adjustedTime-3*60*60*1000);
+      return newDateTime.toLocaleTimeString()
+      // console.log(newDateTime,newDateTime.toLocaleTimeString());
     }
 
     const timeInDay = (start, end) => {
@@ -147,7 +167,6 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
           timeDay["evening"].value = 1080;
           timeDay["evening"].status = true;
       }else if (start < 720 && end < 1080 && end > 720) {
-        console.log("מייאו")
         timeDay["morning"].value = start;
         timeDay["morning"].status = true;
         timeDay["noon"].value = 720;
@@ -158,8 +177,8 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList,selectedTimeOfDay
       }
       console.log(timeDay)
   };
-  
-  }, [selectedDate, workingDayList, onEarliestTimeChange]);
+  onTimeSelection(earliestTime);
+  }, [selectedDate,earliestTime, workingDayList, onEarliestTimeChange]);
 
   return <span>{earliestTime}</span>;
 };

@@ -14,6 +14,8 @@ const QuestionButtons = () => {
   const location = useLocation();
   const { userid,filteredTreatm,allTreat,userSend } = location.state || {};
   const [earliestTime, setEarliestTime] = useState("Loading...");
+  const [selectedAppointmentTime, setSelectedAppointmentTime] = useState(null);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [isDateSelected, setIsDateSelected] = useState(false);
   const [selectedTimeOfDay, setSelectedTimeOfDay] = useState(null);
@@ -121,8 +123,6 @@ const QuestionButtons = () => {
         </div>
       );
     } else if (isDateSelected && selectedTimeOfDay !== null) {
-      // Determine the user's earliest available time for the selected time of day
-      // const earliestTime = determineEarliestTime(selectedTimeOfDay);
       return (
         <div className="chat-body">
           <h3>Selected Time of Day: {selectedTimeOfDay}</h3>
@@ -140,10 +140,12 @@ const QuestionButtons = () => {
   
   
   const addToQueueHandler = async () => {
-    console.log("מקשרררררררררררררררררררררררר")
-    const [hourString, minuteString] = earliestTime.split(":");
+
+    if (selectedAppointmentTime && buttonClicked) {
+    const [hourString, minuteString] = selectedAppointmentTime.split(":");
     const hour = parseInt(hourString, 10);
     const minute = parseInt(minuteString, 10);
+    console.log(hour,minute)
     const date = selectedDate; 
     date.setHours(hour); 
     date.setMinutes(minute)
@@ -154,6 +156,7 @@ const QuestionButtons = () => {
     } catch (error) {
       console.error('Error adding user to the queue:', error); // Handle errors (e.g., show an error message to the user)
     }
+  }
   };
   
   
@@ -169,14 +172,29 @@ const QuestionButtons = () => {
   };
 
   const handleDateSelection = (date) => {
+    // console.log(date)
     setSelectedDate(date);
     setIsDateSelected(true);
   };
-  const handleEarliestTimeChange = (time) => {
-    // console.log( selectedDate.setHours(time))
-    setEarliestTime(time);
+ 
+
+  const handleTimeSelection = (time) => {
+    console.log(time)
+    setSelectedAppointmentTime(time);
+    console.log(selectedAppointmentTime)
+  };
+  const handleAddToQueueClick = () => {
+    console.log("1234567890")
+    setButtonClicked(true);
   };
 
+  useEffect(() => {
+    if (selectedAppointmentTime !== null) {
+      addToQueueHandler();
+    }
+  }, [selectedAppointmentTime,buttonClicked]);
+
+  
   return (
     <div style={{ display: "inline-flex", flexDirection: "column" }}>
     <button onClick={googleSignIn}>Sign In</button>
@@ -186,11 +204,11 @@ const QuestionButtons = () => {
       </div>
       {renderButtons()}
         {isDateSelected && selectedTimeOfDay !== null && (
-          <EarliestAvailableTime selectedDate={selectedDate} deatailUserList={deatailUserList} selectedTimeOfDay = {selectedTimeOfDay} allTreat= {allTreat} onEarliestTimeChange={handleEarliestTimeChange} />
+          <EarliestAvailableTime selectedDate={selectedDate} deatailUserList={deatailUserList} selectedTimeOfDay = {selectedTimeOfDay} allTreat= {allTreat} onEarliestTimeChange={setEarliestTime} onTimeSelection={handleTimeSelection}    />
         
           )}
            {isDateSelected && selectedTimeOfDay !== null && (
-            <button onClick={addToQueueHandler}>הוסף תור</button>)}
+            <button onClick={handleAddToQueueClick}>הוסף תור</button>)}
 
     </div>
   </div>

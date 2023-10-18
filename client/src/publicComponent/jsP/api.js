@@ -38,7 +38,7 @@ const findTretmentQueue = async (list, tretment) => {
   const newQueue = [];
   list.map((element) => {
     const treatfind = tretment.find((a) => a._id === element.TreatmantType);
-    console.log(treatfind);
+    // console.log(treatfind);
 
     if (new Date(element.DateTime) > currentDate) {
       const a = new Date(element.DateTime);
