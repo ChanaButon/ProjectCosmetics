@@ -268,7 +268,7 @@ useEffect(() => {
 //   console.log(finData)
 //  }, [finData]);
 useEffect(() => {
-    
+    console.log(productsData,userData)
   if (productsData.length > 0 && userData.length>0){
     updateDetail()
     findUserType()

@@ -204,7 +204,7 @@ const QuestionButtons = () => {
       </div>
       {renderButtons()}
         {isDateSelected && selectedTimeOfDay !== null && (
-          <EarliestAvailableTime selectedDate={selectedDate} deatailUserList={deatailUserList} selectedTimeOfDay = {selectedTimeOfDay} allTreat= {allTreat} onEarliestTimeChange={setEarliestTime} onTimeSelection={handleTimeSelection}    />
+          <EarliestAvailableTime selectedDate={selectedDate} deatailUserList={deatailUserList} selectedTimeOfDay = {selectedTimeOfDay} allTreat= {allTreat} filteredTreatm={filteredTreatm} onEarliestTimeChange={setEarliestTime} onTimeSelection={handleTimeSelection}    />
         
           )}
            {isDateSelected && selectedTimeOfDay !== null && (

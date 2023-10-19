@@ -7,15 +7,16 @@ const timeDay = {
   "evening": { value: 0, status: false }
 };
 
-const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDay, allTreat, onEarliestTimeChange, onTimeSelection }) => {
+const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDay, allTreat,filteredTreatm, onEarliestTimeChange, onTimeSelection }) => {
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const workingDayList = deatailUserList.WorkingDay;
+  const BrakeTime = deatailUserList.BrakeTime;
   const QueueList = deatailUserList.QueueList;
   const date = new Date(selectedDate);
   const dayNumber = date.getDay();
   const dayName = daysOfWeek[dayNumber];
   const dayTime = deatailUserList.WorkingDay.find(a=>a.Day===dayName)
-  console.log(dayTime.Start,dayTime.End)
+  console.log(dayTime.Start,dayTime.End,filteredTreatm.TreatmantTime)
   useEffect(() => {
     const fetchEarliestTime = async () => {
       try {
@@ -37,13 +38,13 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
           const fin =await calculateAviableQueue(responseListQueue,dayTime.Start,dayTime.End)
           console.log(timeDay,fin)
           if(selectedTimeOfDay==="morning"){
-            if( timeDay["morning"].status === true){
+            if( timeDay["morning"].status === true && (timeDay["morning"].value+filteredTreatm.TreatmantTime+BrakeTime <= 720|| timeDay["noon"].value===720) ){
               setEarliestTime(convertToDate(timeDay["morning"].value,selectedDate))
               // setEarliestTime(timeDay["morning"].value)
             }else{
               setEarliestTime("אין תור זמין בשעות הבוקר")
             }
-          }else if(selectedTimeOfDay==="noon"){
+          }else if(selectedTimeOfDay==="noon" &&  (timeDay["noon"].value+filteredTreatm.TreatmantTime+BrakeTime <= 1080|| timeDay["evening"].value===1080)){
             if( timeDay["noon"].status === true){
               setEarliestTime(convertToDate(timeDay["noon"].value,selectedDate))
               // setEarliestTime(timeDay["noon"].value)
@@ -92,25 +93,26 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
     console.log(sortedQueues)
 
         sortedQueues.forEach((queue) => {
+          console.log(queue)
           const queueStartTime = time(queue.DateTime);
           const queueEndTime = queueStartTime + queue.TreatmantType.TreatmantTime;
           // console.log(queueEndTime,workEndMinutes,queueStartTime,workStartMinutes)
           if (queueEndTime <= workEndMinutes && queueStartTime >= workStartMinutes) {
             if(queueStartTime< 720){
-              timeDay["morning"].value = queueEndTime;
-              if(queueEndTime>=720){
+              timeDay["morning"].value = queueEndTime+BrakeTime;
+              if(queueEndTime + BrakeTime>=720){
                 timeDay["morning"].status = false;
-                timeDay["noon"].value = timeDay["noon"].value+queueEndTime-720;
+                timeDay["noon"].value = timeDay["noon"].value+queueEndTime+BrakeTime-720;
               }
             }else if(queueStartTime<1080){
-              timeDay["noon"].value = queueEndTime;
-              if(queueEndTime>=1080){
+              timeDay["noon"].value = queueEndTime+BrakeTime;
+              if(queueEndTime+BrakeTime >=1080){
                 timeDay["noon"].status = false;
-                timeDay["evening"].value = timeDay["evening"].value+queueEndTime-1080;
+                timeDay["evening"].value = timeDay["evening"].value+queueEndTime+BrakeTime-1080;
               }
             }else{
-              timeDay["evening"].value=queueEndTime;
-              if(queueEndTime <= workEndMinutes){
+              timeDay["evening"].value=queueEndTime+BrakeTime;
+              if(queueEndTime + BrakeTime <= workEndMinutes){
                 timeDay["evening"].status = false;
               }
             }
@@ -123,7 +125,7 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
     }
 
     const time = (date)=>{
-      console.log(date)
+      // console.log(date)
       const [datePart, timePart] = date.split(', ');
       const [hourString, minuteString] = timePart.split(':');
       const hour = parseInt(hourString, 10);
@@ -137,14 +139,13 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
       const dateTime = new Date(date1);
       const localTimezoneOffset = dateTime.getTimezoneOffset() * 60 * 1000;
       const adjustedTime = dateTime.getTime() - localTimezoneOffset + millisecondsSinceMidnight;
-      const newDateTime = new Date(adjustedTime-3*60*60*1000);
+      const newDateTime = new Date(adjustedTime-2*60*60*1000);
       return newDateTime.toLocaleTimeString()
       // console.log(newDateTime,newDateTime.toLocaleTimeString());
     }
 
     const timeInDay = (start, end) => {
       console.log(start, end);
-      
       if (start < 720 && end <= 720) {
           timeDay["morning"].value = start;
           timeDay["morning"].status = true;
