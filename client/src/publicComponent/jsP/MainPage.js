@@ -15,6 +15,8 @@ const  ListExampleCelled = () => {
 
   const location = useLocation();
   const { userSend } = location.state || {};
+
+
   const [finData, setfinData] = useState([]);
   const [productsData, setProductsData] = useState([]);
   const [userData, setUserData] = useState([]);
@@ -30,7 +32,8 @@ const  ListExampleCelled = () => {
   const [finQueue,setFinQueue]=useState([]);
   const currentDate = new Date(); // Current date and time
   const [dateTimequeue,setdateTimequeue]=useState({});
-
+   
+  
   const session = useSession();
   const supabase = useSupabaseClient();
   const { isLoading } = useSessionContext();
@@ -57,7 +60,7 @@ const  ListExampleCelled = () => {
     const data = await response.json();
     setProductsData(data)
     const allTreatments = [];
-    console.log(data)
+   // console.log(data)
 
   // Map over each data object and its TreatmantID elements
   data.forEach(async (dataItem) => {
@@ -196,7 +199,7 @@ const  ListExampleCelled = () => {
               // console.log(myQueue)
               // console.log(tretment)
               const treatfind = tretment.find(a=>a.id._id===element.TreatmantType)
-              console.log(treatfind)
+             // console.log(treatfind)
               if (treatfind) {
                 flattenedObject = {
                   _id: treatfind.id._id,
@@ -210,7 +213,7 @@ const  ListExampleCelled = () => {
               if(new Date(element.DateTime) > currentDate){
                 // console.log()
                 const a = new Date(element.DateTime)
-                console.log({ ...element,"DateTime1":a.toLocaleString(), "TreatmantType": flattenedObject })
+               // console.log({ ...element,"DateTime1":a.toLocaleString(), "TreatmantType": flattenedObject })
                // console.log(a.getHours()+3,a.getMinutes())
               userQueue.push({ ...element,"DateTime":a.toLocaleString(), "TreatmantType": flattenedObject })
               }
@@ -221,29 +224,30 @@ const  ListExampleCelled = () => {
 
         }
       const findUserType = async () => {
+       
+          const respone = await fetch(`http://localhost:3321/UserType/getAllUserType`);
+          const data= await respone.json();
+          setUserType(data)
+          console.log(data)
+          const type1=data.filter(temp=>temp._id===userSend.user.UserType)
+          const type= data.map((temp) => {
+            if(temp._id===userSend.user.UserType){
+              return temp.userNameType
 
-        try {
-          const res = await axios.get(`http://localhost:3321/UserType/getAllUserType`);
-          if (res.data) {
-            const userType = res.data;
-            console.log(userType)
-            setUserType(userType)
+            }
+            else {
+              return null
+            }
+            
+          }).filter(a=> a!== null)
 
-             // Update the state with the fetched data              
-            return userType
-          }
-        } catch (err) {
-          console.log(err);
-          alert("אירעה שגיאה");
-        }
+          console.log(type)
+          console.log(type1)
 
+         // console.log(userSend.user.UserType)
+      
+         // console.log(data[0]._id,data[0].userNameType)
         
-
-
-        //const userTypeName= 
-
-
-
 
       }
           
@@ -267,6 +271,10 @@ useEffect(() => {
     
   if (productsData.length > 0 && userData.length>0){
     updateDetail()
+    findUserType()
+    
+    
+
   }
 }, [userData]);
 
