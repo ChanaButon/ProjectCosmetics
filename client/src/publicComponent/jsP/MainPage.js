@@ -24,7 +24,7 @@ const  ListExampleCelled = () => {
   const [detaill,setdetail]=useState([]);
   const [start, setStart] = useState(new Date);
   const [end, setEnd] = useState(new Date);
-  const [eventName, setEventName] = useState("");
+  const [userType, setUserType] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [tretment,setTretment]=useState([]);
   const [finQueue,setFinQueue]=useState([]);
@@ -57,6 +57,7 @@ const  ListExampleCelled = () => {
     const data = await response.json();
     setProductsData(data)
     const allTreatments = [];
+    console.log(data)
 
   // Map over each data object and its TreatmantID elements
   data.forEach(async (dataItem) => {
@@ -99,7 +100,7 @@ const  ListExampleCelled = () => {
       return null;
     }).filter(item => item !== null);
     const listuser = []
-    const userTreat = connectedList.map(element=>{
+    const userTreat = connectedList.map(element  => {
       const listTreat = []
       element.TreatmantID.forEach((treat=>{
         // console.log(treat)
@@ -154,6 +155,7 @@ const  ListExampleCelled = () => {
               const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
               if (res.data) {
                 const d = res.data;
+                console.log(d);
                 return d;
               }
             } catch (err) {
@@ -164,6 +166,7 @@ const  ListExampleCelled = () => {
       
           const userDataResults = await Promise.all(userPromises);
           setUserData(userDataResults);
+          console.log(userDataResults)
 
         };
         
@@ -217,7 +220,32 @@ const  ListExampleCelled = () => {
             console.log(finQueue)
 
         }
-      
+      const findUserType = async () => {
+
+        try {
+          const res = await axios.get(`http://localhost:3321/UserType/getAllUserType`);
+          if (res.data) {
+            const userType = res.data;
+            console.log(userType)
+            setUserType(userType)
+
+             // Update the state with the fetched data              
+            return userType
+          }
+        } catch (err) {
+          console.log(err);
+          alert("אירעה שגיאה");
+        }
+
+        
+
+
+        //const userTypeName= 
+
+
+
+
+      }
           
 
 

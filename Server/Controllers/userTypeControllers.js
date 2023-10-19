@@ -37,8 +37,17 @@ const findUserByType = async (type) => {
         return null;
     }
 }
+const getAllUserType =  async (req, res) => {
+    try {
+      const users = await UserType.find({})
+      res.send(users);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send(e.message);
+    }
+  }
 
-module.exports = { newUserType,findUserByType };
+module.exports = { newUserType,findUserByType ,getAllUserType};
 
 
 
