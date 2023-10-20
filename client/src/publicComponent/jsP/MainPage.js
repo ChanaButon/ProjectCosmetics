@@ -20,7 +20,7 @@ const  ListExampleCelled = () => {
   const [finData, setfinData] = useState([]);
   const [productsData, setProductsData] = useState([]);
   const [userData, setUserData] = useState([]);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [myQueue, setMyQueue] = useState([]);
   const navigate=useNavigate();
   const [detaill,setdetail]=useState([]);
@@ -225,32 +225,22 @@ const  ListExampleCelled = () => {
         }
       const findUserType = async () => {
        
-          const respone = await fetch(`http://localhost:3321/UserType/getAllUserType`);
-          const data= await respone.json();
-          setUserType(data)
-          console.log(data)
-          const type1=data.filter(temp=>temp._id===userSend.user.UserType)
-          const type= data.map((temp) => {
-            if(temp._id===userSend.user.UserType){
-              return temp.userNameType
-
-            }
-            else {
-              return null
-            }
-            
-          }).filter(a=> a!== null)
-
-          console.log(type)
-          console.log(type1)
-
-         // console.log(userSend.user.UserType)
-      
-         // console.log(data[0]._id,data[0].userNameType)
-        
+        try {
+          const response = await fetch(`http://localhost:3321/UserType/getAllUserType`);
+          const data = await response.json();
+          setUserType(data);
+          
+          const type = data.find(temp => temp._id === userSend.user.UserType);
+          if (type) {
+            setUserType(type); // Set userType state directly to the found type object
+          }
+        } catch (error) {
+          console.error(error);
+          alert("אירעה שגיאה");
+        }
 
       }
-          
+      
 
 
 
@@ -264,19 +254,31 @@ useEffect(() => {
 
 }, []);
 
-// useEffect(() => {
-//   console.log(finData)
-//  }, [finData]);
+
 useEffect(() => {
-    console.log(productsData,userData)
+    
   if (productsData.length > 0 && userData.length>0){
     updateDetail()
     findUserType()
+    console.log(userType)
     
-    
-
   }
 }, [userData]);
+
+useEffect(() => {
+  // ... (your existing code)
+  console.log(userType)
+
+
+  if (userType && userType.userNameType === 'business') {
+    setVisible(true); // If userus type is 'business', set visible to true
+  }
+  else{
+    setVisible(false)
+
+  }
+}, [userType]);      
+
 
   useEffect(() => {
     if (productsData.length>0){
@@ -301,7 +303,12 @@ useEffect(() => {
 
 return(
   <div>
-  <button onClick={OwnerPage}>מעבר לדף העיסקי</button>
+    
+    {userType && userType.userNameType === 'business' && (
+        <button className='bootonBusnse' onClick={OwnerPage}>
+          מעבר לדף העיסקי
+        </button>
+      )}
 <div className="container">
 {finData &&
   finData.map((user) => (
