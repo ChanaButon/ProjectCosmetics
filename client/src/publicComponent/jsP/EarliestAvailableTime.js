@@ -32,9 +32,14 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
           if (!listQueue.ok) {
             throw new Error('Failed to fetch data');
           }
-
           const responseListQueue = await listQueue.json();
           console.log(responseListQueue);
+          const listQueue1 = await fetch(`http://localhost:3321/queue/getQueueDateCancelled?${params.toString()}`);
+          if (!listQueue.ok) {
+            throw new Error('Failed to fetch data');
+          }
+          const responseListQueueCancelled = await listQueue1.json();
+          console.log(responseListQueueCancelled);
           const fin =await calculateAviableQueue(responseListQueue,dayTime.Start,dayTime.End)
           console.log(timeDay,fin)
           if(selectedTimeOfDay==="morning"){
@@ -139,11 +144,17 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
       const dateTime = new Date(date1);
       console.log(dateTime)
       const localTimezoneOffset = dateTime.getTimezoneOffset() * 60 * 1000;
+      console.log(dateTime.getTimezoneOffset())
       const adjustedTime = dateTime.getTime() - localTimezoneOffset + millisecondsSinceMidnight;
-      const newDateTime = new Date(adjustedTime-3*60*60*1000);
+      const timezoneOffset = (dateTime.getTimezoneOffset() === -120) ? 2 : 3; // -120 for +0200, -180 for +0300
+      console.log(timezoneOffset)
+      const newDateTime = new Date(adjustedTime-timezoneOffset*60*60*1000);
       return newDateTime.toLocaleTimeString()
-      // console.log(newDateTime,newDateTime.toLocaleTimeString());
+    
     }
+  
+
+
 
     const timeInDay = (start, end) => {
       console.log(start, end);

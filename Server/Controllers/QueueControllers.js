@@ -118,6 +118,40 @@ const getQueuesByDateAndStatus = async (req, res) => {
 };
 
 
+const getQueuescancelled = async (req, res) => {
+  try {
+    // Extract the query parameters
+    const targetDate = new Date(req.query.selectedDate);
+    const queueList = JSON.parse(req.query.QueueList);
+
+    // Set the time to the start of the day (00:00:00)
+    targetDate.setHours(0, 0, 0, 0);
+
+    // Calculate the end of the day (23:59:59)
+    const endOfDay = new Date(targetDate);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    // Find queues with Status: true, DateTime falling within the target date, and matching Queue IDs
+    const filteredQueues = await Queue.find({
+      Status: false,
+      DateTime: {
+        $gte: targetDate,
+        $lte: endOfDay
+      },
+      _id: {
+        $in: queueList
+      }
+    });
+
+    console.log(filteredQueues);
+    res.json(filteredQueues);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
+
 const getQueueByIdCustomer = async(req,res)=>{
   console.log(req.params)
   try {
@@ -143,5 +177,5 @@ const getAllQueue =  async (req, res) => {
   }
 }
 
-module.exports = {newQueue,getQueuesByDateAndStatus,getAllQueue,getQueueByIdCustomer,updateQueue,deleteQueueById}
+module.exports = {newQueue,getQueuesByDateAndStatus,getAllQueue,getQueueByIdCustomer,updateQueue,deleteQueueById,getQueuescancelled}
 
