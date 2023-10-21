@@ -166,10 +166,18 @@ const QuestionButtons = () => {
       const workingDay = deatailUserList.WorkingDay.map(day => day.Day);
       const workingDayNumbers = workingDay.map(dayName => moment().day(dayName).day());
       const dayOfWeek = date.getDay();
-      return !workingDayNumbers.includes(dayOfWeek);
+  
+      // Check if the selected date is a vacation day
+      const isVacationDay = deatailUserList.HoliDay.some(vacationDay => {
+        return moment(date).isBetween(moment(vacationDay.StartDate), moment(vacationDay.EndDate), null, '[]');
+      });
+  
+      // Disable the slot if it's not a working day or if it's a vacation day
+      return !workingDayNumbers.includes(dayOfWeek) || isVacationDay;
     }
     return false;
   };
+  
 
   const handleDateSelection = (date) => {
     // console.log(date)

@@ -55,13 +55,14 @@ const deleteQueueById = async (req, res) => {
 
 
 const updateQueue = async (req, res) => {
-    console.log(req.body._id);
+    console.log(req.body,"123456789876543234567897654345678765432");
     const updatedQueue ={...req.body};
     try {
-      const result = await Queue.findOneAndUpdate({_id:req.body._id}, updateQueue, {new:true})
+      const result = await Queue.findOneAndUpdate({_id:req.body._id}, updatedQueue, {new:true})
       if(!result){
         res.status(404).send({message: "no such Queue with the specific id"})
       }
+      console.log(result)
       res.send(result);
     } catch (e) {
       console.log(e);
@@ -123,7 +124,7 @@ const getQueueByIdCustomer = async(req,res)=>{
     console.log("12345679876543212345678765432345678")
       console.log(req.params)
       const id = req.params.id.replace(':', ''); // This removes the colon
-      let queue = await Queue.find({Customer:id});
+      let queue = await Queue.find({Customer:id,Status:true});
       console.log(queue,"queue");
       res.send(  queue );
   }

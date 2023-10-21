@@ -14,29 +14,24 @@ export default function NextPageDetails() {
 
   const [isDetailsVisible, setIsDetailsVisible] = useState(true);
 
-  console.log(element)
+  // console.log(element)
   
-  console.log(element.TreatmantType)
+  // console.log(element.TreatmantType)
 
   const tretmentType=element.TreatmantType
  
-  console.log(tretmentType)
+  // console.log(tretmentType)
 
   const checkIf12HoursPassed = (dateTimeString) => {
-
+    const [datePart, timePart] = dateTimeString.split(', '); // Split the date and time parts
+    const [day, month, year] = datePart.split('/'); // Split the date into day, month, and year
+    const [hours, minutes, seconds] = timePart.split(':'); // Split the time into hours, minutes, and seconds
+    const date = new Date(year, month - 1, day, hours, minutes, seconds); // Note: Month is zero-based, so we subtract 1 from the month.
     const twelveHoursInMilliseconds = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
-    const parsedDate = new Date(dateTimeString); // Parse the DateTime string into a Date object
-    console.log(parsedDate)
-    const currentTime = new Date(); // Get the current time
-    console.log(currentTime)
-    
-
+    const currentTime = new Date(); // Get the current time    
     // Calculate the time difference in milliseconds
-    const timeDifference = Math.abs(parsedDate - currentTime); 
-    
-    console.log(timeDifference)
-    console.log(twelveHoursInMilliseconds)
-    // Compare if the time difference is greater than or equal to 12 hours
+    const timeDifference = Math.abs(date - currentTime); 
+        // Compare if the time difference is greater than or equal to 12 hours
     return timeDifference >= twelveHoursInMilliseconds;
   };
 
@@ -56,16 +51,17 @@ export default function NextPageDetails() {
 
     const dateTimeString = element.DateTime; // Replace this with your actual DateTime string
     const is12HoursPassed = checkIf12HoursPassed(dateTimeString);
-
+    console.log(is12HoursPassed)
   if (is12HoursPassed){
       console.log('At least 12 hours have passed since the given time.');
       setIsDetailsVisible(false);
 
-      if (element.Status){
-        element.Status= false
-      }
-      console.log(element)
-      const idQueueFind = await axios.delete(`http://localhost:3321/queue/deleteQueueById:${element._id}`);
+     const deleteQueue= {
+      "_id":element._id,
+      "Status":false
+     }
+      console.log("למחוקקקקקקקקקקקקקקקקקקקקקקקקקקקקקק")
+      const idQueueFind = await axios.put(`http://localhost:3321/queue/updateQueue`,deleteQueue);
       if(idQueueFind.data){
        console.log(idQueueFind.data);
        return "התור נמחק בהצלחה" // Assuming your server sends a success message back

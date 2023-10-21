@@ -137,9 +137,10 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
     const convertToDate = (minuteTime,date1)=>{
       const millisecondsSinceMidnight = minuteTime * 60 * 1000;
       const dateTime = new Date(date1);
+      console.log(dateTime)
       const localTimezoneOffset = dateTime.getTimezoneOffset() * 60 * 1000;
       const adjustedTime = dateTime.getTime() - localTimezoneOffset + millisecondsSinceMidnight;
-      const newDateTime = new Date(adjustedTime-2*60*60*1000);
+      const newDateTime = new Date(adjustedTime-3*60*60*1000);
       return newDateTime.toLocaleTimeString()
       // console.log(newDateTime,newDateTime.toLocaleTimeString());
     }
