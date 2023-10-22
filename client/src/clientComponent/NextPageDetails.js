@@ -56,12 +56,9 @@ export default function NextPageDetails() {
       console.log('At least 12 hours have passed since the given time.');
       setIsDetailsVisible(false);
 
-     const deleteQueue= {
-      "_id":element._id,
-      "Status":false
-     }
+   
       console.log("למחוקקקקקקקקקקקקקקקקקקקקקקקקקקקקקק")
-      const idQueueFind = await axios.put(`http://localhost:3321/queue/updateQueue`,deleteQueue);
+      const idQueueFind = await axios.delete(`http://localhost:3321/queue/deleteQueueById:${element._id}`);
       if(idQueueFind.data){
        console.log(idQueueFind.data);
        return "התור נמחק בהצלחה" // Assuming your server sends a success message back
