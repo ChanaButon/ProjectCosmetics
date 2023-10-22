@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function NextPageDetails() {
+
+  
   const location = useLocation();
   const { element } = location.state || {};
   const [visible, setVisible] = useState(true);
@@ -106,7 +108,6 @@ export default function NextPageDetails() {
     </div>
   );
 }
-
 
 
 

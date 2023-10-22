@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import HomeClient from "../clientComponent/HomeClient";
+import EditAppointmentForm from './EditAppointmentForm';
 
 
 
@@ -26,7 +27,23 @@ const ImageUploader = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [appointments, setAppointments] = useState(dummyAppointments);
+  const [editingAppointment, setEditingAppointment] = useState(null);
+  const [ isEditing, setIsEditing] = useState(false);
+ 
+  const handleEdit = (appointment) => {
+    setEditingAppointment(appointment);
+    setIsEditing(true);
+  };
 
+  const handleSaveEdit = (editedAppointment) => {
+    // Implement logic to save edited appointment data
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
 
   function onDateChange(date) {
     setSelectedDate(date);
@@ -40,6 +57,7 @@ const ImageUploader = () => {
       appointmentDate.getDate() === selectedDate.getDate()
     );
   });
+  
 
 
 
@@ -81,7 +99,8 @@ const ImageUploader = () => {
             DateTime: {appointment.DateTime.toLocaleString()}<br />
             TreatmentType: {appointment.TreatmentType}<br />
             Customer: {appointment.Customer}<br />
-            Status: {appointment.Status.toString()}
+            Status: {appointment.Status.toString()}<br/>
+            <button onClick={() => setEditingAppointment(appointment)}>Edit</button>
           </li>
         ))}
       </ul>
@@ -91,7 +110,19 @@ const ImageUploader = () => {
         <img src={previewUrl} alt="Preview" style={{ maxWidth: "10%" }} />
       )}
       {selectedFile && <button onClick={fileUploadHandler}>Upload</button>}
+
+      {isEditing && (
+        <EditAppointmentForm
+          appointment={editingAppointment}
+          onSave={handleSaveEdit}
+          onCancel={handleCancelEdit}
+        />
+      )}
+
       <HomeClient />
+
+
+
     </div>
   );
 };

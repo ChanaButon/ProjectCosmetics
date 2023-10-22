@@ -1,4 +1,4 @@
-import img from '../../images/IMG_8090.JPG'
+// import img from '../../images/IMG_8090.JPG'
 import React, { useEffect, useState } from 'react'
 import { Image, List } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom';
