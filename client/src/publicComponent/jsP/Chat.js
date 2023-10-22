@@ -189,7 +189,6 @@ const QuestionButtons = () => {
   const handleTimeSelection = (time) => {
     console.log(time)
     setSelectedAppointmentTime(time);
-    console.log(selectedAppointmentTime)
   };
   const handleAddToQueueClick = () => {
     console.log("1234567890")

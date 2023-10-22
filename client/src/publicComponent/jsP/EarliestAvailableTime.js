@@ -7,7 +7,11 @@ const timeDay = {
   "evening": { value: 0, status: false }
 };
 
+
+
+
 const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDay, allTreat,filteredTreatm, onEarliestTimeChange, onTimeSelection }) => {
+  const [timeDayCancelled, setTimeDayCancelled] = useState([]);
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const workingDayList = deatailUserList.WorkingDay;
   const BrakeTime = deatailUserList.BrakeTime;
@@ -17,6 +21,7 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
   const dayName = daysOfWeek[dayNumber];
   const dayTime = deatailUserList.WorkingDay.find(a=>a.Day===dayName)
   console.log(dayTime.Start,dayTime.End,filteredTreatm.TreatmantTime)
+
   useEffect(() => {
     const fetchEarliestTime = async () => {
       try {
@@ -34,36 +39,48 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
           }
           const responseListQueue = await listQueue.json();
           console.log(responseListQueue);
-          const listQueue1 = await fetch(`http://localhost:3321/queue/getQueueDateCancelled?${params.toString()}`);
-          if (!listQueue.ok) {
-            throw new Error('Failed to fetch data');
-          }
-          const responseListQueueCancelled = await listQueue1.json();
-          console.log(responseListQueueCancelled);
           const fin =await calculateAviableQueue(responseListQueue,dayTime.Start,dayTime.End)
-          console.log(timeDay,fin)
+          console.log(fin,fin.length,timeDay)
           if(selectedTimeOfDay==="morning"){
             if( timeDay["morning"].status === true && (timeDay["morning"].value+filteredTreatm.TreatmantTime+BrakeTime <= 720|| timeDay["noon"].value===720) ){
-              setEarliestTime(convertToDate(timeDay["morning"].value,selectedDate))
+              if(fin.length> 0){
+                const option = fin.find(a=>a.Time==="morning"&& a.Start+filteredTreatm.TreatmantTime+BrakeTime<=a.End)
+                console.log(option,filteredTreatm.TreatmantTime)
+                if(option!==undefined){setEarliestTime(convertToDate(option.Start,selectedDate))}else{
+                  setEarliestTime(convertToDate(timeDay["morning"].value,selectedDate))}
+              }
+              else{
+              setEarliestTime(convertToDate(timeDay["morning"].value,selectedDate))}
               // setEarliestTime(timeDay["morning"].value)
             }else{
+             
               setEarliestTime("אין תור זמין בשעות הבוקר")
             }
           }else if(selectedTimeOfDay==="noon" &&  (timeDay["noon"].value+filteredTreatm.TreatmantTime+BrakeTime <= 1080|| timeDay["evening"].value===1080)){
-            if( timeDay["noon"].status === true){
-              setEarliestTime(convertToDate(timeDay["noon"].value,selectedDate))
-              // setEarliestTime(timeDay["noon"].value)
-            }else{
-              setEarliestTime("אין תור זמין בשעות הצהריים")
-            }
-          }else{
-            if( timeDay["evening"].status === true){
-              setEarliestTime(convertToDate(timeDay["evening"].value,selectedDate))
-              // setEarliestTime(timeDay["evening"].value)
+            if(timeDay["noon"].status === true){
+            if(fin.length> 0 ){
+              const option = fin.find(a=>a.Time==="noon"&& a.Start+filteredTreatm.TreatmantTime+BrakeTime<=a.End)
+              console.log(option,filteredTreatm.TreatmantTime)
+              if(option!==undefined){setEarliestTime(convertToDate(option.Start,selectedDate))}
+              else{setEarliestTime(convertToDate(timeDay["noon"].value,selectedDate))}}
+            else{setEarliestTime(convertToDate(timeDay["noon"].value,selectedDate))}
+            }else{setEarliestTime("אין תור זמין בשעות הצהריים")}
+          }else if(timeDay["evening"].status === true||fin.length> 0){
+             if(fin.length> 0 ){
+                const option = fin.find(a=>a.Time==="evening"&& a.Start+filteredTreatm.TreatmantTime+BrakeTime<=a.End)
+                console.log(option,filteredTreatm.TreatmantTime)
+                if(option!==undefined){setEarliestTime(convertToDate(option.Start,selectedDate))}
+                else{
+                  setEarliestTime(convertToDate(timeDay["evening"].value,selectedDate))}
+                }
+                
+                else{
+                  console.log("hooo")
+                setEarliestTime(convertToDate(timeDay["evening"].value,selectedDate))}
             }else{
               setEarliestTime("אין תור זמין בשעות הערב")
             }
-          }
+         
           console.log(earliestTime)
           onTimeSelection(earliestTime);
         }
@@ -96,12 +113,22 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
       return time(a.DateTime) - time(b.DateTime);
     })
     console.log(sortedQueues)
+    const cancelledTimes = [];
 
         sortedQueues.forEach((queue) => {
           console.log(queue)
           const queueStartTime = time(queue.DateTime);
           const queueEndTime = queueStartTime + queue.TreatmantType.TreatmantTime;
-          // console.log(queueEndTime,workEndMinutes,queueStartTime,workStartMinutes)
+          console.log(queueStartTime,timeDay,(queueStartTime===timeDay["noon"].value) ,timeDay["noon"].value )
+          if(!(queueStartTime===timeDay["morning"].value||queueStartTime===timeDay["noon"].value||queueStartTime===timeDay["evening"].value)){
+            if(queueStartTime< 720 &&  timeDay["morning"].status === true){
+              cancelledTimes.push({ Start: timeDay["morning"].value, End: queueStartTime, Time: "morning" });
+            }else if(queueStartTime< 1080 &&  timeDay["noon"].status === true){
+              cancelledTimes.push({ Start: timeDay["noon"].value, End: queueStartTime, Time: "noon" });
+            }else if(queueStartTime>1080 &&  timeDay["evening"].status === true){
+              cancelledTimes.push({ Start: timeDay["evening"].value, End: queueStartTime, Time: "evening" });
+            }
+          }
           if (queueEndTime <= workEndMinutes && queueStartTime >= workStartMinutes) {
             if(queueStartTime< 720){
               timeDay["morning"].value = queueEndTime+BrakeTime;
@@ -117,18 +144,20 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
               }
             }else{
               timeDay["evening"].value=queueEndTime+BrakeTime;
-              if(queueEndTime + BrakeTime <= workEndMinutes){
+              console.log(queueEndTime + BrakeTime,queueEndTime + BrakeTime >= workEndMinutes,workEndMinutes)
+              if(queueEndTime + BrakeTime >= workEndMinutes|| queue.TreatmantType.TreatmantTime+queueEndTime + BrakeTime > workEndMinutes){
                 timeDay["evening"].status = false;
               }
             }
           }
-          return 
+          console.log(cancelledTimes)
+          setTimeDayCancelled(cancelledTimes); // Set the cancelled times after the list is full
         });
-
- 
+        return cancelledTimes
     
     }
 
+  
     const time = (date)=>{
       // console.log(date)
       const [datePart, timePart] = date.split(', ');
@@ -142,12 +171,9 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
     const convertToDate = (minuteTime,date1)=>{
       const millisecondsSinceMidnight = minuteTime * 60 * 1000;
       const dateTime = new Date(date1);
-      console.log(dateTime)
       const localTimezoneOffset = dateTime.getTimezoneOffset() * 60 * 1000;
-      console.log(dateTime.getTimezoneOffset())
       const adjustedTime = dateTime.getTime() - localTimezoneOffset + millisecondsSinceMidnight;
       const timezoneOffset = (dateTime.getTimezoneOffset() === -120) ? 2 : 3; // -120 for +0200, -180 for +0300
-      console.log(timezoneOffset)
       const newDateTime = new Date(adjustedTime-timezoneOffset*60*60*1000);
       return newDateTime.toLocaleTimeString()
     
@@ -159,15 +185,19 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
     const timeInDay = (start, end) => {
       console.log(start, end);
       if (start < 720 && end <= 720) {
+        console.log("1")
           timeDay["morning"].value = start;
           timeDay["morning"].status = true;
       } else if (start > 1080 && end <= 1080) {
+        console.log("2")
           timeDay["noon"].value = start;
           timeDay["noon"].status = true;
       } else if (start >= 1080) {
+        console.log("3")
           timeDay["evening"].value = start;
           timeDay["evening"].status = true;
       } else if (start < 720 && end > 1080) {
+        console.log("4")
           timeDay["morning"].value = start;
           timeDay["morning"].status = true;
           timeDay["noon"].value = 720;
@@ -175,11 +205,13 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
           timeDay["evening"].value = 1080;
           timeDay["evening"].status = true;
       } else if (start < 1080 && end > 1080) {
+        console.log("5")
           timeDay["noon"].value = start;
           timeDay["noon"].status = true;
           timeDay["evening"].value = 1080;
           timeDay["evening"].status = true;
       }else if (start < 720 && end < 1080 && end > 720) {
+        console.log("6")
         timeDay["morning"].value = start;
         timeDay["morning"].status = true;
         timeDay["noon"].value = 720;
@@ -190,13 +222,14 @@ const EarliestAvailableTime = ({ selectedDate, deatailUserList, selectedTimeOfDa
       }
       console.log(timeDay)
   };
-  onTimeSelection(earliestTime);
-  }, [selectedDate,earliestTime, workingDayList, onEarliestTimeChange]);
+  
+
+    onTimeSelection(earliestTime);
+
+  },[selectedDate,earliestTime, workingDayList, onEarliestTimeChange])
 
   return <span>{earliestTime}</span>;
 };
-
-
 
 
 
