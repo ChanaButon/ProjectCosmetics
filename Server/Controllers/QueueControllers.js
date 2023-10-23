@@ -167,6 +167,20 @@ const getQueueByIdCustomer = async(req,res)=>{
   }
 }
 
+const getQueueById = async(req,res)=>{
+  console.log(req.params)
+  try {
+      console.log(req.params)
+      const id = req.params.id.replace(':', ''); // This removes the colon
+      let queue = await Queue.find({_id:id,Status:true});
+      console.log(queue,"queue");
+      res.send(  queue );
+  }
+  catch (error) {
+      res.send("cannot find user: " + error.message)
+  }
+}
+
 const getAllQueue =  async (req, res) => {
   try {
     const queue = await Queue.find({})
@@ -177,5 +191,5 @@ const getAllQueue =  async (req, res) => {
   }
 }
 
-module.exports = {newQueue,getQueuesByDateAndStatus,getAllQueue,getQueueByIdCustomer,updateQueue,deleteQueueById,getQueuescancelled}
+module.exports = {newQueue,getQueuesByDateAndStatus,getAllQueue,getQueueByIdCustomer,updateQueue,deleteQueueById,getQueuescancelled,getQueueById}
 

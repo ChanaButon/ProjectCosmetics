@@ -11,10 +11,13 @@ import DateTimePicker from 'react-datetime-picker';// import './h.css';
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 import './MainPage.css'
 
+
+
 const  ListExampleCelled = () => {
 
   const location = useLocation();
   const { userSend } = location.state || {};
+  console.log(userSend)
 
 
   const [finData, setfinData] = useState([]);
@@ -23,6 +26,7 @@ const  ListExampleCelled = () => {
   const [visible, setVisible] = useState(false);
   const [myQueue, setMyQueue] = useState([]);
   const navigate=useNavigate();
+  console.log(finData)
   const [detaill,setdetail]=useState([]);
   const [start, setStart] = useState(new Date);
   const [end, setEnd] = useState(new Date);
@@ -140,8 +144,12 @@ const  ListExampleCelled = () => {
     }
 
     const OwnerPage = () => {
-        
-      navigate("/OwnerPage")
+        console.log(userSend)
+       const value= finData.find(a=>a.UserID===userSend.user._id)
+       console.log(finData[1].UserID)
+       console.log(userSend.user._id)
+       console.log(value)
+      navigate("/OwnerPage",{state:{value}})
       setVisible(false)
     }
     const Chat = (userid,filteredTreatm,allTreat,userSend) => {
@@ -282,7 +290,7 @@ useEffect(() => {
 
   useEffect(() => {
     if (productsData.length>0){
-      // console.log(productsData);
+      console.log(productsData);
       detail();
     }
   }, [productsData]);
@@ -305,7 +313,7 @@ return(
   <div>
     
     {userType && userType.userNameType === 'business' && (
-        <button className='bootonBusnse' onClick={OwnerPage}>
+        <button className='bootonBusnse' onClick={() => OwnerPage()}>
           מעבר לדף העיסקי
         </button>
       )}
