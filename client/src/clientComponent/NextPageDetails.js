@@ -25,16 +25,19 @@ export default function NextPageDetails() {
   // console.log(tretmentType)
 
   const checkIf12HoursPassed = (dateTimeString) => {
-    const [datePart, timePart] = dateTimeString.split(', '); // Split the date and time parts
-    const [day, month, year] = datePart.split('/'); // Split the date into day, month, and year
-    const [hours, minutes, seconds] = timePart.split(':'); // Split the time into hours, minutes, and seconds
-    const date = new Date(year, month - 1, day, hours, minutes, seconds); // Note: Month is zero-based, so we subtract 1 from the month.
-    const twelveHoursInMilliseconds = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
-    const currentTime = new Date(); // Get the current time    
+    const currentDate = new Date();
+  
+    // Parse the target date string to a JavaScript Date object
+    const targetDateObject = new Date(dateTimeString);
+    
     // Calculate the time difference in milliseconds
-    const timeDifference = Math.abs(date - currentTime); 
-        // Compare if the time difference is greater than or equal to 12 hours
-    return timeDifference >= twelveHoursInMilliseconds;
+    const timeDifference = targetDateObject - currentDate;
+    
+    // Convert milliseconds to hours
+    const hoursDifference = timeDifference / (1000 * 60 * 60);
+    
+    // Check if the difference is greater than 12 hours
+    return hoursDifference > 12;
   };
 
   const Chat = () => {

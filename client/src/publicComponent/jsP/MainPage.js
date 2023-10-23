@@ -158,7 +158,7 @@ const  ListExampleCelled = () => {
               const res = await axios.get(`http://localhost:3321/User/findUserById/${element.UserID}`);
               if (res.data) {
                 const d = res.data;
-                console.log(d);
+                // console.log(d);
                 return d;
               }
             } catch (err) {
@@ -169,7 +169,7 @@ const  ListExampleCelled = () => {
       
           const userDataResults = await Promise.all(userPromises);
           setUserData(userDataResults);
-          console.log(userDataResults)
+          // console.log(userDataResults)
 
         };
         
@@ -260,7 +260,7 @@ useEffect(() => {
   if (productsData.length > 0 && userData.length>0){
     updateDetail()
     findUserType()
-    console.log(userType)
+    // console.log(userType)
     
   }
 }, [userData]);
@@ -282,7 +282,7 @@ useEffect(() => {
 
   useEffect(() => {
     if (productsData.length>0){
-      console.log(productsData);
+      // console.log(productsData);
       detail();
     }
   }, [productsData]);
