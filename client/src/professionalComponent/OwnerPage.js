@@ -2,11 +2,10 @@
 import React, { useState, useEffect } from 'react';
 // import Details from "../clientComponent/Details";
 // import Home from "../publicComponent/jsP/Home";
-import Calendar from 'react-calendar';
+// import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import HomeClient from "../clientComponent/HomeClient";
 import EditAppointmentForm from './EditAppointmentForm';
-
 
 
 const dummyAppointments = [
@@ -24,6 +23,7 @@ const dummyAppointments = [
 
 
 const ImageUploader = () => {
+  // const localizer = momentLocalizer(moment);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -91,7 +91,7 @@ const ImageUploader = () => {
   return (
     <div>
       
-      <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/>
+      {/* <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/> */}
       <h2>Appointments for {selectedDate.toDateString()}:</h2>
       <ul>
         {filteredAppointments.map(appointment => (
@@ -120,7 +120,6 @@ const ImageUploader = () => {
       )}
 
       <HomeClient />
-
 
 
     </div>
