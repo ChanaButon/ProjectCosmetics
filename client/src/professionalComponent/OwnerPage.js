@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 // import Details from "../clientComponent/Details";
 // import Home from "../publicComponent/jsP/Home";
-import Calendar from 'react-calendar';
+// import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import HomeClient from "../clientComponent/HomeClient";
 import EditAppointmentForm from './EditAppointmentForm';
@@ -140,7 +140,7 @@ const myQueue = async ()  => {
     <div>
       <h1> ברוכים הבאים {value.Name} </h1>
       
-      <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/>
+      {/* <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/> */}
       <h2>Appointments for {selectedDate.toDateString()}:</h2>
       <ul>
         {filteredAppointments.map(appointment => (
@@ -169,7 +169,6 @@ const myQueue = async ()  => {
       )}
 
       <HomeClient />
-
 
 
     </div>
