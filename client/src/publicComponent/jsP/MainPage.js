@@ -146,10 +146,10 @@ const  ListExampleCelled = () => {
     const OwnerPage = () => {
         console.log(userSend)
        const value= finData.find(a=>a.UserID===userSend.user._id)
-       console.log(finData[1].UserID)
-       console.log(userSend.user._id)
-       console.log(value)
-      navigate("/OwnerPage",{state:{value}})
+       //console.log(finData[1].UserID)
+       ////console.log(userSend.user._id)
+       console.log(userData)
+      navigate("/OwnerPage",{state:{value,tretment}})
       setVisible(false)
     }
     const Chat = (userid,filteredTreatm,allTreat,userSend) => {

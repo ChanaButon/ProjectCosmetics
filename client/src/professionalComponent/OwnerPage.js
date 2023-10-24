@@ -26,8 +26,8 @@ const dummyAppointments = [
 
 const ImageUploader = () => {
   const location = useLocation();
-  const { value } = location.state || {};
-  console.log(value)
+  const { value,tretment } = location.state || {};
+  console.log(tretment)
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -65,29 +65,34 @@ const ImageUploader = () => {
   });
  
 const myQueue = async ()  => {
-  try{
-      value.QueueList.map(async (element) => {
-      
+  
+  const queuesPromises =value.QueueList.map(async (element) => {
+    
+  try{  
       const res = await axios.get(`http://localhost:3321/queue/getQueueById:${element}`)
       console.log(res.data)
       if(res.data){
-        const dataQueue=res.data
-       setFindQueue(...findQueue,dataQueue)
+        //const dataQueue=res.data
+       // setFindQueue(...findQueue,dataQueue)
+       // findQueue.push(dataQueue)
+       return res.data[0]
     
-      }})
-
-    }catch(error){
+      }}
+    catch(error){
       console.error(error);
       alert("אירעה שגיאה");
 
     }
-    
+  
+  } );
+     let queueResult=await Promise.all(queuesPromises);
+     console.log(queueResult)
+     queueResult= queueResult.filter(appointment => Boolean(appointment))
+     setFindQueue(queueResult)
   }
 
 
 
- 
-  
 
 
 
