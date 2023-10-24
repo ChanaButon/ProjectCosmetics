@@ -9,6 +9,8 @@ router.get('/getQueue',queueControllers.getAllQueue)
 router.get('/getQueueByCustomer:id',queueControllers.getQueueByIdCustomer)
 router.put('/updateQueue',queueControllers.updateQueue)
 router.delete('/deleteQueueById:id',queueControllers.deleteQueueById)
+router.get('/getQueueById:id',queueControllers.getQueueById)
+
 
 
 

@@ -6,7 +6,9 @@ import React, { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import HomeClient from "../clientComponent/HomeClient";
 import EditAppointmentForm from './EditAppointmentForm';
-
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios'
 
 const dummyAppointments = [
   {
@@ -23,12 +25,16 @@ const dummyAppointments = [
 
 
 const ImageUploader = () => {
-  // const localizer = momentLocalizer(moment);
+  const location = useLocation();
+  const { value } = location.state || {};
+  console.log(value)
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [appointments, setAppointments] = useState(dummyAppointments);
   const [editingAppointment, setEditingAppointment] = useState(null);
+  const [findQueue,setFindQueue] = useState([])
+  
   const [ isEditing, setIsEditing] = useState(false);
  
   const handleEdit = (appointment) => {
@@ -57,6 +63,30 @@ const ImageUploader = () => {
       appointmentDate.getDate() === selectedDate.getDate()
     );
   });
+ 
+const myQueue = async ()  => {
+  try{
+      value.QueueList.map(async (element) => {
+      
+      const res = await axios.get(`http://localhost:3321/queue/getQueueById:${element}`)
+      console.log(res.data)
+      if(res.data){
+        const dataQueue=res.data
+       setFindQueue(...findQueue,dataQueue)
+    
+      }})
+
+    }catch(error){
+      console.error(error);
+      alert("אירעה שגיאה");
+
+    }
+    
+  }
+
+
+
+ 
   
 
 
@@ -86,10 +116,24 @@ const ImageUploader = () => {
         // Handle errors
       });
 
+
     }
+
+    useEffect(() => {
+
+      myQueue()
+     
+   // }
+  }, []);
+
+ useEffect(() => {
+      
+      console.log(findQueue)     
+  }, [findQueue]);
 
   return (
     <div>
+      <h1> ברוכים הבאים {value.Name} </h1>
       
       {/* <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/> */}
       <h2>Appointments for {selectedDate.toDateString()}:</h2>
