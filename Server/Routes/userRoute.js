@@ -7,8 +7,8 @@ router.post('/newUser',userControllers.newUser)
 router.delete('/deleteUserById/:id',userControllers.deleteUserById)
 router.get('/findUserById/:id',userControllers.findUserById)
 router.post('/getUser',userControllers.findUserByIdAndCode)
-router.get('/getUserbyID',userControllers.getAllUser)
 
+router.get('/getAllUser',userControllers.getAllUser)
 
 
 module.exports=router

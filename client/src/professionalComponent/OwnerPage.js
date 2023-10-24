@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
-// import Details from "../clientComponent/Details";
+ //import Details from "../clientComponent/Details";
 // import Home from "../publicComponent/jsP/Home";
-// import Calendar from 'react-calendar';
+ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import HomeClient from "../clientComponent/HomeClient";
 import EditAppointmentForm from './EditAppointmentForm';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios'
+import {findTretmentQueuewithoutDate} from '../publicComponent/jsP/api.js';
+import axios from 'axios';
+
 
 const dummyAppointments = [
   {
@@ -26,8 +28,10 @@ const dummyAppointments = [
 
 const ImageUploader = () => {
   const location = useLocation();
-  const { value,tretment } = location.state || {};
+  const { value,tretment,userList } = location.state || {};
+  console.log(userList)
   console.log(tretment)
+  console.log(value)
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -36,6 +40,8 @@ const ImageUploader = () => {
   const [findQueue,setFindQueue] = useState([])
   
   const [ isEditing, setIsEditing] = useState(false);
+
+  console.log(findQueue)
  
   const handleEdit = (appointment) => {
     setEditingAppointment(appointment);
@@ -63,6 +69,24 @@ const ImageUploader = () => {
       appointmentDate.getDate() === selectedDate.getDate()
     );
   });
+
+const ShowQueueFinish = () =>{
+  console.log("miooooo")
+   
+  findTretmentQueuewithoutDate(findQueue,tretment)
+
+
+
+
+
+
+
+
+
+}
+
+
+
  
 const myQueue = async ()  => {
   
@@ -127,6 +151,7 @@ const myQueue = async ()  => {
     useEffect(() => {
 
       myQueue()
+      ShowQueueFinish()
      
    // }
   }, []);
@@ -140,7 +165,7 @@ const myQueue = async ()  => {
     <div>
       <h1> ברוכים הבאים {value.Name} </h1>
       
-      {/* <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/> */}
+      <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/>
       <h2>Appointments for {selectedDate.toDateString()}:</h2>
       <ul>
         {filteredAppointments.map(appointment => (

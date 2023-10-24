@@ -64,4 +64,4 @@ const findTretmentQueuewithoutDate = async (list, tretment) => {
 };
 
 
-export { addToQueueApi, findTretmentQueue };
+export { addToQueueApi, findTretmentQueue,findTretmentQueuewithoutDate };

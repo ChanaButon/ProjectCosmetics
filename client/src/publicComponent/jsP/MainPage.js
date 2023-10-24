@@ -18,8 +18,9 @@ const  ListExampleCelled = () => {
   const location = useLocation();
   const { userSend } = location.state || {};
   console.log(userSend)
+  
 
-
+  const [userList, setUserList] = useState([]);
   const [finData, setfinData] = useState([]);
   const [productsData, setProductsData] = useState([]);
   const [userData, setUserData] = useState([]);
@@ -42,7 +43,7 @@ const  ListExampleCelled = () => {
   const supabase = useSupabaseClient();
   const { isLoading } = useSessionContext();
   
-
+  console.log(userList)
 
   async function googleSignIn() {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -58,6 +59,25 @@ const  ListExampleCelled = () => {
     }
     Chat()
   }
+  const getAllUser = async () => {
+       
+    try {
+      const response = await fetch(`http://localhost:3321/User/getAllUser`);
+      const data = await response.json();
+      setUserList(data);
+      console.log(userList)
+      
+      // const type = data.find(temp => temp._id === userSend.user.UserType);
+      // if (type) {
+      //   setUserType(type); // Set userType state directly to the found type object
+      // }
+    } catch (error) {
+      console.error(error);
+      alert("אירעה שגיאה");
+    }
+    
+  }
+
 
   const getAllProducts = async () => {
     const response = await fetch('http://localhost:3321/product/getProducts');
@@ -149,7 +169,7 @@ const  ListExampleCelled = () => {
        //console.log(finData[1].UserID)
        ////console.log(userSend.user._id)
        console.log(userData)
-      navigate("/OwnerPage",{state:{value,tretment}})
+      navigate("/OwnerPage",{state:{value,tretment,userList}})
       setVisible(false)
     }
     const Chat = (userid,filteredTreatm,allTreat,userSend) => {
@@ -252,28 +272,30 @@ const  ListExampleCelled = () => {
 
 
 
-useEffect(() => {
- getAllProducts()
- queues()
- if (myQueue.length>0)
- {
-  findTretmentQueue()
- }
+  useEffect(() => {
+   getAllProducts()
+   getAllUser()
+   queues()
+   
+   if (myQueue.length>0)
+   {
+    findTretmentQueue()
+   }
 
-}, []);
+   }, []);
 
 
-useEffect(() => {
+    useEffect(() => {
     
-  if (productsData.length > 0 && userData.length>0){
+    if (productsData.length > 0 && userData.length>0){
     updateDetail()
     findUserType()
-    // console.log(userType)
     
+    // console.log(userType)  
   }
-}, [userData]);
+    }, [userData]);
 
-useEffect(() => {
+    useEffect(() => {
   // ... (your existing code)
   console.log(userType)
 
@@ -288,13 +310,14 @@ useEffect(() => {
 }, [userType]);      
 
 
-  useEffect(() => {
+   useEffect(() => {
     if (productsData.length>0){
       console.log(productsData);
       detail();
     }
   }, [productsData]);
-  useEffect(() => {
+
+   useEffect(() => {
     
     if (myQueue.length>0 && tretment.length>0 )
     {
@@ -303,6 +326,9 @@ useEffect(() => {
     }
    
    }, [myQueue,tretment]);
+
+
+   
 
   if (isLoading) {
     return (<></>)
@@ -350,7 +376,6 @@ return(
 </div>
 </div>)
 };
- 
 
 
 export default  ListExampleCelled
