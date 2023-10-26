@@ -22,6 +22,9 @@ import Chat from './publicComponent/jsP/Chat';
 import BusinessLogin from './professionalComponent/BusinessLogin';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import Modal from 'react-modal'; // Import the Modal library
+
+Modal.setAppElement('#root'); // Set the app element
 
 
 

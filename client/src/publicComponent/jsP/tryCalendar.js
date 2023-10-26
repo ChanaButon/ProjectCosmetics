@@ -343,7 +343,12 @@
 // export default BusinessOwnerCalendar;import React from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import './tryCalendar.css'; // Import your custom CSS for styling
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { useState } from 'react'; // Import useState to manage the event detail visibility
+import EventDetailModal from './eventDetailModal'; // Import your EventDetailModal component
+
+// import './tryCalendar.css'; // Import your custom CSS for styling
 
 const appointmentData = [
   {
@@ -444,7 +449,7 @@ const appointmentData = [
   },
   {
       "_id": "6534988888f8e94abe9593b4",
-      "DateTime": "10/30/2023, 6:00:00 PM",
+      "DateTime": "10/30/2023, 6:30:00 PM",
       "TreatmantType": {
           "_id": "6525dc86db773689c6683dc3",
           "TreatmantName": "גבות/שפם",
@@ -539,6 +544,7 @@ const appointmentData = [
       "__v": 0
   }
 ];// Function to parse date and time in the given format
+
 const parseDateTime = (dateTimeString) => {
   const parts = dateTimeString.split(', ');
   const dateParts = parts[0].split('/').map((part) => parseInt(part));
@@ -553,43 +559,65 @@ const parseDateTime = (dateTimeString) => {
 };
 
 const BusinessOwnerCalendar = () => {
+  const [eventDetail, setEventDetail] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleEventClick = (eventClickInfo) => {
+    // Display the event detail when an event is clicked
+    setEventDetail(eventClickInfo.event);
+    setIsOpen(true); // Open the modal
+  };
+   // Function to close the event detail
+   const closeEventDetail = () => {
+    setEventDetail(null);
+    setIsOpen(false); // Close the modal
+
+  };
   // Convert the DateTime in appointmentData to FullCalendar-compatible format
-  const events = appointmentData.map((appointment) => ({
-    title: `${appointment.TreatmantType.TreatmantName} - ${appointment.Customer.Name}`,
-    start: parseDateTime(appointment.DateTime),
-    extendedProps: {
-      phone: appointment.Customer.Phone,
-    },
-  }));
+  const events = appointmentData.map((appointment) => {
+    const start = parseDateTime(appointment.DateTime);
+    const end = new Date(start);
+    end.setMinutes(start.getMinutes() + appointment.TreatmantType.TreatmantTime);
+    return {
+      title: `${appointment.TreatmantType.TreatmantName} - ${appointment.Customer.Name}`,
+      start,
+      end,
+      extendedProps: {
+        phone: appointment.Customer.Phone,
+      },
+    };
+  });
+  const renderEventContent = (eventInfo) => {
+    return (
+      <div className="appointment-event">
+        <p className="title">{eventInfo.event.title}</p>
+      </div>
+    );
+  };
 
   return (
     <div className="calendar-container">
       <FullCalendar
-        plugins={[dayGridPlugin]}
-        initialView="dayGridWeek"
+        plugins={[dayGridPlugin, timeGridPlugin,interactionPlugin]} // Include both dayGrid and timeGrid plugins
+        initialView="timeGridWeek" // Set the initial view to timeGridWeek (or other time-based view)
         events={events}
         eventContent={renderEventContent}
-        eventDisplay="block"
+        eventDisplay="list-item" 
         headerToolbar={{
           start: "today prev next",
-          end: "dayGridMonth dayGridWeek dayGridDay",
+          end: "dayGridMonth timeGridWeek timeGridDay", 
         }}
-        views={["dayGridMonth", "dayGridWeek", "dayGridDay"]}
-
+        views={["dayGridMonth", "dayGridWeek", "dayGridDay", "timeGridWeek", "timeGridDay"]} 
+        eventClick={handleEventClick}
+      />
+       <EventDetailModal
+        isOpen={isOpen}
+        event={eventDetail}
+        onRequestClose={closeEventDetail}
       />
     </div>
   );
 };
 
-const renderEventContent = (eventInfo) => {
-  return (
-    <div className="appointment-event">
-      <p className="time">{eventInfo.timeText}</p>
-      <p className="title">{eventInfo.event.title}</p>
-      {eventInfo.event.extendedProps && (
-        <p className="customer-phone">{eventInfo.event.extendedProps.phone}</p>
-      )}
-    </div>
-  );
-};
+
 export default BusinessOwnerCalendar;
