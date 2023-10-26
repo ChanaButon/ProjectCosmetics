@@ -50,18 +50,31 @@ const findTretmentQueue = async (list, tretment) => {
 };
 
 const findTretmentQueuewithoutDate = async (list, tretment) => {
-  // console.log(list, tretment);
+  console.log(list, tretment);
   const newQueue = [];
   list.map((element) => {
-    const treatfind = tretment.find((a) => a._id === element.TreatmantType);
-    // console.log(treatfind);
+    const treatfind = tretment.find((a) => a.id._id === element.TreatmantType);
+     console.log(treatfind);
 
       const a = new Date(element.DateTime);
-      newQueue.push({ ...element, "DateTime": a.toLocaleString(), "TreatmantType": treatfind });
+      newQueue.push({ ...element, "DateTime": a.toLocaleString(), "TreatmantType": treatfind.id });
+  });
+  console.log(newQueue);
+  return newQueue; 
+};
+const findCustomerQueue = async (list, customer) => {
+  console.log(list, customer);
+  const newQueue = [];
+  list.map((element) => {
+    const custfind = customer.find((a) => a._id === element.Customer);
+     console.log(custfind);
+
+     // const a = new Date(element.DateTime);
+      newQueue.push({ ...element,"Customer": custfind });
   });
   console.log(newQueue);
   return newQueue; 
 };
 
 
-export { addToQueueApi, findTretmentQueue,findTretmentQueuewithoutDate };
+export { addToQueueApi, findTretmentQueue,findTretmentQueuewithoutDate ,findCustomerQueue};
