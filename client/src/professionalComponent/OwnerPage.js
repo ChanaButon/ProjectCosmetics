@@ -8,7 +8,7 @@ import HomeClient from "../clientComponent/HomeClient";
 import EditAppointmentForm from './EditAppointmentForm';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import {findTretmentQueuewithoutDate} from '../publicComponent/jsP/api.js';
+import {findTretmentQueuewithoutDate,findCustomerQueue} from '../publicComponent/jsP/api.js';
 import axios from 'axios';
 
 
@@ -35,7 +35,7 @@ const ImageUploader = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [appointments, setAppointments] = useState(dummyAppointments);
+  const [appointments, setAppointments] = useState([]);
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [findQueue,setFindQueue] = useState([])
   
@@ -70,18 +70,13 @@ const ImageUploader = () => {
     );
   });
 
-const ShowQueueFinish = () =>{
-  console.log("miooooo")
-   
-  findTretmentQueuewithoutDate(findQueue,tretment)
+const ShowQueueFinish = async () =>{
+  
 
-
-
-
-
-
-
-
+  const queueTretment = await   findTretmentQueuewithoutDate(findQueue,tretment)
+  const listFinish = await findCustomerQueue(queueTretment,userList)
+  console.log(listFinish)
+  setAppointments(listFinish)
 
 }
 
@@ -151,15 +146,23 @@ const myQueue = async ()  => {
     useEffect(() => {
 
       myQueue()
-      ShowQueueFinish()
+     // console.log(appointments)
+     // ShowQueueFinish()
      
    // }
   }, []);
 
  useEffect(() => {
-      
-      console.log(findQueue)     
+      if (findQueue.length>0)
+      {
+        ShowQueueFinish()
+      }
+      console.log(findQueue)
+      console.log(appointments)     
   }, [findQueue]);
+
+
+
 
   return (
     <div>
