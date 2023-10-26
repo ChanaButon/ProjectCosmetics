@@ -168,9 +168,10 @@ const myQueue = async ()  => {
   return (
     <div>
       <h1> ברוכים הבאים {value.Name} </h1>
+      
       <SchedulingCalendar/>
-      <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/>
-      <h2>Appointments for {selectedDate.toDateString()}:</h2>
+      {/* <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/> */}
+      {/* <h2>Appointments for {selectedDate.toDateString()}:</h2> */}
       <ul>
         {filteredAppointments.map(appointment => (
           <li key={appointment._id}>

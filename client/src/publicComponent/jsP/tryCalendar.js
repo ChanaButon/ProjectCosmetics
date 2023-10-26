@@ -52,10 +52,298 @@
 //   );
 // };
 
-// export default GoogleCalendarConnect;
-import React, { useState, useEffect } from 'react';
+// // export default GoogleCalendarConnect;
+// import React, { useState, useEffect } from 'react';
+// import FullCalendar from '@fullcalendar/react';
+// import dayGridPlugin from '@fullcalendar/daygrid';
+
+
+
+// function BusinessOwnerCalendar() {
+//   const appointmentData = [
+//     {
+//         "_id": "652b4181f7b0ea13c05a52e8",
+//         "DateTime": "10/16/2023, 5:21:00 AM",
+//         "TreatmantType": {
+//             "_id": "6525dc86db773689c6683dc3",
+//             "TreatmantName": "גבות/שפם",
+//             "Price": 60,
+//             "TreatmantTime": 30,
+//             "__v": 0
+//         },
+//         "Customer": {
+//             "_id": "6525dc46db773689c6683d7c",
+//             "Name": "חנה",
+//             "FamilyName": "בוטון",
+//             "ID": "324151026",
+//             "Password": "1234",
+//             "Mail": "chanabuton@gmail.com",
+//             "Phone": "0506715796",
+//             "UserType": "64f1b0b2a21df4d97f005b02",
+//             "__v": 0
+//         },
+//         "Status": true,
+//         "__v": 0
+//     },
+//     {
+//         "_id": "652c45f1f9d484cea9cde9da",
+//         "DateTime": "10/16/2023, 5:21:00 AM",
+//         "TreatmantType": {
+//             "_id": "6525dc86db773689c6683dc3",
+//             "TreatmantName": "גבות/שפם",
+//             "Price": 60,
+//             "TreatmantTime": 30,
+//             "__v": 0
+//         },
+//         "Customer": {
+//             "_id": "6525dc46db773689c6683d7c",
+//             "Name": "חנה",
+//             "FamilyName": "בוטון",
+//             "ID": "324151026",
+//             "Password": "1234",
+//             "Mail": "chanabuton@gmail.com",
+//             "Phone": "0506715796",
+//             "UserType": "64f1b0b2a21df4d97f005b02",
+//             "__v": 0
+//         },
+//         "Status": true,
+//         "__v": 0
+//     },
+//     {
+//         "_id": "65319e63c7a6d4e2e2dedabd",
+//         "DateTime": "10/23/2023, 7:00:00 AM",
+//         "TreatmantType": {
+//             "_id": "6525dc86db773689c6683dc3",
+//             "TreatmantName": "גבות/שפם",
+//             "Price": 60,
+//             "TreatmantTime": 30,
+//             "__v": 0
+//         },
+//         "Customer": {
+//             "_id": "65319e1dc7a6d4e2e2deda8d",
+//             "Name": "יהלה",
+//             "FamilyName": "רועי",
+//             "ID": "333240653",
+//             "Password": "12345678",
+//             "Mail": "yahalaroi13@gmail.com",
+//             "Phone": "0547045594",
+//             "UserType": "64f1aca42838b6acac126f3a",
+//             "__v": 0
+//         },
+//         "Status": true,
+//         "__v": 0
+//     },
+//     {
+//         "_id": "6534983788f8e94abe959357",
+//         "DateTime": "10/29/2023, 5:00:00 PM",
+//         "TreatmantType": {
+//             "_id": "6525dc86db773689c6683dc3",
+//             "TreatmantName": "גבות/שפם",
+//             "Price": 60,
+//             "TreatmantTime": 30,
+//             "__v": 0
+//         },
+//         "Customer": {
+//             "_id": "6525dc46db773689c6683d7c",
+//             "Name": "חנה",
+//             "FamilyName": "בוטון",
+//             "ID": "324151026",
+//             "Password": "1234",
+//             "Mail": "chanabuton@gmail.com",
+//             "Phone": "0506715796",
+//             "UserType": "64f1b0b2a21df4d97f005b02",
+//             "__v": 0
+//         },
+//         "Status": true,
+//         "__v": 0
+//     },
+//     {
+//         "_id": "6534988888f8e94abe9593b4",
+//         "DateTime": "10/30/2023, 6:00:00 PM",
+//         "TreatmantType": {
+//             "_id": "6525dc86db773689c6683dc3",
+//             "TreatmantName": "גבות/שפם",
+//             "Price": 60,
+//             "TreatmantTime": 30,
+//             "__v": 0
+//         },
+//         "Customer": {
+//             "_id": "6525dc46db773689c6683d7c",
+//             "Name": "חנה",
+//             "FamilyName": "בוטון",
+//             "ID": "324151026",
+//             "Password": "1234",
+//             "Mail": "chanabuton@gmail.com",
+//             "Phone": "0506715796",
+//             "UserType": "64f1b0b2a21df4d97f005b02",
+//             "__v": 0
+//         },
+//         "Status": true,
+//         "__v": 0
+//     },
+//     {
+//         "_id": "6534989688f8e94abe9593d7",
+//         "DateTime": "10/30/2023, 6:00:00 PM",
+//         "TreatmantType": {
+//             "_id": "6525dc86db773689c6683dc3",
+//             "TreatmantName": "גבות/שפם",
+//             "Price": 60,
+//             "TreatmantTime": 30,
+//             "__v": 0
+//         },
+//         "Customer": {
+//             "_id": "6525dc46db773689c6683d7c",
+//             "Name": "חנה",
+//             "FamilyName": "בוטון",
+//             "ID": "324151026",
+//             "Password": "1234",
+//             "Mail": "chanabuton@gmail.com",
+//             "Phone": "0506715796",
+//             "UserType": "64f1b0b2a21df4d97f005b02",
+//             "__v": 0
+//         },
+//         "Status": true,
+//         "__v": 0
+//     },
+//     {
+//         "_id": "653498fc88f8e94abe959441",
+//         "DateTime": "10/29/2023, 5:00:00 PM",
+//         "TreatmantType": {
+//             "_id": "6525dc86db773689c6683dc3",
+//             "TreatmantName": "גבות/שפם",
+//             "Price": 60,
+//             "TreatmantTime": 30,
+//             "__v": 0
+//         },
+//         "Customer": {
+//             "_id": "6525dc46db773689c6683d7c",
+//             "Name": "חנה",
+//             "FamilyName": "בוטון",
+//             "ID": "324151026",
+//             "Password": "1234",
+//             "Mail": "chanabuton@gmail.com",
+//             "Phone": "0506715796",
+//             "UserType": "64f1b0b2a21df4d97f005b02",
+//             "__v": 0
+//         },
+//         "Status": true,
+//         "__v": 0
+//     },
+//     {
+//         "_id": "65349e1588f8e94abe9596d8",
+//         "DateTime": "11/5/2023, 7:45:00 PM",
+//         "TreatmantType": {
+//             "_id": "6525dc86db773689c6683dc3",
+//             "TreatmantName": "גבות/שפם",
+//             "Price": 60,
+//             "TreatmantTime": 30,
+//             "__v": 0
+//         },
+//         "Customer": {
+//             "_id": "6525dc46db773689c6683d7c",
+//             "Name": "חנה",
+//             "FamilyName": "בוטון",
+//             "ID": "324151026",
+//             "Password": "1234",
+//             "Mail": "chanabuton@gmail.com",
+//             "Phone": "0506715796",
+//             "UserType": "64f1b0b2a21df4d97f005b02",
+//             "__v": 0
+//         },
+//         "Status": true,
+//         "__v": 0
+//     }
+//   ]
+//   const [events, setEvents] = useState([ {
+//     "_id": "65349e1588f8e94abe9596d8",
+//     "DateTime": "11/5/2023, 7:45:00 PM",
+//     "TreatmantType": {
+//         "_id": "6525dc86db773689c6683dc3",
+//         "TreatmantName": "גבות/שפם",
+//         "Price": 60,
+//         "TreatmantTime": 30,
+//         "__v": 0
+//     },
+//     "Customer": {
+//         "_id": "6525dc46db773689c6683d7c",
+//         "Name": "חנה",
+//         "FamilyName": "בוטון",
+//         "ID": "324151026",
+//         "Password": "1234",
+//         "Mail": "chanabuton@gmail.com",
+//         "Phone": "0506715796",
+//         "UserType": "64f1b0b2a21df4d97f005b02",
+//         "__v": 0
+//     },
+//     "Status": true,
+//     "__v": 0
+// }]);
+//   const [selectedDateAppointments, setSelectedDateAppointments] = useState([]);
+
+//   const handleDatesSet = (info) => {
+//     console.log(info.view && info.view.activeStart)
+//     if (info.view && info.view.activeStart) {
+//       const clickedDate = info.view.activeStart.toISOString().split('T')[0]; // Get the displayed date in ISO format
+//       console.log(clickedDate)
+//       const appointmentsForSelectedDate = appointmentData.filter(appointment => {
+//         const appointmentDate = appointment.DateTime.split(',')[0];
+//         console.log(new Date(appointmentDate) ,new Date(clickedDate))
+//         return new Date(appointmentDate) > new Date(clickedDate);
+//       });
+//       console.log(appointmentsForSelectedDate)
+
+//       setSelectedDateAppointments(appointmentsForSelectedDate);
+//     }
+//   };
+
+//   useEffect(() => {
+//     // You can fetch appointment data from an API or database and set it in the 'appointmentData' state.
+//   }, []);
+
+//   const renderEventContent = (eventInfo) => {
+//     return (
+//       <div className="event-queue-item">
+//         <p>Appointment Time: {eventInfo.event.extendedProps.DateTime}</p>
+//         <p>Treatment Type: {eventInfo.event.extendedProps.TreatmantType.TreatmantName}</p>
+//         <p>Customer Name: {eventInfo.event.extendedProps.Customer.Name}</p>
+//         {/* Include other appointment details as needed */}
+//       </div>
+//     );
+//   };
+
+//   return (
+//     <div>
+//       <FullCalendar
+//         plugins={[dayGridPlugin]}
+//         initialView="dayGridWeek"
+//         events={events}
+//         datesSet={handleDatesSet}
+//         eventContent={renderEventContent} // Render event content with the customized function
+//         eventDisplay="block" // Display events as blocks to create a queue-like appearance
+//       />
+//       {selectedDateAppointments.length > 0 && (
+//         <div>
+//           <h3>Appointments for Selected Date:</h3>
+//           <ul>
+//             {selectedDateAppointments.map(appointment => (
+//               <li key={appointment._id}>
+//                 <p>Appointment Time: {appointment.DateTime}</p>
+//                 <p>Treatment Type: {appointment.TreatmantType.TreatmantName}</p>
+//                 <p>Customer Name: {appointment.Customer.Name}</p>
+//                 {/* Include other appointment details as needed */}
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default BusinessOwnerCalendar;import React from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import './tryCalendar.css'; // Import your custom CSS for styling
 
 const appointmentData = [
   {
@@ -250,70 +538,58 @@ const appointmentData = [
       "Status": true,
       "__v": 0
   }
-]
+];// Function to parse date and time in the given format
+const parseDateTime = (dateTimeString) => {
+  const parts = dateTimeString.split(', ');
+  const dateParts = parts[0].split('/').map((part) => parseInt(part));
+  const timePart = parts[1].split(' ');
+  const timeParts = timePart[0].split(':').map((part) => parseInt(part));
+  const [month, day, year] = dateParts;
+  const [hour, minute] = timeParts.slice(0, 2);
+  const isPM = timePart[1].toLowerCase() === 'pm';
+  const adjustedHour = isPM && hour !== 12 ? hour + 12 : hour;
 
-function BusinessOwnerCalendar() {
-  const [events, setEvents] = useState(appointmentData);
-  const [selectedDateAppointments, setSelectedDateAppointments] = useState([]);
+  return new Date(year, month - 1, day, adjustedHour, minute);
+};
 
-  const handleDatesSet = (info) => {
-    console.log(info.view && info.view.activeStart)
-    if (info.view && info.view.activeStart) {
-      const clickedDate = info.view.activeStart.toISOString().split('T')[0]; // Get the displayed date in ISO format
-      console.log(clickedDate)
-      const appointmentsForSelectedDate = appointmentData.filter(appointment => {
-        const appointmentDate = appointment.DateTime.split(',')[0];
-        console.log(new Date(appointmentDate) ,new Date(clickedDate))
-        return new Date(appointmentDate) > new Date(clickedDate);
-      });
-      console.log(appointmentsForSelectedDate)
-
-      setSelectedDateAppointments(appointmentsForSelectedDate);
-    }
-  };
-
-  useEffect(() => {
-    // You can fetch appointment data from an API or database and set it in the 'appointmentData' state.
-  }, []);
-
-  const renderEventContent = (eventInfo) => {
-    return (
-      <div className="event-queue-item">
-        <p>Appointment Time: {eventInfo.event.extendedProps.DateTime}</p>
-        <p>Treatment Type: {eventInfo.event.extendedProps.TreatmantType.TreatmantName}</p>
-        <p>Customer Name: {eventInfo.event.extendedProps.Customer.Name}</p>
-        {/* Include other appointment details as needed */}
-      </div>
-    );
-  };
+const BusinessOwnerCalendar = () => {
+  // Convert the DateTime in appointmentData to FullCalendar-compatible format
+  const events = appointmentData.map((appointment) => ({
+    title: `${appointment.TreatmantType.TreatmantName} - ${appointment.Customer.Name}`,
+    start: parseDateTime(appointment.DateTime),
+    extendedProps: {
+      phone: appointment.Customer.Phone,
+    },
+  }));
 
   return (
-    <div>
+    <div className="calendar-container">
       <FullCalendar
         plugins={[dayGridPlugin]}
         initialView="dayGridWeek"
         events={events}
-        datesSet={handleDatesSet}
-        eventContent={renderEventContent} // Render event content with the customized function
-        eventDisplay="block" // Display events as blocks to create a queue-like appearance
+        eventContent={renderEventContent}
+        eventDisplay="block"
+        headerToolbar={{
+          start: "today prev next",
+          end: "dayGridMonth dayGridWeek dayGridDay",
+        }}
+        views={["dayGridMonth", "dayGridWeek", "dayGridDay"]}
+
       />
-      {selectedDateAppointments.length > 0 && (
-        <div>
-          <h3>Appointments for Selected Date:</h3>
-          <ul>
-            {selectedDateAppointments.map(appointment => (
-              <li key={appointment._id}>
-                <p>Appointment Time: {appointment.DateTime}</p>
-                <p>Treatment Type: {appointment.TreatmantType.TreatmantName}</p>
-                <p>Customer Name: {appointment.Customer.Name}</p>
-                {/* Include other appointment details as needed */}
-              </li>
-            ))}
-          </ul>
-        </div>
+    </div>
+  );
+};
+
+const renderEventContent = (eventInfo) => {
+  return (
+    <div className="appointment-event">
+      <p className="time">{eventInfo.timeText}</p>
+      <p className="title">{eventInfo.event.title}</p>
+      {eventInfo.event.extendedProps && (
+        <p className="customer-phone">{eventInfo.event.extendedProps.phone}</p>
       )}
     </div>
   );
-}
-
+};
 export default BusinessOwnerCalendar;
