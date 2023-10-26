@@ -497,12 +497,12 @@ const appointmentData = [
   },
   {
       "_id": "653498fc88f8e94abe959441",
-      "DateTime": "10/29/2023, 5:00:00 PM",
+      "DateTime": "10/29/2023, 6:00:00 PM",
       "TreatmantType": {
           "_id": "6525dc86db773689c6683dc3",
           "TreatmantName": "גבות/שפם",
           "Price": 60,
-          "TreatmantTime": 30,
+          "TreatmantTime": 15,
           "__v": 0
       },
       "Customer": {
@@ -605,6 +605,7 @@ const BusinessOwnerCalendar = () => {
         eventDisplay="list-item" 
         headerToolbar={{
           start: "today prev next",
+          center:"title",
           end: "dayGridMonth timeGridWeek timeGridDay", 
         }}
         views={["dayGridMonth", "dayGridWeek", "dayGridDay", "timeGridWeek", "timeGridDay"]} 
