@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import './tryCalendar.css'
+import './Home.css'
 const EventDetailModal = ({ isOpen, event, onRequestClose }) => {
   return (
     <Modal
