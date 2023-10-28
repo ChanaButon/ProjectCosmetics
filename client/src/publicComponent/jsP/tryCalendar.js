@@ -351,218 +351,13 @@ import EventDetailModal from './eventDetailModal'; // Import your EventDetailMod
 
 // import './tryCalendar.css'; // Import your custom CSS for styling
 
-const appointmentData = [
-  {
-      "_id": "652b4181f7b0ea13c05a52e8",
-      "DateTime": "10/16/2023, 5:21:00 AM",
-      "TreatmantType": {
-          "_id": "6525dc86db773689c6683dc3",
-          "TreatmantName": "גבות/שפם",
-          "Price": 60,
-          "TreatmantTime": 30,
-          "__v": 0
-      },
-      "Customer": {
-          "_id": "6525dc46db773689c6683d7c",
-          "Name": "חנה",
-          "FamilyName": "בוטון",
-          "ID": "324151026",
-          "Password": "1234",
-          "Mail": "chanabuton@gmail.com",
-          "Phone": "0506715796",
-          "UserType": "64f1b0b2a21df4d97f005b02",
-          "__v": 0
-      },
-      "Status": true,
-      "__v": 0
-  },
-  {
-      "_id": "652c45f1f9d484cea9cde9da",
-      "DateTime": "10/16/2023, 5:21:00 AM",
-      "TreatmantType": {
-          "_id": "6525dc86db773689c6683dc3",
-          "TreatmantName": "גבות/שפם",
-          "Price": 60,
-          "TreatmantTime": 30,
-          "__v": 0
-      },
-      "Customer": {
-          "_id": "6525dc46db773689c6683d7c",
-          "Name": "חנה",
-          "FamilyName": "בוטון",
-          "ID": "324151026",
-          "Password": "1234",
-          "Mail": "chanabuton@gmail.com",
-          "Phone": "0506715796",
-          "UserType": "64f1b0b2a21df4d97f005b02",
-          "__v": 0
-      },
-      "Status": true,
-      "__v": 0
-  },
-  {
-      "_id": "65319e63c7a6d4e2e2dedabd",
-      "DateTime": "10/23/2023, 7:00:00 AM",
-      "TreatmantType": {
-          "_id": "6525dc86db773689c6683dc3",
-          "TreatmantName": "גבות/שפם",
-          "Price": 60,
-          "TreatmantTime": 30,
-          "__v": 0
-      },
-      "Customer": {
-          "_id": "65319e1dc7a6d4e2e2deda8d",
-          "Name": "יהלה",
-          "FamilyName": "רועי",
-          "ID": "333240653",
-          "Password": "12345678",
-          "Mail": "yahalaroi13@gmail.com",
-          "Phone": "0547045594",
-          "UserType": "64f1aca42838b6acac126f3a",
-          "__v": 0
-      },
-      "Status": true,
-      "__v": 0
-  },
-  {
-      "_id": "6534983788f8e94abe959357",
-      "DateTime": "10/29/2023, 5:00:00 PM",
-      "TreatmantType": {
-          "_id": "6525dc86db773689c6683dc3",
-          "TreatmantName": "גבות/שפם",
-          "Price": 60,
-          "TreatmantTime": 30,
-          "__v": 0
-      },
-      "Customer": {
-          "_id": "6525dc46db773689c6683d7c",
-          "Name": "חנה",
-          "FamilyName": "בוטון",
-          "ID": "324151026",
-          "Password": "1234",
-          "Mail": "chanabuton@gmail.com",
-          "Phone": "0506715796",
-          "UserType": "64f1b0b2a21df4d97f005b02",
-          "__v": 0
-      },
-      "Status": true,
-      "__v": 0
-  },
-  {
-      "_id": "6534988888f8e94abe9593b4",
-      "DateTime": "10/30/2023, 6:30:00 PM",
-      "TreatmantType": {
-          "_id": "6525dc86db773689c6683dc3",
-          "TreatmantName": "גבות/שפם",
-          "Price": 60,
-          "TreatmantTime": 30,
-          "__v": 0
-      },
-      "Customer": {
-          "_id": "6525dc46db773689c6683d7c",
-          "Name": "חנה",
-          "FamilyName": "בוטון",
-          "ID": "324151026",
-          "Password": "1234",
-          "Mail": "chanabuton@gmail.com",
-          "Phone": "0506715796",
-          "UserType": "64f1b0b2a21df4d97f005b02",
-          "__v": 0
-      },
-      "Status": true,
-      "__v": 0
-  },
-  {
-      "_id": "6534989688f8e94abe9593d7",
-      "DateTime": "10/30/2023, 6:00:00 PM",
-      "TreatmantType": {
-          "_id": "6525dc86db773689c6683dc3",
-          "TreatmantName": "גבות/שפם",
-          "Price": 60,
-          "TreatmantTime": 30,
-          "__v": 0
-      },
-      "Customer": {
-          "_id": "6525dc46db773689c6683d7c",
-          "Name": "חנה",
-          "FamilyName": "בוטון",
-          "ID": "324151026",
-          "Password": "1234",
-          "Mail": "chanabuton@gmail.com",
-          "Phone": "0506715796",
-          "UserType": "64f1b0b2a21df4d97f005b02",
-          "__v": 0
-      },
-      "Status": true,
-      "__v": 0
-  },
-  {
-      "_id": "653498fc88f8e94abe959441",
-      "DateTime": "10/29/2023, 6:00:00 PM",
-      "TreatmantType": {
-          "_id": "6525dc86db773689c6683dc3",
-          "TreatmantName": "גבות/שפם",
-          "Price": 60,
-          "TreatmantTime": 15,
-          "__v": 0
-      },
-      "Customer": {
-          "_id": "6525dc46db773689c6683d7c",
-          "Name": "חנה",
-          "FamilyName": "בוטון",
-          "ID": "324151026",
-          "Password": "1234",
-          "Mail": "chanabuton@gmail.com",
-          "Phone": "0506715796",
-          "UserType": "64f1b0b2a21df4d97f005b02",
-          "__v": 0
-      },
-      "Status": true,
-      "__v": 0
-  },
-  {
-      "_id": "65349e1588f8e94abe9596d8",
-      "DateTime": "11/5/2023, 7:45:00 PM",
-      "TreatmantType": {
-          "_id": "6525dc86db773689c6683dc3",
-          "TreatmantName": "גבות/שפם",
-          "Price": 60,
-          "TreatmantTime": 30,
-          "__v": 0
-      },
-      "Customer": {
-          "_id": "6525dc46db773689c6683d7c",
-          "Name": "חנה",
-          "FamilyName": "בוטון",
-          "ID": "324151026",
-          "Password": "1234",
-          "Mail": "chanabuton@gmail.com",
-          "Phone": "0506715796",
-          "UserType": "64f1b0b2a21df4d97f005b02",
-          "__v": 0
-      },
-      "Status": true,
-      "__v": 0
-  }
-];// Function to parse date and time in the given format
 
-const parseDateTime = (dateTimeString) => {
-  const parts = dateTimeString.split(', ');
-  const dateParts = parts[0].split('/').map((part) => parseInt(part));
-  const timePart = parts[1].split(' ');
-  const timeParts = timePart[0].split(':').map((part) => parseInt(part));
-  const [month, day, year] = dateParts;
-  const [hour, minute] = timeParts.slice(0, 2);
-  const isPM = timePart[1].toLowerCase() === 'pm';
-  const adjustedHour = isPM && hour !== 12 ? hour + 12 : hour;
 
-  return new Date(year, month - 1, day, adjustedHour, minute);
-};
 
-const BusinessOwnerCalendar = () => {
+const BusinessOwnerCalendar = ({appointmentData}) => {
   const [eventDetail, setEventDetail] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log(appointmentData)
   const handleEventClick = (eventClickInfo) => {
     // Display the event detail when an event is clicked
     setEventDetail(eventClickInfo.event);
@@ -573,6 +368,20 @@ const BusinessOwnerCalendar = () => {
     setEventDetail(null);
     setIsOpen(false); // Close the modal
 
+  };
+
+
+  const parseDateTime = (dateTimeString) => {
+    const parts = dateTimeString.split(', ');
+    const dateParts = parts[0].split('/').map((part) => parseInt(part));
+    const timePart = parts[1].split(' ');
+    const timeParts = timePart[0].split(':').map((part) => parseInt(part));
+    const [month, day, year] = dateParts;
+    const [hour, minute] = timeParts.slice(0, 2);
+    const isPM = timePart[1].toLowerCase() === 'pm';
+    const adjustedHour = isPM && hour !== 12 ? hour + 12 : hour;
+  
+    return new Date(year, month - 1, day, adjustedHour, minute);
   };
   // Convert the DateTime in appointmentData to FullCalendar-compatible format
   const events = appointmentData.map((appointment) => {
