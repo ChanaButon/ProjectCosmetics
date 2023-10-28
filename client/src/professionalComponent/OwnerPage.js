@@ -90,7 +90,7 @@ const myQueue = async ()  => {
     
   try{  
       const res = await axios.get(`http://localhost:3321/queue/getQueueById:${element}`)
-      console.log(res.data)
+      // console.log(res.data)
       if(res.data){
         //const dataQueue=res.data
        // setFindQueue(...findQueue,dataQueue)

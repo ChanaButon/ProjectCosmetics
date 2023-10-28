@@ -372,6 +372,7 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
 
 
   const parseDateTime = (dateTimeString) => {
+    console.log(dateTimeString)
     const parts = dateTimeString.split(', ');
     const dateParts = parts[0].split('/').map((part) => parseInt(part));
     const timePart = parts[1].split(' ');
@@ -385,6 +386,7 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
   };
   // Convert the DateTime in appointmentData to FullCalendar-compatible format
   const events = appointmentData.map((appointment) => {
+    console.log(appointment.DateTime)
     const start = parseDateTime(appointment.DateTime);
     const end = new Date(start);
     end.setMinutes(start.getMinutes() + appointment.TreatmantType.TreatmantTime);
