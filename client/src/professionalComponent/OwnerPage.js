@@ -124,6 +124,14 @@ const myQueue = async ()  => {
     };
     reader.readAsDataURL(event.target.files[0]);
   }
+  
+  // const SchedulingCalendar = () => {
+   
+  // // eslint-disable-next-line no-undef
+  // navigate("/SchedulingCalendar",{state:{appointments}})
+  // // eslint-disable-next-line no-undef
+  // setVisible(false)
+// }
 
   function fileUploadHandler() {
     // Replace the URL with your own endpoint
@@ -158,8 +166,8 @@ const myQueue = async ()  => {
       {
         ShowQueueFinish()
       }
-      console.log(findQueue)
-      console.log(appointments)     
+      // console.log(findQueue)
+      // console.log(appointments)     
   }, [findQueue]);
 
 

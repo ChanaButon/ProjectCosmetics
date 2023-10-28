@@ -347,6 +347,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useState } from 'react'; // Import useState to manage the event detail visibility
 import EventDetailModal from './eventDetailModal'; // Import your EventDetailModal component
+//import appointments from './'
 
 // import './tryCalendar.css'; // Import your custom CSS for styling
 
