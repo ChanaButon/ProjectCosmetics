@@ -372,6 +372,7 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
 
 
   const parseDateTime = (dateTimeString) => {
+    console.log(dateTimeString)
     const parts = dateTimeString.split(', ');
     const dateParts = parts[0].split('/').map((part) => parseInt(part));
     const timePart = parts[1].split(' ');
