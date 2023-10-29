@@ -378,14 +378,19 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
     const timePart = parts[1].split(' ');
     const timeParts = timePart[0].split(':').map((part) => parseInt(part));
     const [month, day, year] = dateParts;
+    console.log(year)
     const [hour, minute] = timeParts.slice(0, 2);
     const isPM = timePart[1].toLowerCase() === 'pm';
     const adjustedHour = isPM && hour !== 12 ? hour + 12 : hour;
   console.log(year)
+=======
+    console.log(new Date(year, month - 1, day, adjustedHour, minute))
+>>>>>>> 419250266c62ea2825e532451f5359d8e8859de4
     return new Date(year, month - 1, day, adjustedHour, minute);
   };
   // Convert the DateTime in appointmentData to FullCalendar-compatible format
   const events = appointmentData.map((appointment) => {
+    console.log(appointment.DateTime)
     const start = parseDateTime(appointment.DateTime);
     const end = new Date(start);
     end.setMinutes(start.getMinutes() + appointment.TreatmantType.TreatmantTime);
