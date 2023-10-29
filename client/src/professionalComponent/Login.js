@@ -120,7 +120,7 @@ if (!isChecked) {
     <input ref={nameRef} placeholder='Name' id="firstNameInput" className={`aaa bbb ${formErrors.name ? 'error' : ''}`}  type="text" />
     {formErrors.name && <span className="error-text">שדה חובה</span>}
   </div> 
-  <div cl assName="inputColumn">
+  <div className="inputColumn">
     <label htmlFor="lastNameInput" className="inputLabel">
       :שם משפחה
     </label>

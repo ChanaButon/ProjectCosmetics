@@ -30,9 +30,10 @@ const Register = (props) => {
     password: false,
     mail: false,
     phone: false,
+    isChecked: false,
   });
-  const [checkboxError, setCheckboxError] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  // const [checkboxError, setCheckboxError] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
  // const [isPageOpen, setIsPageOpen] = useState(true);
 
   
@@ -40,22 +41,23 @@ const Register = (props) => {
     navigate('/'); // Navigate to the main page
   };
 
-  if (nextPage1 == true) {
+  // if (nextPage1 == true) {
 
-    navigate("/MainPage")
-  }
+  //   navigate("/MainPage")
+  // }
 
 
 
   const checkUser = () => {
-    
-    setFormErrors({name: !nameRef.current.value,
+    setFormErrors({
+      name: !nameRef.current.value,
       familyName: !FamilyNameRef.current.value,
       ID: !isValidId(IDRef.current.value),
       password: !passwordRef.current.value,
       mail: !isValidEmail(MailRef.current.value),
       phone: !isValidPhoneNumber(PhoneRef.current.value),
-  });
+      isChecked: !formErrors.isChecked,
+    });
     console.log(formErrors)
 
   
@@ -64,22 +66,20 @@ const Register = (props) => {
     }
  
 
-  if (!isChecked) {
-    setCheckboxError(true); // Set checkbox error to true
-    return;
-  }
-    //שליחת הנתונים להוספה לנוד - משתמש חדש כולל כל הנתונים 
-    let user = {
-      Name: nameRef.current.value,
-      FamilyName:FamilyNameRef.current.value,
-      ID:IDRef.current.value,
-      Password: passwordRef.current.value,
-      Mail:MailRef.current.value,
-      Phone:PhoneRef.current.value,
-      Type: "client",
-      
-
+    if (!formErrors.isChecked) {
+      setFormErrors({ ...formErrors, isChecked: true });
+      return;
     }
+    //שליחת הנתונים להוספה לנוד - משתמש חדש כולל כל הנתונים 
+    const user = {
+      Name: nameRef.current.value,
+      FamilyName: FamilyNameRef.current.value,
+      ID: IDRef.current.value,
+      Password: passwordRef.current.value,
+      Mail: MailRef.current.value,
+      Phone: PhoneRef.current.value,
+      Type: 'client',
+    };
 
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser', user).then((res) => {
@@ -110,7 +110,7 @@ const Register = (props) => {
     <input ref={nameRef} placeholder='Name' id="firstNameInput" className={`aaa bbb ${formErrors.name ? 'error' : ''}`}  type="text" />
     {formErrors.name && <span className="error-text">שדה חובה</span>}
   </div> 
-  <div cl assName="inputColumn">
+  <div className="inputColumn">
     <label htmlFor="lastNameInput" className="inputLabel">
       :שם משפחה
     </label>
@@ -156,8 +156,11 @@ const Register = (props) => {
 </div>
 
       
-        <Form.Checkbox inline label='אני מאשר/ת את תנאי האתר'  checked={isChecked} onChange={() => { setIsChecked(!isChecked); setCheckboxError(false);  }}/>
-        {checkboxError && <span className="error-text">יש לאשר את תנאי האתר</span>}
+        <Form.Checkbox inline label='אני מאשר/ת את תנאי האתר'  checked={formErrors.isChecked} onChange={() =>
+            setFormErrors({ ...formErrors, isChecked: !formErrors.isChecked })}/>
+       {!formErrors.isChecked && (
+          <span className="error-text">יש לאשר את תנאי האתר</span>
+        )}
         <Button onClick={checkUser} color='pink'>Submit</Button>
       
 

@@ -1,13 +1,13 @@
 // import img from '../../images/IMG_8090.JPG'
 import React, { useEffect, useState } from 'react'
-import { Image, List } from 'semantic-ui-react'
+// import { Image, List } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom';
 // import { Image } from 'semantic-ui-react'
 //import Login from '../../professionalComponent/Login'
 import axios from 'axios'
 import { useLocation } from 'react-router-dom';
-import H from './googleCalendar/googleCalnedar';
-import DateTimePicker from 'react-datetime-picker';// import './h.css';
+// import H from './googleCalendar/googleCalnedar';
+// import DateTimePicker from 'react-datetime-picker';// import './h.css';
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 import './MainPage.css'
 
@@ -28,37 +28,37 @@ const  ListExampleCelled = () => {
   const [myQueue, setMyQueue] = useState([]);
   const navigate=useNavigate();
   console.log(finData)
-  const [detaill,setdetail]=useState([]);
-  const [start, setStart] = useState(new Date);
-  const [end, setEnd] = useState(new Date);
+  // const [detaill,setdetail]=useState([]);
+  // const [start, setStart] = useState(new Date);
+  // const [end, setEnd] = useState(new Date);
   const [userType, setUserType] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
+  // const [eventDescription, setEventDescription] = useState("");
   const [tretment,setTretment]=useState([]);
   const [finQueue,setFinQueue]=useState([]);
   const currentDate = new Date(); // Current date and time
-  const [dateTimequeue,setdateTimequeue]=useState({});
+  // const [dateTimequeue,setdateTimequeue]=useState({});
    
   
-  const session = useSession();
-  const supabase = useSupabaseClient();
+  // const session = useSession();
+  // const supabase = useSupabaseClient();
   const { isLoading } = useSessionContext();
   
   console.log(userList)
 
-  async function googleSignIn() {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        scopes: 'https://www.googleapis.com/auth/calendar'
-      }
-    });
+  // async function googleSignIn() {
+  //   const { error } = await supabase.auth.signInWithOAuth({
+  //     provider: 'google',
+  //     options: {
+  //       scopes: 'https://www.googleapis.com/auth/calendar'
+  //     }
+  //   });
 
-    if (error) {
-      alert("error");
-      console.log(error);
-    }
-    Chat()
-  }
+  //   if (error) {
+  //     alert("error");
+  //     console.log(error);
+  //   }
+  //   Chat()
+  // }
   const getAllUser = async () => {
        
     try {
@@ -127,7 +127,7 @@ const  ListExampleCelled = () => {
       return null;
     }).filter(item => item !== null);
     const listuser = []
-    const userTreat = connectedList.map(element  => {
+    connectedList.map(element  => {
       const listTreat = []
       element.TreatmantID.forEach((treat=>{
         // console.log(treat)

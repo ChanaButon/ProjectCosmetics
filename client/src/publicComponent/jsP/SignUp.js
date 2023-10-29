@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Form, Icon, Message } from 'semantic-ui-react'
-import UserReducer from '../../redux/reducer'
+import { Button, Form } from 'semantic-ui-react'
+// import UserReducer from '../../redux/reducer'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { setUser } from '../../redux/actions'
@@ -10,7 +10,7 @@ import './SignUp.css'
 
 const Register = (props) => {
   const navigate = useNavigate()
-  const [nextPage1, setNextPage] = useState(false)
+  // const [nextPage1, setNextPage] = useState(false)
   const IDRef = useRef('null')
   const PasswordRef = useRef('null')
   const { dispatch } = props
@@ -18,7 +18,7 @@ const Register = (props) => {
   const [checkboxError, setCheckboxError] = useState(false);
   const [form, setForm] = useState({
     ID: false,
-    password: false,
+    Password: false,
   });
 
 
@@ -49,7 +49,7 @@ const Register = (props) => {
     axios.post('http://localhost:3321/User/getUser', user).then((res) => {
       console.log(res.data);
       const userSend = res.data;
-      if (res.data.status == false) {
+      if (res.data.status === false) {
 
         alert("not found")
       }

@@ -44,6 +44,7 @@ const findTretmentQueue = async (list, tretment) => {
       const a = new Date(element.DateTime);
       newQueue.push({ ...element, "DateTime": a.toLocaleString(), "TreatmantType": treatfind });
     }
+    
   });
   console.log(newQueue);
   return newQueue; 

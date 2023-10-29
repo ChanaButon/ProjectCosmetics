@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useNavigate } from 'react-router-dom'
 // import { Navigate } from 'react-router-dom'
-import Login from '../../professionalComponent/Login'
-import Entrance from './Entrance'
+// import Login from '../../professionalComponent/Login'
+// import Entrance from './Entrance'
 // import axios from './axios'
 // import './Home.css'
 

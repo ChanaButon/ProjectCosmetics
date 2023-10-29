@@ -7,8 +7,8 @@ import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth
 
  function H() {
 
-  const [start, setStart] = useState(new Date);
-  const [end, setEnd] = useState(new Date);
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(new Date());
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
 
