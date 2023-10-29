@@ -39,7 +39,7 @@ const ImageUploader = () => {
   const [appointments, setAppointments] = useState([]);
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [findQueue,setFindQueue] = useState([])
-  
+  console.log(appointments)
   const [ isEditing, setIsEditing] = useState(false);
 
   console.log(findQueue)
@@ -206,7 +206,7 @@ const myQueue = async ()  => {
         />
       )}
 
-      <HomeClient />
+     {value && <HomeClient  userName={value}   />}
 
 
     </div>

@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Details from './Details';
 
-export default function HomeClient() {
+export default function HomeClient(userName) {
+  console.log(userName.userName.Name)
+  const[user,setUser]=useState([]);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    if (userName.length>0){
+      console.log(userName);
+      setUser(userName)
+    }
+  }, []);
+  
+  console.log(user)
 
   return (
     <>
@@ -23,8 +34,8 @@ export default function HomeClient() {
         </Offcanvas.Header>
         <Offcanvas.Body>
             
-          היי  שירה
-          <Details/>
+         <h3>היי {userName.userName.Name}</h3> 
+          { userName&& < Details user={userName}/>}
         </Offcanvas.Body>
         
       </Offcanvas>

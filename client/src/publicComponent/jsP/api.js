@@ -58,6 +58,7 @@ const findTretmentQueuewithoutDate = async (list, tretment) => {
      console.log(element.DateTime);
 
       const a = new Date(element.DateTime);
+      console.log(a,a.toLocaleString())
      
       newQueue.push({ ...element, "DateTime": a.toLocaleString('en-US', {
         year: 'numeric',

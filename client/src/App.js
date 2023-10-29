@@ -36,7 +36,7 @@ function App() {
     <div className="App">
 
 
-      {/* <H/> */}
+      <H/>
       {/* <GoogleCalendarConnect/> */}
       <Logo />
       <Home />
