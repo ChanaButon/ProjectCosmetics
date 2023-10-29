@@ -206,7 +206,7 @@ const myQueue = async ()  => {
         />
       )}
 
-      <HomeClient />
+     {value && <HomeClient  userName={value}   />}
 
 
     </div>

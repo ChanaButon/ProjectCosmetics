@@ -383,9 +383,7 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
     const isPM = timePart[1].toLowerCase() === 'pm';
     const adjustedHour = isPM && hour !== 12 ? hour + 12 : hour;
   console.log(year)
-=======
     console.log(new Date(year, month - 1, day, adjustedHour, minute))
->>>>>>> 419250266c62ea2825e532451f5359d8e8859de4
     return new Date(year, month - 1, day, adjustedHour, minute);
   };
   // Convert the DateTime in appointmentData to FullCalendar-compatible format

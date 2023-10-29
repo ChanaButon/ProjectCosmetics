@@ -46,6 +46,7 @@ const GoogleAuth = ({ onAuthSuccess }) => {
   };
 
   const handleSignIn = () => {
+    console.log("כניסה")
     window.gapi.auth2.getAuthInstance().signIn();
   };
 
