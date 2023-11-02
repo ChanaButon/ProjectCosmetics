@@ -18,7 +18,7 @@
 .ReactModal__Content {
   position: relative;
   background: #fff; /* White background color */
-  border: 1px solid #ff69b4; /* Pink border color */
+  border: 1px solid #f18ecb; /* Pink border color */
   border-radius: 0; /* Square corners */
   max-width: 400px;
   width: 200px; /* Set the width to 200px (adjust as needed) */
@@ -43,8 +43,8 @@ p {
 
 /* Close button styles */
 button {
-  background: #ff69b4; /* Pink button background color */
-  color: #fff; /* White text color */
+  background: #f18ecb; /* Pink button background color */
+  /* color: #fff; White text color */
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
@@ -54,5 +54,5 @@ button {
 }
 
 button:hover {
-  background: #ff1493; /* Darker pink on hover */
+  background: #f18ecb; /* Darker pink on hover */
 }

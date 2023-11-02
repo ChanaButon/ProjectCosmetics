@@ -35,10 +35,9 @@ function App() {
   return (
     <div className="App">
 
-
+<Logo />
       <H/>
       {/* <GoogleCalendarConnect/> */}
-      <Logo />
       <Home />
       <Outlet />
     </div>

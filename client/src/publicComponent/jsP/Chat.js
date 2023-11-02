@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
-import './style.css';
+import './Chat.css';
+import axios from 'axios';
 // import Calendar from 'react-calendar';
-import { useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
-import { useLocation } from 'react-router-dom';
+import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
+import { redirect, useLocation } from 'react-router-dom';
 // import {  momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Calendar from 'react-calendar';
 import EarliestAvailableTime from "./EarliestAvailableTime";
 import {  addToQueueApi } from "./api"
+import { useNavigate } from 'react-router-dom';
 
 const QuestionButtons = () => {
+  const navigate = useNavigate(); // Use useNavigate for navigation
   const location = useLocation();
   const { userid,filteredTreatm,allTreat,userSend } = location.state || {};
+  console.log(userid,filteredTreatm,allTreat,userSend)
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const [selectedAppointmentTime, setSelectedAppointmentTime] = useState(null);
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -27,8 +31,44 @@ const QuestionButtons = () => {
   const [deatailUserList, setDeatailUserList] = useState([]);
   const [addToQueue, setAddToQueue] = useState(false);
 
+  const session = useSession();
   const supabase = useSupabaseClient();
   const { isLoading } = useSessionContext();
+
+ 
+  async function createCalendarEvent(date) {
+    const initialDate = new Date(date.toISOString());
+    // Adding 30 minutes
+    initialDate.setMinutes(initialDate.getMinutes() + filteredTreatm.TreatmantTime);
+    const newDate = initialDate.toISOString(); // Formatted as ISO string ('YYYY-MM-DDTHH:MM:SS.SSSZ')
+    console.log(newDate);
+
+    const event = {
+      "summary": filteredTreatm.TreatmantName,
+      // "description": eventDescription,
+      "start": {
+        "dateTime": date.toISOString(),
+        "timeZone": Intl.DateTimeFormat().resolvedOptions().timeZone
+      },
+      "end": {
+        "dateTime":newDate,
+        "timeZone": Intl.DateTimeFormat().resolvedOptions().timeZone
+      }
+    }
+    console.log(event)
+    try {
+      await axios.post("https://www.googleapis.com/calendar/v3/calendars/primary/events", event, {
+        headers: {
+          'Authorization': `Bearer ${session.provider_token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      // console.log(data);
+      alert("Event created! Check your Google Calendar.");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
    // Calculate the date two weeks from now
  const twoWeeksFromNow = new Date();
@@ -102,8 +142,7 @@ const QuestionButtons = () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        scopes: 'https://www.googleapis.com/auth/calendar'
-      }
+        scopes: 'https://www.googleapis.com/auth/calendar'      }
     });
 
     if (error) {
@@ -116,17 +155,16 @@ const QuestionButtons = () => {
     if (isDateSelected && selectedTimeOfDay === null) {
     return (
         <div className="chat-body">
-          <h3>Select a time:</h3>
-          <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("morning")}>Morning</button>
-          <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("noon")}>Noon</button>
-          <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("evening")}>Evening</button>
+          <h3>:בחירת זמן ביום</h3>
+          <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("morning")}>בוקר</button>
+          <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("noon")}>צהריים</button>
+          <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("evening")}>ערב</button>
         </div>
       );
     } else if (isDateSelected && selectedTimeOfDay !== null) {
       return (
         <div className="chat-body">
-          <h3>Selected Time of Day: {selectedTimeOfDay}</h3>
-          <h3>Earliest Available Time: </h3>
+          <h3>:שעה זמינה  </h3>
         </div>
       );
     } else {
@@ -149,13 +187,16 @@ const QuestionButtons = () => {
     const date = selectedDate; 
     date.setHours(hour); 
     date.setMinutes(minute)
-    console.log(date);
+    
     try {
+      console.log("ftgyhjk")
       const message = await addToQueueApi(date,filteredTreatm,userSend._id,deatailUserList._id);
       console.log(message); // Handle the success message (e.g., show a success notification to the user)
     } catch (error) {
       console.error('Error adding user to the queue:', error); // Handle errors (e.g., show an error message to the user)
     }
+    createCalendarEvent(date)
+
   }
   };
   
@@ -204,7 +245,7 @@ const QuestionButtons = () => {
   
   return (
     <div style={{ display: "inline-flex", flexDirection: "column" }}>
-    <button onClick={googleSignIn}>Sign In</button>
+    {/* <button onClick={createCalendarEvent}>Sign In</button> */}
     <div className="chat-container">
       <div className="chat-header ">
         <h2>CHAT</h2>

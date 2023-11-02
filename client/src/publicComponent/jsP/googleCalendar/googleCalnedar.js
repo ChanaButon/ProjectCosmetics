@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import DateTimePicker from 'react-datetime-picker';
 import axios from 'axios';
 import './Calnedar.css';
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
-
-
+import {FcGoogle} from 'react-icons/fc'
  function H() {
 
   const [start, setStart] = useState(new Date());
@@ -20,19 +18,34 @@ import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth
     return <></>
   }
 
-   async function googleSignIn() {
+  // if (session) {
+
+  // }
+
+  async function googleSignIn() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         scopes: 'https://www.googleapis.com/auth/calendar'
       }
     });
-
+  
     if (error) {
-      alert("error");
+      alert("Error occurred while signing in");
       console.log(error);
+    } else {
+      // Subscribe to authentication state changes
+      const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          alert(`Hey ${session.user.email}`);
+  
+          // Unsubscribe from the listener after showing the alert
+          listener.unsubscribe();
+        }
+      });
     }
   }
+  
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -52,6 +65,7 @@ import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth
         "timeZone": Intl.DateTimeFormat().resolvedOptions().timeZone
       }
     }
+    console.log(event)
 
     try {
       await axios.post("https://www.googleapis.com/calendar/v3/calendars/primary/events", event, {
@@ -66,36 +80,19 @@ import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth
       console.log(error);
     }
   }
-
   return (
-    <div>
-      <div style={{ width: "800px", margin: "100px auto" }}>
-        {session ? (
-          <>
-            <h2>Hey {session.user.email}</h2>
-            <p>Start of your event</p>
-            <DateTimePicker onChange={setStart} value={start} />
-{/*             
-            <DateTimePicker
-              onChange={setStart}
-              value={start}
-              className="custom-datetime-picker"
-              hourClassName="custom-hour"
-            /> */}
-
-            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-            <p>End of your event</p>
-            <DateTimePicker onChange={setEnd} value={end} size={200}/>
-            <p>Event Name</p>
-            <input type="text" onChange={(e) => setEventName(e.target.value) } />
-            <p>Event Description</p>
-            <input type="text" onChange={(e) => setEventDescription(e.target.value)} />
-            <hr />
-            <button onClick={createCalendarEvent}>Create Calendar Event</button>
-            <button onClick={signOut}>Sign Out</button>
-          </>
+    <div className="main-container">
+      <div className="gsi-material-button">
+      {session ? (
+        <button onClick={signOut} className='googlebutton'>
+          <FcGoogle onClick={signOut} title='Google Sign Out' />
+          <span>oogle Sign Out</span></button>
         ) : (
-          <button onClick={googleSignIn}>Sign In</button>
+          <>
+          <button onClick={googleSignIn} className='googlebutton'>
+            <FcGoogle  title='Google Sign In' />
+            <span>oogle Sign In</span></button>
+          </>
         )}
       </div>
     </div>
