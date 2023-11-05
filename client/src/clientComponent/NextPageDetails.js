@@ -25,6 +25,7 @@ export default function NextPageDetails() {
   // console.log(tretmentType)
 
   const checkIf12HoursPassed = (dateTimeString) => {
+    console.log(dateTimeString)
     const currentDate = new Date();
   
     // Parse the target date string to a JavaScript Date object

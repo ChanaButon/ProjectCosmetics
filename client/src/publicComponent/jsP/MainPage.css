@@ -1,36 +1,35 @@
 /* CSS for the appointment list */
-.appointment-container {
+.container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
 }
 
-
-.user-details {
+.userDetail {
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 20px;
   width: 300px;
 }
 
-.user-details h3 {
+.userDetail h3 {
   margin-bottom: 10px;
-  color: #f08d8d;
+  color: #333;
   font-size: 20px;
 }
 
-.treatment-detail {
+.treatmentDetail {
   margin-left: 15px;
   font-size: 16px;
 }
 
-.treatment-list {
+.custom-list {
   list-style: none;
   padding: 0;
 }
 
-.treatment-list li {
+.custom-list li {
   cursor: pointer;
   padding: 8px;
   margin: 5px 0;
@@ -40,7 +39,7 @@
 }
 
 .custom-list li:hover {
-  background-color: #e0e0e0;
+  background-color: #f7f4f4;
 }
 
 .queue {
@@ -52,7 +51,7 @@
   font-size: 24px;
 }
 
-.user-queue {
+.userQueue {
   padding: 15px;
   margin: 10px 0;
   background-color: #f3eaea;
@@ -60,16 +59,16 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.user-queue h1 {
+.userQueue h1 {
   margin: 0;
   font-size: 18px;
 }
 
-.queue-button {
+.button1 {
   padding: 8px 16px;
   border: none;
   border-radius: 4px;
-  background-color: #d64d4d;
+  background-color: #f18ecb;
   color: white;
   font-size: 14px;
   cursor: pointer;
@@ -77,16 +76,7 @@
 }
 
 .button1:hover {
-  background-color: #f08d8d; /* Change to your desired hover color */
-}
-
-/* CSS for the appointment list */
-.appointment-container {
-  display: flex;
-  flex-direction: column; /* Display children elements in a column */
-  align-items: flex-start; /* Align children elements to the start (left side) */
-  gap: 20px;
-  padding: 20px; /* Add padding as needed */
+  background-color: #efdcdc; /* Change to your desired hover color */
 }
 
 .bootonBusnse{

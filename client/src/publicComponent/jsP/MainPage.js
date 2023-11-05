@@ -219,36 +219,36 @@
 
           };
 
-          const findTretmentQueue = async () =>{
-            console.log(myQueue)
-            let flattenedObject = []
-            const userQueue = []
-            myQueue.map(element=>{
-                // console.log(myQueue)
-                // console.log(tretment)
-                const treatfind = tretment.find(a=>a.id._id===element.TreatmantType)
-              // console.log(treatfind)
-                if (treatfind) {
-                  flattenedObject = {
-                    _id: treatfind.id._id,
-                    TreatmantName: treatfind.id.TreatmantName,
-                    Price: treatfind.id.Price,
-                    TreatmantTime: treatfind.id.TreatmantTime
-                  };
-        
-                }
-                // console.log({ ...element, "TreatmantType": flattenedObject })
-                if(new Date(element.DateTime) > currentDate){
-                  // console.log()
-                  const a = new Date(element.DateTime)
-                // console.log({ ...element,"DateTime1":a.toLocaleString(), "TreatmantType": flattenedObject })
-                // console.log(a.getHours()+3,a.getMinutes())
-                userQueue.push({ ...element,"DateTime":a.toLocaleString(), "TreatmantType": flattenedObject })
-                }
-              })
-              console.log(userQueue)
-              setFinQueue(userQueue)
-              console.log(finQueue)
+        const findTretmentQueue = async () =>{
+          console.log(myQueue)
+          let flattenedObject = []
+          const userQueue = []
+          myQueue.map(element=>{
+              // console.log(myQueue)
+              // console.log(tretment)
+              const treatfind = tretment.find(a=>a.id._id===element.TreatmantType)
+             // console.log(treatfind)
+              if (treatfind) {
+                flattenedObject = {
+                  _id: treatfind.id._id,
+                  TreatmantName: treatfind.id.TreatmantName,
+                  Price: treatfind.id.Price,
+                  TreatmantTime: treatfind.id.TreatmantTime
+                };
+      
+              }
+              // console.log({ ...element, "TreatmantType": flattenedObject })
+              if(new Date(element.DateTime) > currentDate){
+                // console.log()
+                const a = new Date(element.DateTime)
+               // console.log({ ...element,"DateTime1":a.toLocaleString(), "TreatmantType": flattenedObject })
+               // console.log(a.getHours()+3,a.getMinutes())
+              userQueue.push({ ...element,"DateTime":a.toLocaleString(), "TreatmantType": flattenedObject })
+              }
+            })
+            console.log(userQueue)
+            setFinQueue(userQueue)
+            console.log(finQueue)
 
           }
         const findUserType = async () => {
@@ -295,19 +295,19 @@
     }
       }, [userData]);
 
-      useEffect(() => {
-    // ... (your existing code)
-    console.log(userType)
+    useEffect(() => {
+  // ... (your existing code)
+  console.log(userType)
 
 
-    if (userType && userType.userNameType === 'business') {
-      setVisible(true); // If userus type is 'business', set visible to true
-    }
-    else{
-      setVisible(false)
+  if (userType && userType.userNameType === 'business') {
+    setVisible(true); // If userus type is 'business', set visible to true
+  }
+  else{
+    setVisible(false)
 
-    }
-  }, [userType]);      
+  }
+}, [userType]);      
 
 
     useEffect(() => {
@@ -335,50 +335,48 @@
     }
 
 
-    return (
-      <div>
-        {userType && userType.userNameType === 'business' && (
-          <button className='business-button' onClick={() => OwnerPage()}>
-            מעבר לדף העיסקי
-          </button>
-        )}
-              <h4 className='h4Queue'>:לקביעת תורים</h4>
-<div className="appointment-container">
-          <h1> :לקביעת תור חדש</h1>
-          {finData &&
-            finData.map((user) => (
-              <div className="user-details" key={user._id}>
-                <ul className="treatment-list">
-                  <h3>{user.Name}</h3>
-                  {user.TreatmantID &&
-                    user.TreatmantID.map((filteredTreatm) => (
-                      <div className="treatment-detail" key={filteredTreatm._id}>
-                        <li onClick={() => Chat(user._id, filteredTreatm, user.TreatmantID, userSend.user)}>
-                          {filteredTreatm.TreatmantName}
-                        </li>
-                      </div>
-                    ))}
-                </ul>
-              </div>
-            ))}
-          {visible && (
-            <div className="queue">
-              <h1>:התורים הקרובים שלך</h1>
-              {finQueue &&
-                finQueue.map((element) => (
-                  <div className="user-queue" key={element._id}>
-                    <h1>{element.DateTime}-{element.TreatmantType.TreatmantName}</h1>
-                    <button onClick={() => nextPageDetails(element)} className="queue-button">
-                      לשינוי/ביטול תור
-                    </button>
-                  </div>
-                ))}
-            </div>
-          )}
+return(
+  <div>
+    
+    {userType && userType.userNameType === 'business' && (
+        <button className='bootonBusnse' onClick={() => OwnerPage()}>
+          מעבר לדף העיסקי
+        </button>
+      )}
+      <h4 className='h4Queue'>:לקביעת תורים</h4>
+<div className="container">
+{finData &&
+  finData.map((user) => (
+    <div className="userDetail" key={user._id}>
+      <ul className="custom-list">
+      <h3 >{user.Name}</h3>
+      {user.TreatmantID && user.TreatmantID.map((filteredTreatm) => (
+        <div className="tretmentDetail" key={filteredTreatm._id}>
+          <li onClick={() => Chat(user._id,filteredTreatm,user.TreatmantID,userSend.user)}>{filteredTreatm.TreatmantName}</li>
         </div>
-      </div>
-    );
-                }
+        
+      ))}
+      </ul>
+    </div>
+  ))}
+ {visible && (
+  <div className="queue">
+    <h1>:התורים הקרובים שלך</h1>
+    {finQueue &&
+      finQueue.map((element) => (
+        <div className="userQueue" key = {element._id}>
+          <h1>{element.DateTime}-{element.TreatmantType.TreatmantName}</h1>
+          <button onClick={ () =>nextPageDetails(element)} className="button1">
+      לשינוי/ביטול תור
+    </button>
+        </div>
+      ))}
+    
+    
+  </div>)}
+</div>
+</div>)
+};
 
 
   export default  ListExampleCelled
