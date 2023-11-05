@@ -243,12 +243,15 @@
                 const a = new Date(element.DateTime)
                // console.log({ ...element,"DateTime1":a.toLocaleString(), "TreatmantType": flattenedObject })
                // console.log(a.getHours()+3,a.getMinutes())
-              userQueue.push({ ...element,"DateTime":a.toLocaleString(), "TreatmantType": flattenedObject })
+               const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+              userQueue.push({ ...element,"DateTime":a.toLocaleString('en-GB', options), "TreatmantType": flattenedObject })
               }
             })
             console.log(userQueue)
             setFinQueue(userQueue)
             console.log(finQueue)
+            if(finQueue.length>0){
+            setVisible(true)}
 
           }
         const findUserType = async () => {
@@ -295,19 +298,19 @@
     }
       }, [userData]);
 
-    useEffect(() => {
-  // ... (your existing code)
-  console.log(userType)
+//     useEffect(() => {
+//   // ... (your existing code)
+//   console.log(userType)
 
 
-  if (userType && userType.userNameType === 'business') {
-    setVisible(true); // If userus type is 'business', set visible to true
-  }
-  else{
-    setVisible(false)
+//   if (userType && userType.userNameType === 'business') {
+//     setVisible(true); // If userus type is 'business', set visible to true
+//   }
+//   else{
+//     setVisible(false)
 
-  }
-}, [userType]);      
+//   }
+// }, [userType]);      
 
 
     useEffect(() => {

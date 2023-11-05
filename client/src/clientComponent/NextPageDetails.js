@@ -4,7 +4,7 @@ import React ,{ useEffect, useState } from 'react'
 import axios from 'axios' 
 import { useNavigate } from 'react-router-dom';
 import { parse } from 'date-fns';
-
+import moment from 'moment';
 
 
 export default function NextPageDetails() {
@@ -25,11 +25,9 @@ export default function NextPageDetails() {
  
   // console.log(tretmentType)
   const parseDateString = (dateTimeString) => {
-    // Parse the date string into a Date object using date-fns
-    const date = parse(dateTimeString, 'dd/MM/yyyy, HH:mm:ss', new Date());
-    return date;
+    const parsedDate = moment(dateTimeString, 'DD/MM/YYYY, HH:mm:ss').toDate();
+    return parsedDate;
   };
-
 
 
   const checkIf12HoursPassed = (dateTimeString) => {
