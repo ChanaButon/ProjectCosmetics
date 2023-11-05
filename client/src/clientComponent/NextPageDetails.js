@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import React ,{ useEffect, useState } from 'react'
 import axios from 'axios' 
 import { useNavigate } from 'react-router-dom';
+import { parse } from 'date-fns';
 
 
 
@@ -23,26 +24,29 @@ export default function NextPageDetails() {
   const tretmentType=element.TreatmantType
  
   // console.log(tretmentType)
+  const parseDateString = (dateTimeString) => {
+    // Parse the date string into a Date object using date-fns
+    const date = parse(dateTimeString, 'dd/MM/yyyy, HH:mm:ss', new Date());
+    return date;
+  };
+
+
 
   const checkIf12HoursPassed = (dateTimeString) => {
-    console.log(dateTimeString)
     const currentDate = new Date();
-  
-    const [dateStr, timeStr] = dateTimeString.split(", ");
-    const [day, month, year] = dateStr.split("/");
-    const [hours, minutes, seconds] = timeStr.split(":");
-    const targetDateObject = new Date(year, month - 1, day, hours, minutes, seconds);
-    
-    console.log(targetDateObject)
+    // const targetDateObject = new Date(dateTimeString);
+    const parsedDate = parseDateString(dateTimeString);
+    console.log(parsedDate)
     // Calculate the time difference in milliseconds
-    const timeDifference = targetDateObject - currentDate;
-    
+    const timeDifference = parsedDate - currentDate;
+  
     // Convert milliseconds to hours
     const hoursDifference = timeDifference / (1000 * 60 * 60);
-    
+  
     // Check if the difference is greater than 12 hours
     return hoursDifference > 12;
   };
+  
 
   const Chat = () => {
         
