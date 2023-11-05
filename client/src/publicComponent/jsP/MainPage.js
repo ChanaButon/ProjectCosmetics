@@ -342,7 +342,8 @@
             מעבר לדף העיסקי
           </button>
         )}
-        <div className="appointment-container">
+              <h4 className='h4Queue'>:לקביעת תורים</h4>
+<div className="appointment-container">
           <h1> :לקביעת תור חדש</h1>
           {finData &&
             finData.map((user) => (
