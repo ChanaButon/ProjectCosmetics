@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom';
 import {findTretmentQueuewithoutDate,findCustomerQueue} from '../publicComponent/jsP/api.js';
 import axios from 'axios';
 import SchedulingCalendar from "../publicComponent/jsP/tryCalendar"
+import "./OwnerPage.css"
 
 
 const dummyAppointments = [
@@ -174,8 +175,8 @@ const myQueue = async ()  => {
 
 
   return (
-    <div>
-      <h1> ברוכים הבאים {value.Name} </h1>
+    <div className="image-uploader-container">
+      <h1 className="page-title"> ברוכים הבאים {value.Name} </h1>
       {appointments&&  <SchedulingCalendar appointmentData={appointments}/>}
     
       {/* <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/> */}

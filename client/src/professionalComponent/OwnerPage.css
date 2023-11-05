@@ -1,0 +1,86 @@
+/* Reset some default styles */
+body, h1, h2, h3, p, ul, li, button {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f0f2; /* Light pink background */
+    color: #333;
+  }
+  
+  .image-uploader-container {
+    background-color: #fff;
+    padding: 30px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .page-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ff66a1; /* Dark pink color for the title */
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 20px;
+  }
+  
+  button {
+    background-color: #ff66a1;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #e64a87; /* Lighter pink on hover */
+  }
+  
+  input[type="file"] {
+    margin-top: 20px;
+  }
+  
+  /* Styling for the calendar */
+  .react-calendar {
+    max-width: 300px; /* Set the maximum width for the calendar */
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .react-calendar__tile--active {
+    background-color: #ff66a1; /* Dark pink for active calendar dates */
+    color: #fff;
+  }
+  
+  /* Additional styles can be added or modified based on your preferences */
+/* Styling for the calendar */
+.react-calendar {
+    max-width: 250px; /* Set the maximum width for the calendar */
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px; /* Set the font size of the calendar */
+  }
+  
+  .react-calendar__tile {
+    padding: 8px; /* Adjust the padding of calendar tiles */
+  }
+  
+  .react-calendar__tile--active {
+    background-color: #ff66a1; /* Dark pink for active calendar dates */
+    color: #fff;
+  }
+  
