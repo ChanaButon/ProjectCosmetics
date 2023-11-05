@@ -28,9 +28,12 @@ export default function NextPageDetails() {
     console.log(dateTimeString)
     const currentDate = new Date();
   
-    // Parse the target date string to a JavaScript Date object
-    const targetDateObject = new Date(dateTimeString);
+    const [dateStr, timeStr] = dateTimeString.split(", ");
+    const [day, month, year] = dateStr.split("/");
+    const [hours, minutes, seconds] = timeStr.split(":");
+    const targetDateObject = new Date(year, month - 1, day, hours, minutes, seconds);
     
+    console.log(targetDateObject)
     // Calculate the time difference in milliseconds
     const timeDifference = targetDateObject - currentDate;
     
@@ -75,6 +78,9 @@ export default function NextPageDetails() {
     } 
      else {
       console.log('Less than 12 hours have passed since the given time.');
+      alert('אי אפשר למחוק את התור כיוון שיש פחות מ - 12 שעות עד התור');
+      setIsDetailsVisible(true); // Set back the visibility in case of an error
+  
     }
 
     
