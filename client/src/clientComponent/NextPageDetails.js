@@ -25,8 +25,9 @@ export default function NextPageDetails() {
  
   // console.log(tretmentType)
   const parseDateString = (dateTimeString) => {
+     console.log(dateTimeString)
     // Parse the date string into a Date object using date-fns
-    const date = parse(dateTimeString, 'dd/MM/yyyy, HH:mm:ss', new Date());
+    const date = parse(dateTimeString, 'MM/dd/yyyy, HH:mm:ss', new Date());
     return date;
   };
 
