@@ -3,9 +3,8 @@ import { useLocation } from 'react-router-dom';
 import React ,{ useEffect, useState } from 'react'
 import axios from 'axios' 
 import { useNavigate } from 'react-router-dom';
-import { parse } from 'date-fns';
 import moment from 'moment';
-
+import './NextPageDetail.css'
 
 export default function NextPageDetails() {
 
@@ -104,13 +103,13 @@ export default function NextPageDetails() {
           <h2>{element.TreatmantType.Price}: מחיר טיפול</h2>
           <h2>{element.TreatmantType.TreatmantTime}: זמן טיפול</h2>
           <h2>{element.DateTime}: שעה ותאריך</h2>
-          <button  onClick={() =>Chat()} className="buttonChenge">שינוי תור</button>
-          <button onClick={deleteQueue} className="buttonDelete">ביטול תור</button>
+          {/* <button onClick={() => Chat()} className="buttonChenge">שינוי תור</button> */}
+<button onClick={deleteQueue} className="buttonDelete">ביטול תור</button>
         </>
       ): (
         <div>
           <h1>פרטי התור בוטלו</h1>
-          <button  onClick={() =>Chat()}   className="scheduleButton">לקביעת תור חדש</button>
+          <button onClick={() => Chat()} className="scheduleButton">לקביעת תור חדש</button>
         </div>
       )}
     
