@@ -249,6 +249,9 @@ const  ListExampleCelled = () => {
             console.log(userQueue)
             setFinQueue(userQueue)
             console.log(finQueue)
+            if(finQueue.length>0){
+              setVisible(true)
+            }
 
         }
       const findUserType = async () => {
@@ -295,19 +298,7 @@ const  ListExampleCelled = () => {
   }
     }, [userData]);
 
-    useEffect(() => {
-  // ... (your existing code)
-  console.log(userType)
-
-
-  if (userType && userType.userNameType === 'business') {
-    setVisible(true); // If userus type is 'business', set visible to true
-  }
-  else{
-    setVisible(false)
-
-  }
-}, [userType]);      
+  
 
 
    useEffect(() => {
@@ -362,7 +353,7 @@ return(
  {visible && (
   <div className="queue">
     <h1>:התורים הקרובים שלך</h1>
-    {finQueue &&
+    {finQueue.length>0 &&
       finQueue.map((element) => (
         <div className="userQueue" key = {element._id}>
           <h1>{element.DateTime}-{element.TreatmantType.TreatmantName}</h1>

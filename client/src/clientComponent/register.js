@@ -30,10 +30,9 @@ const Register = (props) => {
     password: false,
     mail: false,
     phone: false,
-    isChecked: false,
   });
-  // const [checkboxError, setCheckboxError] = useState(false);
-  // const [isChecked, setIsChecked] = useState(false);
+  const [checkboxError, setCheckboxError] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
  // const [isPageOpen, setIsPageOpen] = useState(true);
 
   
@@ -41,23 +40,22 @@ const Register = (props) => {
     navigate('/'); // Navigate to the main page
   };
 
-  // if (nextPage1 == true) {
+  if (nextPage1 == true) {
 
-  //   navigate("/MainPage")
-  // }
+    navigate("/MainPage")
+  }
 
 
 
   const checkUser = () => {
-    setFormErrors({
-      name: !nameRef.current.value,
+    
+    setFormErrors({name: !nameRef.current.value,
       familyName: !FamilyNameRef.current.value,
       ID: !isValidId(IDRef.current.value),
       password: !passwordRef.current.value,
       mail: !isValidEmail(MailRef.current.value),
       phone: !isValidPhoneNumber(PhoneRef.current.value),
-      isChecked: !formErrors.isChecked,
-    });
+  });
     console.log(formErrors)
 
   
@@ -66,27 +64,30 @@ const Register = (props) => {
     }
  
 
-    if (!formErrors.isChecked) {
-      setFormErrors({ ...formErrors, isChecked: true });
-      return;
-    }
+  if (!isChecked) {
+    setCheckboxError(true); // Set checkbox error to true
+    return;
+  }
     //שליחת הנתונים להוספה לנוד - משתמש חדש כולל כל הנתונים 
-    const user = {
+    let user = {
       Name: nameRef.current.value,
-      FamilyName: FamilyNameRef.current.value,
-      ID: IDRef.current.value,
+      FamilyName:FamilyNameRef.current.value,
+      ID:IDRef.current.value,
       Password: passwordRef.current.value,
-      Mail: MailRef.current.value,
-      Phone: PhoneRef.current.value,
-      Type: 'client',
-    };
+      Mail:MailRef.current.value,
+      Phone:PhoneRef.current.value,
+      Type: "client",
+      
+
+    }
 
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser', user).then((res) => {
       if (res.data) {
-        //עדכון לסטור
+        const userSend = {"user":res.data}
+        console.log(userSend)
         dispatch(setUser(res.data.newUser))
-        navigate("/MainPage")
+        navigate("/MainPage",{state:{userSend}})
       }
     }).catch((err) => {
       console.log(err);
@@ -124,7 +125,7 @@ const Register = (props) => {
       :תעודת זהות
     </label>
     <br/>
-    <input ref={IDRef}  placeholder='ID' id="lastNameInput" className={`aaa bbb ${formErrors.ID ? 'error' : ''}`}  type="Number" />
+    <input ref={IDRef}  placeholder='ID' id="lastNameInput" className={`aaa bbb ${formErrors.ID ? 'error' : ''}`}   />
     {formErrors.ID && <span className="error-text">ת"ז לא תקינה ,הקש שוב</span>}
   </div>
 {/* <br/> */}
@@ -156,11 +157,8 @@ const Register = (props) => {
 </div>
 
       
-        <Form.Checkbox inline label='אני מאשר/ת את תנאי האתר'  checked={formErrors.isChecked} onChange={() =>
-            setFormErrors({ ...formErrors, isChecked: !formErrors.isChecked })}/>
-       {!formErrors.isChecked && (
-          <span className="error-text">יש לאשר את תנאי האתר</span>
-        )}
+        <Form.Checkbox inline label='אני מאשר/ת את תנאי האתר'  checked={isChecked} onChange={() => { setIsChecked(!isChecked); setCheckboxError(false);  }}/>
+        {checkboxError && <span className="error-text">יש לאשר את תנאי האתר</span>}
         <Button onClick={checkUser} color='pink'>Submit</Button>
       
 
