@@ -11,6 +11,7 @@ export default function NextPageDetails() {
   
   const location = useLocation();
   const { element } = location.state || {};
+  console.log(element)
   const [visible, setVisible] = useState(true);
   const navigate=useNavigate();
 
@@ -49,8 +50,25 @@ export default function NextPageDetails() {
   
 
   const Chat = () => {
-        
-    navigate("/SignUp/MainPage/Chat")
+    console.log(element)
+    axios.get(`http://localhost:3321/User/findUserById/${element.Customer}`).then((res) => {
+      console.log(res.data);
+      const userSend = {"user":res.data.id};
+      if (res.data.status === false) {
+
+        alert("not found")
+      }
+      else {
+
+        //עדכון לסטור
+        console.log(userSend)
+        navigate("/SignUp/MainPage",{state:{userSend}});
+      }
+    }
+  ).catch ((err) => {
+    console.log(err);
+    alert("אירעה שגיאה")
+  })
     setVisible(false)
   }
 
