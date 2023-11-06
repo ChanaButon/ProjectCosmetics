@@ -134,6 +134,7 @@ let product = {
   QueueList:[],
   
 }
+alert("העסק נוסף בהצלחה")
 console.log(product);
 
 
