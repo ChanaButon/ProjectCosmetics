@@ -177,7 +177,7 @@ const myQueue = async ()  => {
   return (
     <div className="image-uploader-container">
       <h1 className="page-title"> ברוכים הבאים {value.Name} </h1>
-      {appointments&&  <SchedulingCalendar appointmentData={appointments}/>}
+      {appointments &&  <SchedulingCalendar appointmentData={appointments}/>}
     
       {/* <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/> */}
       {/* <h2>Appointments for {selectedDate.toDateString()}:</h2> */}

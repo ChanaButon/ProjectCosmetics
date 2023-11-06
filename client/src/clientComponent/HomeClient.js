@@ -22,10 +22,10 @@ export default function HomeClient(userName) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" >
         הגדרות
       </Button>
-
+      onClick={handleShow}
       <Offcanvas show={show} onHide={handleClose} backdrop="static">
         
         <Offcanvas.Header closeButton>

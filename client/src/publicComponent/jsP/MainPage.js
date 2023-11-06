@@ -370,7 +370,7 @@ return(
         <div className="userQueue" key = {element._id}>
           <h1>{element.DateTime}-{element.TreatmantType.TreatmantName}</h1>
           <button onClick={ () =>nextPageDetails(element)} className="button1">
-      לשינוי/ביטול תור
+      לביטול התור
     </button>
         </div>
       ))}

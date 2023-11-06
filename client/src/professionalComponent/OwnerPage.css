@@ -4,11 +4,7 @@ body, h1, h2, h3, p, ul, li, button {
     padding: 0;
   }
   
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f0f2; /* Light pink background */
-    color: #333;
-  }
+  
   
   .image-uploader-container {
     background-color: #fff;
@@ -36,7 +32,7 @@ body, h1, h2, h3, p, ul, li, button {
   
   button {
     background-color: #ff66a1;
-    color: #fff;
+    /* color: #fff; */
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
@@ -68,7 +64,7 @@ body, h1, h2, h3, p, ul, li, button {
   /* Additional styles can be added or modified based on your preferences */
 /* Styling for the calendar */
 .react-calendar {
-    max-width: 250px; /* Set the maximum width for the calendar */
+    max-width: 400px; /* Set the maximum width for the calendar */
     margin-top: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

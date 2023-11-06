@@ -35,14 +35,34 @@
   margin: 10px;
   padding: 10px;
   border-radius: 5px;
+  background-color: #f18ecb;
   cursor: pointer;
-  background-color: #f3eaea;
   margin-left: auto; /* Pushes the element to the right */
 }
 
+.addQueue {
+  border: none; /* Remove border */
+  color: white; /* White text */
+  text-align: center; /* Center text */
+  text-decoration: none;
+  display: block; /* Change display to block to make the button display as a block element */
+  font-size: 16px;
+  margin: 10px auto; /* Margin to position the button */
+  cursor: pointer;
+  padding: 10px 20px; /* Padding around the text */
+  border-radius: 8px; /* Rounded border */
+  transition-duration: 0.4s;
+}
+
+.addQueue:hover {
+  color: white;
+}
+
+
 
 .message-bubble :hover{
-  background-color: #f18ecb;
+  background-color: #f3eaea;
+
 }
 
 .calendar-container {

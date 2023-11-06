@@ -64,10 +64,10 @@ const QuestionButtons = () => {
         }
       });
       // console.log(data);
-      alert("Event created! Check your Google Calendar.");
+      alert('התור נקבע ב ' + date + ' ב Google Calendar. התור התווסף בהצלחה.');
     } catch (error) {
       console.log(error);
-    }
+      alert(  date+"התור נקבע ב " +"Google Calrndar"+ 'התור לא התווסף ל')   }
   }
 
    // Calculate the date two weeks from now
@@ -256,7 +256,7 @@ const QuestionButtons = () => {
         
           )}
            {isDateSelected && selectedTimeOfDay !== null && (
-            <button onClick={handleAddToQueueClick}>הוסף תור</button>)}
+            <button className="addQueue" onClick={handleAddToQueueClick}>הוסף תור</button>)}
 
     </div>
   </div>
