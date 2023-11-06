@@ -1,59 +1,66 @@
-import React, {  useState } from "react";
-import { useNavigate } from 'react-router-dom'
-// import { Navigate } from 'react-router-dom'
-// import Login from '../../professionalComponent/Login'
-// import Entrance from './Entrance'
-// import axios from './axios'
- import './Home.css'
-
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isVisible, setIsVisible] = useState(true);
 
-  const [visible, setVisible] = useState(true);
-  const navigate=useNavigate()
+  // Check if the current route is the home page
+  const isHomePage = location.pathname === "/";
+
+  useEffect(() => {
+    // If the current route is the home page, refresh the component
+    if (isHomePage) {
+      setIsVisible(true);
+    }
+  }, [location.pathname]);
+
+  const handleNavigate = (route) => {
+    setIsVisible(false);
+    navigate(route);
+  };
+
   const loginCliant = () => {
-       
-    navigate("register")
-    setVisible(false)
-
-  }
+    navigate("register");
+    setIsVisible(false);
+  };
 
   const loginOwner = () => {
-        
-    navigate("Login")
-    setVisible(false)
+    navigate("Login");
+    setIsVisible(false);
+  };
 
+  const signUp = () => {
+    navigate("SignUp");
+    setIsVisible(false);
+  };
 
-    }
+  // Hide the home page if the current route is not the home page
+  if (!isHomePage) {
+    return null;
+  }
 
-    const signUp = () => {
-        
-      navigate("SignUp")
-      setVisible(false)
-  
-  
-      }
-
- 
   return (
     <>
-       {visible ? <div>      
-        <h1 className="fff">?פעם ראשונה שלך כאן </h1>
-        <button onClick={loginCliant} className="button1">לחץ להרשמה</button>
+      {isVisible ? (
+        <div>
+          <h1 className="fff">?פעם ראשונה שלך כאן </h1>
+          <button onClick={loginCliant} className="button1">
+            לחץ להרשמה
+          </button>
 
-        {/* <button className="myButton">Scroll to Top</button> */}
+          <h1 className="fff">בעל עסק חדש כאן </h1>
+          <button onClick={loginOwner} className="button1">
+            לחץ להרשמה
+          </button>
 
-        <h1 className="fff">בעל עסק חדש כאן </h1>
-        <button onClick={loginOwner} className="button1">לחץ להרשמה</button>
-        
-        
-        <h1 className="fff">לכניסה למערכת </h1>
-        <button onClick={signUp} className="button1">לחץ להתחברות</button>
-
-        </div> : <div />}
-
+          <h1 className="fff">לכניסה למערכת </h1>
+          <button onClick={signUp} className="button1">
+            לחץ להתחברות
+          </button>
+        </div>
+      ) : null}
     </>
-  )
+  );
 }
-
-

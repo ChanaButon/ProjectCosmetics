@@ -178,7 +178,7 @@ axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
 
   return (
     <div className="component-container">
-    <h1 className="title">ברוכה הבאה {product.Name}</h1>
+    <h1 className="title1">ברוכה הבאה {product.Name}</h1>
     <h2 className="subtitle">הקש מחירון לכל התמחות:</h2>
     <ul className="treatments-list">
       {product.TreatmantName && product.TreatmantName.length > 0 ? (
