@@ -176,110 +176,109 @@ axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
   
 
   return (
-    <div>
-      <h1>  ברוכה הבאה {product.Name}</h1>
-      <h2>הקש מחירון לכל התמחות:</h2>
-      {<ul>
-        {product.TreatmantName && product.TreatmantName.length > 0 ? (
-          product.TreatmantName.map((treatment, index) => (
-            <li key={index}>
-              {treatment}
-              <input
-                type="text"
-                placeholder="Enter Price"
-                onChange={(e) => handlePriceChange(treatment, e.target.value)}
-                //value={treatmantList[treatment] || ''}
-              />
-              <input
-                type="text"
-                placeholder="זמן טיפול"
-                onChange={(e) => handleTimeChange(treatment, e.target.value)}
-                //value={treatmentTime[treatment] || ''}
-              />
-              
-            </li>
-          ))
-        ) : (
-          <p>No treatments selected.</p>
-        )}
-      </ul> }
-      <h2>תיאור העסק</h2>
-      <textarea
-       placeholder="BusinessDescription" value={businessDescription} onChange={(e) => setBusinessDescription(e.target.value)} />
-
-{/* Display the business description */}
-{/* <p>{businessDescription}</p> */}
-      <h2>כתובת העסק</h2>
-      <input placeholder="Business Address" value={businessAddress} onChange={(e) => setBusinessAddress(e.target.value)}/>
-      {/* Display the business address */}
-      <p>Address: {businessAddress}</p>
-
-       {/* Your day input fields */}
-      <select   ref={selectedDayRef} placeholder='Day' id="DayInput"  className={`aaa bbb`} type="text" >
+    <div className="component-container">
+    <h1 className="title">ברוכה הבאה {product.Name}</h1>
+    <h2 className="subtitle">הקש מחירון לכל התמחות:</h2>
+    <ul className="treatments-list">
+      {product.TreatmantName && product.TreatmantName.length > 0 ? (
+        product.TreatmantName.map((treatment, index) => (
+          <li key={index} className="treatment-item">
+            {treatment}
+            <input
+              className="input-field"
+              type="text"
+              placeholder="הכנס מחיר"
+              onChange={(e) => handlePriceChange(treatment, e.target.value)}
+            />
+            <input
+              className="input-field"
+              type="text"
+              placeholder="זמן טיפול"
+              onChange={(e) => handleTimeChange(treatment, e.target.value)}
+            />
+          </li>
+        ))
+      ) : (
+        <p>No treatments selected.</p>
+      )}
+    </ul>
+    <h2 className="subtitle">תיאור העסק</h2>
+    <textarea
+      className="input-field"
+      placeholder="תיאור העסק"
+      value={businessDescription}
+      onChange={(e) => setBusinessDescription(e.target.value)}
+    />
+    <h2 className="subtitle">כתובת העסק</h2>
+    <input
+      className="input-field"
+      placeholder="כתובת העסק"
+      value={businessAddress}
+      onChange={(e) => setBusinessAddress(e.target.value)}
+    />
+   
+    <h2 className="subtitle">ימי עבודה</h2>
+    
+      {/* options for days of the week */}
+    
+       <select   ref={selectedDayRef} placeholder='Day' id="DayInput"  className={`aaa bbb`} type="text" >
       {daysOfWeek.map((day, index) => (
           <option key={index} value={day}>
             {day}
+      
           </option>
-        ))}
-      </select>
-      <input  ref={startTimeRef} placeholder='StaartTime' id="StartTimeInput"  className={`aaa bbb`} type="time" />
-      <input  ref={finishTimeRef} placeholder='FinishTime' id="FinishTimeInput"  className={`aaa bbb`} type="time" />
-      <select  ref={statusRef}  placeholder='Status' id="StatusInput"  className={`aaa bbb`} >
-     
-
-      {statusOptions.map((status, index) => (
+       )) }
+    </select>
+    <input
+      ref={startTimeRef}
+      className="input-field"
+      placeholder="Start Time"
+      id="StartTimeInput"
+      type="time"
+    />
+    <input
+      ref={finishTimeRef}
+      className="input-field"
+      placeholder="Finish Time"
+      id="FinishTimeInput"
+      type="time"
+    />
+    <select ref={statusRef} className="input-field" placeholder="Status" id="StatusInput">
+    {statusOptions.map((status, index) => (
           <option key={index} value={status}>
             {status}
           </option>
         ))}
       </select>
-
-      <button onClick={handleAddDay} color="pink">
-        Add Day
-      </button>
-
-
-      {/* Display the list of added days */}
-      <ul>
-        {dayList.map((day, index) => (
-          <li key={index}>
-            Day: {day.Day}, Start: {day.Start}, End: {day.End}, Status: {day.Status}
-          </li>
-        ))}
-      </ul>
-      <input  ref={startDateRef}  placeholder="StartDate" id="StartDateInput" className={`aaa bbb`} type="date"/>
-      <input ref={endDateRef} placeholder="EndDate" id="EndDateInput" className={`aaa bbb`} type="date"/>
-
-     
-      <button onClick={handelADDFreeDays} color="pink">
-        Add FreeDays
-      </button>
-
-      
-      <u1>
+    <button className="button1" onClick={handleAddDay}>
+     הוסף יום
+    </button>
+    <ul className="added-days-list">
+      {dayList.map((day, index) => (
+        <li key={index} className="day-item">
+          Day: {day.Day}, Start: {day.Start}, End: {day.End}, Status: {day.Status}
+        </li>
+      ))}
+    </ul>
+    <h2 className="subtitle">ימים חופשים </h2>
+    <input ref={startDateRef} className="input-field" placeholder="תחילת התאריך" type="date" />
+    <input ref={endDateRef} className="input-field" placeholder="סיום התאריך" type="date" />
+    <button className="button1" onClick={handelADDFreeDays}>
+     הוסף יום חופש
+    </button>
+    <ul className="free-days-list">
       {freeDaysList.map((freeDays, index) => (
-          <li key={index}>
-            FreeDay: Start: {freeDays.StartDate}, End: {freeDays.EndDate}
-          </li>
-            ))}
-        </u1>
-
-      <input   ref={BrakeTimeRef} placeholder="BrakeTime" id="BrakeTimeInput" className={`aaa bbb`} type="number"/>
-
-
-
-
-      
-
-
-      
-
-
-     
-      <button onClick={submitUser} color="pink">
-        Submit
-      </button>
-    </div>
+        <li key={index} className="free-day-item">
+          FreeDay: Start: {freeDays.StartDate}, End: {freeDays.EndDate}
+        </li>
+      ))}
+    </ul>
+    <h2 className="subtitle">זמן הפסקה</h2>
+    <input ref={BrakeTimeRef} className="input-field" placeholder="זמן הפסקה" type="number" />
+    <button className="button1" onClick={submitUser}>
+      אישור
+    </button>
+  </div>
       
    
   );
