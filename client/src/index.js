@@ -23,7 +23,7 @@ import BusinessLogin from './professionalComponent/BusinessLogin';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import Modal from 'react-modal'; // Import the Modal library
-
+// import Home from './publicComponent/jsP/Home'
 Modal.setAppElement('#root'); // Set the app element
 
 

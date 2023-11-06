@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 // import Login from '../../professionalComponent/Login'
 // import Entrance from './Entrance'
 // import axios from './axios'
-// import './Home.css'
+ import './Home.css'
 
 
 export default function Home() {
