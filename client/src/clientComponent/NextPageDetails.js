@@ -24,8 +24,11 @@ export default function NextPageDetails() {
  
   // console.log(tretmentType)
   const parseDateString = (dateTimeString) => {
+
+  
     const parsedDate = moment(dateTimeString, 'DD/MM/YYYY, HH:mm:ss').toDate();
     return parsedDate;
+
   };
 
 
