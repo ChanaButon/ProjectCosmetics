@@ -170,11 +170,11 @@
         //console.log(finData[1].UserID)
         ////console.log(userSend.user._id)
         console.log(userData)
-        navigate("/OwnerPage",{state:{value,tretment,userList}})
+        navigate("/SignUp/MainPage/OwnerPage",{state:{value,tretment,userList}})
         setVisible(false)
       }
       const Chat = (userid,filteredTreatm,allTreat,userSend) => {
-      navigate("/Chat",{state:{userid,filteredTreatm,allTreat,userSend}});
+      navigate("/SignUp/MainPage/Chat",{state:{userid,filteredTreatm,allTreat,userSend}});
       //  navigate("/Chat")
         console.log(userid)
         setVisible(false)

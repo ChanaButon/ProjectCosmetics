@@ -58,7 +58,7 @@ const Register = (props) => {
         //עדכון לסטור
         dispatch(setUser(res.data.getUser))
         console.log(userSend)
-        navigate("/MainPage",{state:{userSend}});
+        navigate("/SignUp/MainPage",{state:{userSend}});
       }
     }
   ).catch ((err) => {

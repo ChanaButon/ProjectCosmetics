@@ -101,25 +101,48 @@ async function serverFunction1(data) {
   }
 
   const updateProduct = async (req, res) => {
-    console.log("updateeeeeeeeeeeeeeeeeeeeee")
-    //console.log(req.body._id);
-    let product = await Product.findOne({ _id: req.body._id });
-    const updateProduct ={...req.body};
-    product.Customers.push(updateProduct.Customers)
-    product.QueueList.push(updateProduct.QueueList)
-
-    console.log(product)
     try {
-      const result = await Product.findOneAndUpdate({_id:req.body._id}, product, {new:true})
-      if(!result){
-        res.status(404).send({message: "no such product with the specific id"})
+      const existingProduct = await Product.findOne({ _id: req.body._id });
+      console.log(existingProduct)
+      if (existingProduct) {
+        const existingCustomer = existingProduct.Customers.find(
+          
+          (customer) => customer.toString() === req.body.Customers
+        );
+      
+        if (existingCustomer) {
+          // If the client already exists, add QUEUELIST only if it's not already present
+          if (!existingProduct.QueueList.includes(req.body.QueueList)) {
+            existingProduct.QueueList.push(req.body.QueueList);
+          } else {
+            return res.send('Queue list already exists for the client in the product.');
+          }
+        } else {
+          // Client doesn't exist, add the client and QUEUELIST
+          existingProduct.Customers.push(req.body.Customers);
+          existingProduct.QueueList.push(req.body.QueueList);
+        }
+  
+        const updatedProduct = await Product.findOneAndUpdate(
+          { _id: req.body._id },
+          existingProduct,
+          { new: true }
+        );
+  
+        if (!updatedProduct) {
+          return res.status(404).send({ message: 'No product found with the specified ID' });
+        }
+  
+        return res.send(updatedProduct);
+      } else {
+        return res.status(404).send({ message: 'No product found with the specified ID' });
       }
-      res.send(result);
-    } catch (e) {
-      console.log(e);
-      res.send(e.message);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send(error.message);
     }
-  }
+  };
+  
   
 
 module.exports = { newProduct,getAllProduct,updateProduct }

@@ -42,7 +42,7 @@ const Register = (props) => {
 
   if (nextPage1 == true) {
 
-    navigate("/MainPage")
+    navigate("/register/MainPage")
   }
 
 
@@ -87,7 +87,7 @@ const Register = (props) => {
         const userSend = {"user":res.data}
         console.log(userSend)
         dispatch(setUser(res.data.newUser))
-        navigate("/MainPage",{state:{userSend}})
+        navigate("/register/MainPage",{state:{userSend}})
       }
     }).catch((err) => {
       console.log(err);

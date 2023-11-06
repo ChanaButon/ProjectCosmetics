@@ -94,7 +94,7 @@ if (!isChecked) {
         const idUser = res.data._id;
         //עדכון לסטור
         dispatch(setUser(res.data.newProduct))
-        navigate("/BusinessLogin",{state:{product,idUser}});
+        navigate("/Login/BusinessLogin",{state:{product,idUser}});
       }
     }).catch((err) => {
       console.log(err);

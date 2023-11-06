@@ -44,14 +44,16 @@ root.render(
           <Route path='/' element={<App />}>
             <Route path='HomeClient' element={<HomeClient />} />
             <Route path='Details' element={<Details />} />
-            <Route path='register' element={<Register />} />
-            <Route path='Login' element={<Login />} />
-            <Route path='SignUp' element={<SignUp />} />
-            <Route path='MainPage' element={<MainPage />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/Login' element={<Login />} />
+            <Route path='/SignUp' element={<SignUp />} />
+            <Route path='/SignUp/MainPage' element={<MainPage />} />
+            <Route path='/register/MainPage' element={<MainPage />} />
+            <Route path='/Login/BusinessLogin/MainPage' element={<MainPage />} />
             <Route path='NextPageDetails' element={<NextPageDetails />} />
-            <Route path='OwnerPage' element={<OwnerPage />} />
-            <Route path='Chat' element={<Chat />} />
-            <Route path='BusinessLogin' element={<BusinessLogin />} />
+            <Route path='/SignUp/MainPage/OwnerPage' element={<OwnerPage />} />
+            <Route path='/SignUp/MainPage/Chat' element={<Chat />} />
+            <Route path='/Login/BusinessLogin' element={<BusinessLogin />} />
           </Route>
         </Routes>
       </BrowserRouter>

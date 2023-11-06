@@ -50,7 +50,7 @@ export default function NextPageDetails() {
 
   const Chat = () => {
         
-    navigate("/Chat")
+    navigate("/SignUp/MainPage/Chat")
     setVisible(false)
   }
 
