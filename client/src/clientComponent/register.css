@@ -72,3 +72,18 @@ font-size: 12px;
   font-size: 18px;
   cursor: pointer;
 }
+.exit-button {
+  background-color: #ff0000; /* Red background color */
+  color: #fff; /* White text color */
+  border: none; /* Remove border */
+  border-radius: 50%; /* Rounded shape */
+  width: 30px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+  font-size: 20px; /* Adjust the font size as needed */
+  cursor: pointer; /* Show pointer cursor on hover */
+  outline: none; /* Remove focus outline */
+}
+
+.exit-button:hover {
+  background-color: #cc0000; /* Darker red color on hover */
+}

@@ -201,6 +201,11 @@
             // console.log(userDataResults)
 
           };
+
+
+          const handleExitClick = () => {
+            navigate('/SignUp'); // Navigate to the main page
+          };
           
           const queues = async () => {
           
@@ -341,6 +346,9 @@
 
 return(
   <div>
+    <button className="exit-button" onClick={handleExitClick}>
+      X
+    </button>
     
     {userType && userType.userNameType === 'business' && (
         <button className='bootonBusnse' onClick={() => OwnerPage()}>

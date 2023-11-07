@@ -47,7 +47,10 @@ const Register = (props) => {
   const [checkboxError, setCheckboxError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-
+  const handleExitClick = () => {
+    navigate('/'); // Navigate to the main page
+  };
+ 
 
 
 const checkUser = () => {
@@ -86,7 +89,7 @@ if (!isChecked) {
       Type: "business",
       
     }
-   
+    
 
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser',product).then((res) => {
@@ -106,10 +109,15 @@ if (!isChecked) {
 
 
 
+
+
   }
 
   return (
-    <div>
+    <div >
+    <button className="exit-button" onClick={handleExitClick}>
+      X
+    </button>
    
    <div className="inputRow">
   <div className="inputColumn">

@@ -35,6 +35,10 @@ const QuestionButtons = () => {
   const supabase = useSupabaseClient();
   const { isLoading } = useSessionContext();
 
+    const handleExitClick = () => {
+      navigate(-1);
+       };
+
  
   async function createCalendarEvent(date) {
     const initialDate = new Date(date.toISOString());
@@ -155,6 +159,7 @@ const QuestionButtons = () => {
     if (isDateSelected && selectedTimeOfDay === null) {
     return (
         <div className="chat-body">
+      
           <h3>:בחירת זמן ביום</h3>
           <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("morning")}>בוקר</button>
           <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("noon")}>צהריים</button>
@@ -163,7 +168,7 @@ const QuestionButtons = () => {
       );
     } else if (isDateSelected && selectedTimeOfDay !== null) {
       return (
-        <div className="chat-body">
+        <div className="chat-body2">
           <h3>:שעה זמינה  </h3>
         </div>
       );
@@ -246,6 +251,9 @@ const QuestionButtons = () => {
   return (
     <div style={{ display: "inline-flex", flexDirection: "column" }}>
     {/* <button onClick={createCalendarEvent}>Sign In</button> */}
+    <button className="exit-button" onClick={handleExitClick}>
+      X
+    </button>
     <div className="chat-container">
       <div className="chat-header ">
         <h2>CHAT</h2>
