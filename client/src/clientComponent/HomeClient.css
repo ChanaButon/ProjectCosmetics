@@ -1,0 +1,38 @@
+.offcanvas-trigger {
+  font-size: 20px;
+  cursor: pointer;
+  color: black;
+  background-color: #fff;
+  border: #fff;
+  position: fixed;
+  top: 150px; /* Adjust the top position as needed */
+  right: 20px; /* Adjust the right position as needed */
+  z-index: 1000; /* To ensure it appears above other elements */
+}
+
+  .offcanvas-trigger:hover {
+    background-color: #efdcdc;
+  }
+  
+  .offcanvas-title {
+    font-weight: bold;
+  }
+  
+  .offcanvas-body {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .offcanvas-container {
+    position: relative;
+  }
+  
+  .offcanvas-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  

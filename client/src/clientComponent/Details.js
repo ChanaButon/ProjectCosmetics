@@ -3,7 +3,6 @@ import React from 'react'
 import Accordion from 'react-bootstrap/Accordion';
 
 export default function Details(user) {
-  console.log(user.user.userName.Name)
   return (
     <Accordion>
       <Accordion.Item eventKey="0">

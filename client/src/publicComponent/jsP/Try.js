@@ -28,10 +28,10 @@ function Button({ id, isActive, onClick }) {
     onClick(id);
   };
 
-  const buttonStyle = {
-    backgroundColor: isActive ? 'red' : 'blue',
-    // Add any other desired styles here
-  };
+  // const buttonStyle = {
+  //   backgroundColor: isActive ? 'red' : 'blue',
+  //   // Add any other desired styles here
+  // };
 
   return (
     <button

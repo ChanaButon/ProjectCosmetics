@@ -11,11 +11,11 @@ import Calendar from 'react-calendar';
 import EarliestAvailableTime from "./EarliestAvailableTime";
 import {  addToQueueApi } from "./api"
 import { useNavigate } from 'react-router-dom';
-
+import HomeClient from "../../clientComponent/HomeClient";
 const QuestionButtons = () => {
   const navigate = useNavigate(); // Use useNavigate for navigation
   const location = useLocation();
-  const { userid,filteredTreatm,allTreat,userSend } = location.state || {};
+  const { value,userid,filteredTreatm,allTreat,userSend } = location.state || {};
   console.log(userid,filteredTreatm,allTreat,userSend)
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const [selectedAppointmentTime, setSelectedAppointmentTime] = useState(null);
@@ -247,6 +247,7 @@ const QuestionButtons = () => {
     <div style={{ display: "inline-flex", flexDirection: "column" }}>
     {/* <button onClick={createCalendarEvent}>Sign In</button> */}
     <div className="chat-container">
+    {value && <HomeClient  userName={value}   />}
       <div className="chat-header ">
         <h2>CHAT</h2>
       </div>

@@ -176,6 +176,7 @@ const myQueue = async ()  => {
 
   return (
     <div className="image-uploader-container">
+           {value && <HomeClient  userName={value}   />}
       <h1 className="page-title"> ברוכים הבאים {value.Name} </h1>
       {appointments &&  <SchedulingCalendar appointmentData={appointments}/>}
     
@@ -193,11 +194,11 @@ const myQueue = async ()  => {
         ))}
       </ul>
       
-      <input type="file" onChange={fileSelectedHandler} />
+      {/* <input type="file" onChange={fileSelectedHandler} />
       {previewUrl && (
         <img src={previewUrl} alt="Preview" style={{ maxWidth: "10%" }} />
       )}
-      {selectedFile && <button onClick={fileUploadHandler}>Upload</button>}
+      {selectedFile && <button onClick={fileUploadHandler}>Upload</button>} */}
 
       {isEditing && (
         <EditAppointmentForm
@@ -207,7 +208,6 @@ const myQueue = async ()  => {
         />
       )}
 
-     {value && <HomeClient  userName={value}   />}
 
 
     </div>
