@@ -6,8 +6,8 @@
   }
   .searchIcon {
     position: absolute;
-    top: 52%;
-    right: 300px;
+    top: 41%;
+    right: 400px;
     transform: translateY(-50%);
     color: #666; /* Adjust the color as needed */
     cursor: pointer;

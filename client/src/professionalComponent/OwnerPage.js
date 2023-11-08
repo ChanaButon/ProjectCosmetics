@@ -36,9 +36,6 @@ const ImageUploader = () => {
   const { data } = location.state || {};
 
   const { value,tretment,userList } = location.state || {};
-  // console.log(userList)
-  // console.log(tretment)
-  // console.log(value)
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -48,7 +45,7 @@ const ImageUploader = () => {
   //console.log(appointments)
   const [ isEditing, setIsEditing] = useState(false);
 
-  console.log(findQueue)
+  console.log(findQueue,value)
 
   const handleExitClick = () => {
     navigate(-1); // Navigate to the main page

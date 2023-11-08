@@ -45,7 +45,7 @@ export default function Home() {
     <>
       {isVisible ? (
         <div>
-          <h1 className="fff">?פעם ראשונה שלך כאן </h1>
+          <h1 className="fff">?לקוח פעם ראשונה שלך כאן </h1>
           <button onClick={loginCliant} className="button1">
             לחץ להרשמה
           </button>

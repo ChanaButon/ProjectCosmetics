@@ -47,22 +47,25 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
   };
   // Convert the DateTime in appointmentData to FullCalendar-compatible format
   const events = appointmentData.map((appointment) => {
-    console.log(appointment.DateTime)
-    const start = parseDateTime(appointment.DateTime);
-    const end = new Date(start);
-    end.setMinutes(start.getMinutes() + appointment.TreatmantType.TreatmantTime);
-    return {
-      title: `${appointment.TreatmantType.TreatmantName} - ${appointment.Customer.Name}`,
-      start,
-      end,
-      extendedProps: {
-        phone: appointment.Customer.Phone,
-      },
-    };
-  });
-
+    console.log(appointmentData)
+    if (appointment.Customer && appointment.Customer.Name) {
+      const start = parseDateTime(appointment.DateTime);
+      const end = new Date(start);
+      end.setMinutes(start.getMinutes() + appointment.TreatmantType.TreatmantTime);
+      return {
+        title: `${appointment.TreatmantType.TreatmantName} - ${appointment.Customer.Name}`,
+        start,
+        end,
+        extendedProps: {
+          phone: appointment.Customer.Phone,
+        },
+      };
+    }
+    return null; // Skip this event if Customer or Customer.Name is undefined
+  }).filter((event) => event !== null); // Filter out null events
   
-  if(events.length===0){
+  
+  if(events.length===0&&appointmentData.length>0){
     return (
       <div className="spinner">
         <FaSpinner className="icon" />

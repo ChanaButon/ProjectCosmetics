@@ -17,7 +17,6 @@ import Search from './search.js'
 
     const location = useLocation();
     const { userSend } = location.state || {};
-    console.log(userSend)
     
 
     const [userList, setUserList] = useState([]);
@@ -36,29 +35,12 @@ import Search from './search.js'
     const [tretment,setTretment]=useState([]);
     const [finQueue,setFinQueue]=useState([]);
     const currentDate = new Date(); // Current date and time
-    // const [dateTimequeue,setdateTimequeue]=useState({});
-    
-    
-    // const session = useSession();
-    // const supabase = useSupabaseClient();
     const { isLoading } = useSessionContext();
-    
+    console.log(userType)
+
     console.log(userList)
 
-    // async function googleSignIn() {
-    //   const { error } = await supabase.auth.signInWithOAuth({
-    //     provider: 'google',
-    //     options: {
-    //       scopes: 'https://www.googleapis.com/auth/calendar'
-    //     }
-    //   });
-
-    //   if (error) {
-    //     alert("error");
-    //     console.log(error);
-    //   }
-    //   Chat()
-    // }
+    
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -172,11 +154,10 @@ import Search from './search.js'
       }
 
       const OwnerPage = () => {
-          console.log(userSend)
+          console.log(userSend,finData)
         const value= finData.find(a=>a.UserID===userSend.user._id)
-        //console.log(finData[1].UserID)
-        ////console.log(userSend.user._id)
         console.log(userData)
+        console.log(value)
         navigate("/SignUp/MainPage/OwnerPage",{state:{value,tretment,userList}})
         setVisible(false)
       }
@@ -267,9 +248,11 @@ import Search from './search.js'
           try {
             const response = await fetch(`http://localhost:3321/UserType/getAllUserType`);
             const data = await response.json();
-            setUserType(data);
+            console.log(data,userSend,userSend.user.UserType)
+            // setUserType(data);
             
             const type = data.find(temp => temp._id === userSend.user.UserType);
+            console.log(type)
             if (type) {
               setUserType(type); // Set userType state directly to the found type object
             }
