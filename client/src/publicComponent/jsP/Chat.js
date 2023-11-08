@@ -11,11 +11,14 @@ import Calendar from 'react-calendar';
 import EarliestAvailableTime from "./EarliestAvailableTime";
 import {  addToQueueApi } from "./api"
 import { useNavigate } from 'react-router-dom';
+import HomeClient from "../../clientComponent/HomeClient";
+import {  RxExit } from 'react-icons/rx';
+
 
 const QuestionButtons = () => {
   const navigate = useNavigate(); // Use useNavigate for navigation
   const location = useLocation();
-  const { userid,filteredTreatm,allTreat,userSend } = location.state || {};
+  const { value,userid,filteredTreatm,allTreat,userSend } = location.state || {};
   console.log(userid,filteredTreatm,allTreat,userSend)
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const [selectedAppointmentTime, setSelectedAppointmentTime] = useState(null);
@@ -38,6 +41,9 @@ const QuestionButtons = () => {
     const handleExitClick = () => {
       navigate(-1);
        };
+       const handleBackClick = () => {
+        navigate(-0);
+         };
 
  
   async function createCalendarEvent(date) {
@@ -159,7 +165,7 @@ const QuestionButtons = () => {
     if (isDateSelected && selectedTimeOfDay === null) {
     return (
         <div className="chat-body">
-      
+         
           <h3>:בחירת זמן ביום</h3>
           <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("morning")}>בוקר</button>
           <button className="message-bubble other" onClick={() => setSelectedTimeOfDay("noon")}>צהריים</button>
@@ -169,6 +175,7 @@ const QuestionButtons = () => {
     } else if (isDateSelected && selectedTimeOfDay !== null) {
       return (
         <div className="chat-body2">
+           
           <h3>:שעה זמינה  </h3>
         </div>
       );
@@ -254,9 +261,15 @@ const QuestionButtons = () => {
     <button className="exit-button" onClick={handleExitClick}>
       X
     </button>
+   
     <div className="chat-container">
+    {value && <HomeClient  userName={value}   />}
       <div className="chat-header ">
-        <h2>CHAT</h2>
+        <h2> צ'אט  <RxExit   onClick={handleBackClick}/> </h2>
+        {/* <button className="back-button" onClick={handleBackClick}>
+            X
+          </button> */}
+
       </div>
       {renderButtons()}
         {isDateSelected && selectedTimeOfDay !== null && (

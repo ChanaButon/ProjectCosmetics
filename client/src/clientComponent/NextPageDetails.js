@@ -18,8 +18,8 @@ export default function NextPageDetails() {
   const [isDetailsVisible, setIsDetailsVisible] = useState(true);
 
   const handleExitClick = () => {
-    navigate(-1);
-     };
+      navigate(-1);
+       };
 
 
   // console.log(element)

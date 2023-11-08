@@ -5,9 +5,9 @@ const EventDetailModal = ({ isOpen, event, onRequestClose }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      contentLabel="Event Details"
+      contentLabel="פרטי התור"
     >
-      <h2>Event Details</h2>
+      <h2>פרטי התור</h2>
       {event && (
         <div>
           <p>{event.title}</p>

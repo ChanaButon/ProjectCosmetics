@@ -48,11 +48,10 @@ const ImageUploader = () => {
   //console.log(appointments)
   const [ isEditing, setIsEditing] = useState(false);
 
-  //console.log(findQueue)
+  console.log(findQueue)
 
   const handleExitClick = () => {
-    //navigate('/SignUp/MainPage', { state: { data: yourDataObject } }); // Navigate to the main page
-    navigate(-1);
+    navigate(-1); // Navigate to the main page
   };
  
   const handleEdit = (appointment) => {
@@ -189,6 +188,7 @@ const myQueue = async ()  => {
       <button className="exit-button" onClick={handleExitClick}>
       X
     </button>
+           {value && <HomeClient  userName={value}   />}
       <h1 className="page-title"> ברוכים הבאים {value.Name} </h1>
       {appointments &&  <SchedulingCalendar appointmentData={appointments}/>}
     
@@ -206,11 +206,11 @@ const myQueue = async ()  => {
         ))}
       </ul>
       
-      <input type="file" onChange={fileSelectedHandler} />
+      {/* <input type="file" onChange={fileSelectedHandler} />
       {previewUrl && (
         <img src={previewUrl} alt="Preview" style={{ maxWidth: "10%" }} />
       )}
-      {selectedFile && <button onClick={fileUploadHandler}>Upload</button>}
+      {selectedFile && <button onClick={fileUploadHandler}>Upload</button>} */}
 
       {isEditing && (
         <EditAppointmentForm
@@ -220,7 +220,6 @@ const myQueue = async ()  => {
         />
       )}
 
-     {value && <HomeClient  userName={value}   />}
 
 
     </div>

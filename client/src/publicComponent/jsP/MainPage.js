@@ -10,8 +10,7 @@
   // import DateTimePicker from 'react-datetime-picker';// import './h.css';
   import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
  import './MainPage.css'
- // import './BusinessLogin.css'
-
+import Search from './search.js'
 
 
   const  ListExampleCelled = () => {
@@ -174,7 +173,9 @@
         setVisible(false)
       }
       const Chat = (userid,filteredTreatm,allTreat,userSend) => {
-      navigate("/SignUp/MainPage/Chat",{state:{userid,filteredTreatm,allTreat,userSend}});
+        const value= finData.find(a=>a._id===userid)
+        console.log(finData,userid)
+      navigate("/SignUp/MainPage/Chat",{state:{value,userid,filteredTreatm,allTreat,userSend}});
       //  navigate("/Chat")
         console.log(userid)
         setVisible(false)
@@ -356,6 +357,7 @@ return(
         </button>
       )}
       <h4 className='h4Queue'>:לקביעת תורים</h4>
+      {finData.length > 0 && <Search finData={finData} />}
 <div className="container">
 {finData &&
   finData.map((user) => (

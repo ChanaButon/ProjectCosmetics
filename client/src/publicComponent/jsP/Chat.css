@@ -78,3 +78,14 @@
 div[style='display: inline-flex; flex-direction: column;'] {
   align-items: center;
 }
+
+h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* Optional: Set a width to limit the space for the flex container */
+}
+
+.RxExit {
+  margin-left: auto;
+}
