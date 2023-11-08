@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom';
 import {findTretmentQueuewithoutDate,findCustomerQueue} from '../publicComponent/jsP/api.js';
 import axios from 'axios';
 import SchedulingCalendar from "../publicComponent/jsP/tryCalendar"
+
 import "./OwnerPage.css"
 
 
@@ -29,21 +30,29 @@ const dummyAppointments = [
 
 
 const ImageUploader = () => {
+  
+  const navigate=useNavigate();
   const location = useLocation();
+  const { data } = location.state || {};
+
   const { value,tretment,userList } = location.state || {};
-  console.log(userList)
-  console.log(tretment)
-  console.log(value)
+  // console.log(userList)
+  // console.log(tretment)
+  // console.log(value)
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [findQueue,setFindQueue] = useState([])
-  console.log(appointments)
+  //console.log(appointments)
   const [ isEditing, setIsEditing] = useState(false);
 
   console.log(findQueue)
+
+  const handleExitClick = () => {
+    navigate(-1); // Navigate to the main page
+  };
  
   const handleEdit = (appointment) => {
     setEditingAppointment(appointment);
@@ -176,6 +185,9 @@ const myQueue = async ()  => {
 
   return (
     <div className="image-uploader-container">
+      <button className="exit-button" onClick={handleExitClick}>
+      X
+    </button>
            {value && <HomeClient  userName={value}   />}
       <h1 className="page-title"> ברוכים הבאים {value.Name} </h1>
       {appointments &&  <SchedulingCalendar appointmentData={appointments}/>}

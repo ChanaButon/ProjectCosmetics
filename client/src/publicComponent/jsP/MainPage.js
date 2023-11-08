@@ -203,6 +203,11 @@ import Search from './search.js'
             // console.log(userDataResults)
 
           };
+
+
+          const handleExitClick = () => {
+            navigate('/SignUp'); // Navigate to the main page
+          };
           
           const queues = async () => {
           
@@ -331,6 +336,9 @@ import Search from './search.js'
 
 return(
   <div>
+    <button className="exit-button" onClick={handleExitClick}>
+      X
+    </button>
     
     {userType && userType.userNameType === 'business' && (
         <button className='bootonBusnse' onClick={() => OwnerPage()}>

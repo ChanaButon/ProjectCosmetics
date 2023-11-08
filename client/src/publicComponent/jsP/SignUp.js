@@ -21,6 +21,10 @@ const Register = (props) => {
     Password: false,
   });
 
+  const handleExitClick = () => {
+    navigate('/'); // Navigate to the main page
+  };
+
 
   const send = () => {
 
@@ -69,6 +73,9 @@ const Register = (props) => {
 
 return (
   <div>
+    <button className="exit-button" onClick={handleExitClick}>
+      X
+    </button>
     <div className="inputColumn">
       <label htmlFor="lastNameInput" className="inputLabel">
         :תעודת זהות

@@ -3,6 +3,7 @@ import React, { useState ,useRef, useEffect} from 'react';
 import { useLocation } from 'react-router-dom'; // Import the useLocation hook
 import axios from 'axios'
 //import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import './BusinessLogin.css'
 
 
@@ -12,6 +13,8 @@ const statusOptions = ['true', 'false'];
 const BusinessLogin = () => {
   // Use the useLocation hook to get the location object
   const location = useLocation();
+  const navigate = useNavigate()
+
 
   const {product,idUser} = location.state || {};
  // console.log(idUser)
@@ -80,6 +83,9 @@ useEffect(()=>{
  const [businessAddress, setBusinessAddress] = useState('');
 // const [locationIconUrl, setLocationIconUrl] = useState('');
 
+const handleExitClick = () => {
+  navigate('/Login'); // Navigate to the main page
+};
 
   // Function to handle adding a new day to the list
   const handleAddDay = () => {
@@ -178,6 +184,9 @@ axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
 
   return (
     <div className="component-container">
+     <button className="exit-button" onClick={handleExitClick}>
+      X
+    </button>
     <h1 className="title1">ברוכה הבאה {product.Name}</h1>
     <h2 className="subtitle">הקש מחירון לכל התמחות:</h2>
     <ul className="treatments-list">

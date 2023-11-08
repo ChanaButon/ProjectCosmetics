@@ -17,9 +17,15 @@ export default function NextPageDetails() {
 
   const [isDetailsVisible, setIsDetailsVisible] = useState(true);
 
+  const handleExitClick = () => {
+      navigate(-1);
+       };
+
+
   // console.log(element)
   
   // console.log(element.TreatmantType)
+
 
   const tretmentType=element.TreatmantType
  
@@ -117,6 +123,9 @@ export default function NextPageDetails() {
 
   return (
     <div className='colonterNextDetalis'>
+    <button className="exit-button" onClick={handleExitClick}>
+      X
+    </button>
       {isDetailsVisible ? (
         <>
           <h1>פרטי התור שלך</h1>
