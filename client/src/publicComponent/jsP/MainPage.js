@@ -180,14 +180,7 @@ import Search from './search.js'
         navigate("/SignUp/MainPage/OwnerPage",{state:{value,tretment,userList}})
         setVisible(false)
       }
-      const Chat = (userid,filteredTreatm,allTreat,userSend) => {
-        const value= finData.find(a=>a._id===userid)
-        console.log(finData,userid)
-      navigate("/SignUp/MainPage/Chat",{state:{value,userid,filteredTreatm,allTreat,userSend}});
-      //  navigate("/Chat")
-        console.log(userid)
-        setVisible(false)
-      }
+      
       
       const detail = async () => {
             
@@ -308,19 +301,7 @@ import Search from './search.js'
     }
       }, [userData]);
 
-//     useEffect(() => {
-//   // ... (your existing code)
-//   console.log(userType)
-
-
-//   if (userType && userType.userNameType === 'business') {
-//     setVisible(true); // If userus type is 'business', set visible to true
-//   }
-//   else{
-//     setVisible(false)
-
-//   }
-// }, [userType]);      
+      
 
 
     useEffect(() => {
@@ -359,20 +340,7 @@ return(
       <h4 className='h4Queue'>:לקביעת תורים</h4>
       {finData.length > 0 && <Search finData={finData} userSend={userSend} />}
 <div className="container">
-{finData &&
-  finData.map((user) => (
-    <div className="userDetail" key={user._id}>
-      <ul className="custom-list">
-      <h3 >{user.Name}</h3>
-      {user.TreatmantID && user.TreatmantID.map((filteredTreatm) => (
-        <div className="tretmentDetail" key={filteredTreatm._id}>
-          <li onClick={() => Chat(user._id,filteredTreatm,user.TreatmantID,userSend.user)}>{filteredTreatm.TreatmantName}</li>
-        </div>
-        
-      ))}
-      </ul>
-    </div>
-  ))}
+
  {visible && (
   <div className="queue">
     <h1>:התורים הקרובים שלך</h1>
