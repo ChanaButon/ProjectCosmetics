@@ -59,6 +59,14 @@ import Search from './search.js'
     //   }
     //   Chat()
     // }
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredUsers = finData.filter(user => {
+      // Combine the first name and family name and perform search
+      const fullName = `${user.Name} ${user.Family}`;
+      return fullName.toLowerCase().includes(searchTerm.toLowerCase());
+    });
     const getAllUser = async () => {
         
       try {
@@ -349,7 +357,7 @@ return(
         </button>
       )}
       <h4 className='h4Queue'>:לקביעת תורים</h4>
-      {finData.length > 0 && <Search finData={finData} />}
+      {finData.length > 0 && <Search finData={finData} userSend={userSend} />}
 <div className="container">
 {finData &&
   finData.map((user) => (
