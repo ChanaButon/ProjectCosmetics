@@ -83,9 +83,7 @@ useEffect(()=>{
  const [businessAddress, setBusinessAddress] = useState('');
 // const [locationIconUrl, setLocationIconUrl] = useState('');
 
-const handleExitClick = () => {
-  navigate('/Login'); // Navigate to the main page
-};
+
 
   // Function to handle adding a new day to the list
   const handleAddDay = () => {
@@ -159,6 +157,7 @@ axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
 
     setDayList([]);
     setFreeDayList([]);
+    navigate('/')
 
     }
     //console.log(dayList)
@@ -184,9 +183,6 @@ axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
 
   return (
     <div className="component-container">
-     <button className="exit-button" onClick={handleExitClick}>
-      X
-    </button>
     <h1 className="title1">ברוכה הבאה {product.Name}</h1>
     <h2 className="subtitle">הקש מחירון לכל התמחות:</h2>
     <ul className="treatments-list">

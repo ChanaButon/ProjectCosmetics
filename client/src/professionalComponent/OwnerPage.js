@@ -186,7 +186,7 @@ const myQueue = async ()  => {
       X
     </button>
            {value && <HomeClient  userName={value}   />}
-      <h1 className="page-title"> ברוכים הבאים {value.Name} </h1>
+      {value&&<h1 className="page-title"> ברוכים הבאים {value.Name} </h1>}
       {appointments &&  <SchedulingCalendar appointmentData={appointments}/>}
     
       {/* <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/> */}
