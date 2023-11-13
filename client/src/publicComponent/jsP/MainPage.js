@@ -180,8 +180,9 @@ import Search from './search.js'
             });
         
             const userDataResults = await Promise.all(userPromises);
+            console.log(userDataResults)
+
             setUserData(userDataResults);
-            // console.log(userDataResults)
 
           };
 
@@ -340,7 +341,7 @@ return(
         <div className="userQueue" key = {element._id}>
           <h1>{element.DateTime}-{element.TreatmantType.TreatmantName}</h1>
           <button onClick={ () =>nextPageDetails(element)} className="button1">
-      לביטול התור
+            לפרטי / לביטול התור
     </button>
         </div>
       ))}

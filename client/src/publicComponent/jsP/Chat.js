@@ -162,6 +162,10 @@ const QuestionButtons = () => {
   };
 
   const renderButtons = () => {
+    console.log("earliestTime:", selectedAppointmentTime);
+    console.log("isDateSelected:", isDateSelected);
+    console.log("selectedTimeOfDay:", selectedTimeOfDay);
+    console.log("earliestTime:", earliestTime);
     if (isDateSelected && selectedTimeOfDay === null) {
     return (
         <div className="chat-body">
@@ -175,9 +179,26 @@ const QuestionButtons = () => {
     } else if (isDateSelected && selectedTimeOfDay !== null) {
       return (
         <div className="chat-body2">
-           
-          <h3>:שעה זמינה  </h3>
-        </div>
+        <h3>:שעה זמינה  </h3>
+        {/* Render the EarliestAvailableTime component */}
+        <EarliestAvailableTime
+          selectedDate={selectedDate}
+          deatailUserList={deatailUserList}
+          selectedTimeOfDay={selectedTimeOfDay}
+          allTreat={allTreat}
+          filteredTreatm={filteredTreatm}
+          onEarliestTimeChange={setEarliestTime}
+          onTimeSelection={handleTimeSelection}
+        />
+        {/* Disable the "הוסף תור" button if earliestTime is "אין תור זמין" */}
+        {selectedAppointmentTime&&selectedAppointmentTime.startsWith("אין תור זמין בשעות") ? (
+            <button className="addQueue" disabled>אין תור זמין</button>
+
+        ) : (
+          <button className="addQueue" onClick={handleAddToQueueClick}>הוסף תור</button>
+
+        )}
+      </div>
       );
     } else {
       return (
@@ -272,12 +293,12 @@ const QuestionButtons = () => {
 
       </div>
       {renderButtons()}
-        {isDateSelected && selectedTimeOfDay !== null && (
+        {/* {isDateSelected && selectedTimeOfDay !== null && (
           <EarliestAvailableTime selectedDate={selectedDate} deatailUserList={deatailUserList} selectedTimeOfDay = {selectedTimeOfDay} allTreat= {allTreat} filteredTreatm={filteredTreatm} onEarliestTimeChange={setEarliestTime} onTimeSelection={handleTimeSelection}    />
         
           )}
            {isDateSelected && selectedTimeOfDay !== null && (
-            <button className="addQueue" onClick={handleAddToQueueClick}>הוסף תור</button>)}
+            <button className="addQueue" onClick={handleAddToQueueClick}>הוסף תור</button>)} */}
 
     </div>
   </div>

@@ -177,7 +177,10 @@ const myQueue = async ()  => {
       // console.log(appointments)     
   }, [findQueue]);
 
-
+  const editPage = ()=>{
+    console.log(value)
+    navigate('/SignUp/MainPage/OwnerPage/EditPage',{state:{value}})
+  }
 
 
   return (
@@ -185,9 +188,10 @@ const myQueue = async ()  => {
       <button className="exit-button" onClick={handleExitClick}>
       X
     </button>
+    <button onClick={() => editPage()} >לעריכת פרטי העסק</button>
            {value && <HomeClient  userName={value}   />}
       {value&&<h1 className="page-title"> ברוכים הבאים {value.Name} </h1>}
-      {appointments &&  <SchedulingCalendar appointmentData={appointments}/>}
+      {appointments.length>0 &&  <SchedulingCalendar appointmentData={appointments}/>}
     
       {/* <Calendar onChange={onDateChange} value={selectedDate} locale="en-US"/> */}
       {/* <h2>Appointments for {selectedDate.toDateString()}:</h2> */}

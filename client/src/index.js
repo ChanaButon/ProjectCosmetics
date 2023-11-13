@@ -22,7 +22,7 @@ import BusinessLogin from './professionalComponent/BusinessLogin';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import Modal from 'react-modal';
-
+import EditForm from './professionalComponent/EditPage';
 Modal.setAppElement('#root');
 
 const supabase = createClient(
@@ -50,6 +50,8 @@ root.render(
               <Route path='/SignUp/MainPage/OwnerPage' element={<OwnerPage />} />
               <Route path='SignUp/MainPage/Chat' element={<Chat />} />
               <Route path='/Login/BusinessLogin' element={<BusinessLogin />} />
+              <Route path='/SignUp/MainPage/OwnerPage/EditPage' element={<EditForm />} />
+
             </Route>
           </Routes>
         </BrowserRouter>
