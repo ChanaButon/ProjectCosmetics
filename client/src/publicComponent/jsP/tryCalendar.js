@@ -64,6 +64,8 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
     return null; // Skip this event if Customer or Customer.Name is undefined
   }).filter((event) => event !== null); // Filter out null events
 
+  console.log(events.length,appointmentData.length>0)
+
   if(events.length===0&&appointmentData.length>0){
     return (
       <div className="spinner">
