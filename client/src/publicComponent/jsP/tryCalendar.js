@@ -17,6 +17,9 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
   const [isOpen, setIsOpen] = useState(false);
   console.log(appointmentData)
   let events=[]
+
+  
+
   const handleEventClick = (eventClickInfo) => {
     // Display the event detail when an event is clicked
     setEventDetail(eventClickInfo.event);
@@ -45,6 +48,8 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
     console.log(new Date(year, month - 1, day, adjustedHour, minute))
     return new Date(year, month - 1, day, adjustedHour, minute);
   };
+
+ 
   // Convert the DateTime in appointmentData to FullCalendar-compatible format
    events = appointmentData.map((appointment) => {
     console.log(appointmentData)
@@ -65,7 +70,6 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
   }).filter((event) => event !== null); // Filter out null events
 
   console.log(events.length,appointmentData.length>0)
-
   if(events.length===0&&appointmentData.length>0){
     return (
       <div className="spinner">
@@ -73,6 +77,7 @@ const BusinessOwnerCalendar = ({appointmentData}) => {
       </div>
     );
   }
+  
   const renderEventContent = (eventInfo) => {
     return (
       <div className="appointment-event">
