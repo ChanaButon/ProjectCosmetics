@@ -31,7 +31,7 @@ import Search from './search.js'
     // const [start, setStart] = useState(new Date);
     // const [end, setEnd] = useState(new Date);
     const [userType, setUserType] = useState("");
-    // const [eventDescription, setEventDescription] = useState("");
+    const [queueHistory, setQueueHistory] = useState([]);
     const [tretment,setTretment]=useState([]);
     const [finQueue,setFinQueue]=useState([]);
     const currentDate = new Date(); // Current date and time
@@ -198,7 +198,8 @@ import Search from './search.js'
               const res = await axios.get(`http://localhost:3321/queue/getQueueByCustomer${userSend.user._id}`);
               if (res.data) {
                 const queue = res.data;
-                setMyQueue(queue); // Update the state with the fetched data              
+                setMyQueue(queue); // Update the state with the fetched data  
+                setQueueHistory(queue);            
                 return queue
               }
             } catch (err) {
@@ -209,10 +210,17 @@ import Search from './search.js'
 
           };
 
+          const isWithinLastThreeMonths = (date) => {
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+            return new Date(date) > threeMonthsAgo;
+          };
+
         const findTretmentQueue = async () =>{
           console.log(myQueue)
           let flattenedObject = []
           const userQueue = []
+          const userQueue1 = []
           myQueue.map(element=>{
               // console.log(myQueue)
               // console.log(tretment)
@@ -236,9 +244,18 @@ import Search from './search.js'
                const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
               userQueue.push({ ...element,"DateTime":a.toLocaleString('en-GB', options), "TreatmantType": flattenedObject })
               }
+              else{
+                const a = new Date(element.DateTime);
+                const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                const formattedDate = a.toLocaleString('en-GB', options);
+                if (isWithinLastThreeMonths(a)) {
+                  userQueue1.push({ ...element, "DateTime": formattedDate, "TreatmantType": flattenedObject });
+                }
+              }
             })
             console.log(userQueue)
             setFinQueue(userQueue)
+            setQueueHistory(userQueue1)
             console.log(finQueue)
             if(finQueue.length>0){
             setVisible(true)}
@@ -265,7 +282,31 @@ import Search from './search.js'
         }
         
 
-
+        const QueueHistoryTable = () => {
+          console.log(queueHistory)
+          return (
+            <div className="queue-history">
+              <h5>התורים שהיית בהם </h5>
+              <h5>:ב - 3 חודשים האחרונים</h5>
+              <table>
+                <thead>
+                  <tr>
+                    <th>תאריך ושעה</th>
+                    <th>סוג טיפול</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {queueHistory.map((element) => (
+                    <tr key={element._id}>
+                      <td>{element.DateTime}</td>
+                      <td>{element.TreatmantType.TreatmantName}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+        };
 
     useEffect(() => {
     getAllProducts()
@@ -332,7 +373,9 @@ return(
       <h4 className='h4Queue'>:לקביעת תורים</h4>
       {finData.length > 0 && <Search finData={finData} userSend={userSend} />}
 <div className="container">
-
+  <div className='TableDetail'>
+{queueHistory.length>0 && <QueueHistoryTable />}
+</div>
  {visible && (
   <div className="queue">
     <h1>:התורים הקרובים שלך</h1>
@@ -341,7 +384,7 @@ return(
         <div className="userQueue" key = {element._id}>
           <h1>{element.DateTime}-{element.TreatmantType.TreatmantName}</h1>
           <button onClick={ () =>nextPageDetails(element)} className="button1">
-            לפרטי / לביטול התור
+            לפרטי / ביטול התור
     </button>
         </div>
       ))}

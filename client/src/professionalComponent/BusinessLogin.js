@@ -199,7 +199,7 @@ axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
             <input
               className="input-field"
               type="text"
-              placeholder="זמן טיפול"
+              placeholder="זמן טיפול בדקות"
               onChange={(e) => handleTimeChange(treatment, e.target.value)}
             />
           </li>
@@ -279,7 +279,7 @@ axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
         </li>
       ))}
     </ul>
-    <h2 className="subtitle">זמן הפסקה</h2>
+    <h2 className="subtitle">זמן הפסקה בין טיפול לטיפול</h2>
     <input ref={BrakeTimeRef} className="input-field" placeholder="זמן הפסקה" type="number" />
     <button className="button1" onClick={submitUser}>
       אישור

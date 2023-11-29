@@ -1,4 +1,5 @@
 import Modal from 'react-modal';
+import React from 'react';
 import './Home.css'
 const EventDetailModal = ({ isOpen, event, onRequestClose }) => {
   return (

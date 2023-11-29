@@ -12,12 +12,31 @@ app.use(cors())
 
 const secret=process.env.SECRET
 const mongoose=require('mongoose')
- 
+const accountSid = 'ACad15a0d1f1b604c34f2bded930f83f90';
+const authToken = 'f1c43faa29896d0002aebb5f059adc09';
+const client = require('twilio')(accountSid, authToken);
+
+
+app.post('/send-sms', async (req, res) => {
+    const { to, body } = req.body;
+  
+    try {
+      const message = await client.messages.create({
+        from: '+17814841069', // Your Twilio phone number
+        to,
+        body,
+      });
+  
+      console.log('SMS sent successfully:', message.sid);
+      res.json({ success: true, message: 'SMS sent successfully' });
+    } catch (error) {
+      console.error('Error sending SMS:', error);
+      res.status(500).json({ success: false, message: 'Failed to send SMS' });
+    }
+  });
+
+
 mongoose.connect(process.env.SHIRA_CODE_MONGODB
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
-    // useCreateIndex: true,
-    // indAndModify: false
 ).then(() => {
     console.log('connect to mongo');
 

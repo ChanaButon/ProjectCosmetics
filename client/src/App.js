@@ -27,6 +27,7 @@ import H from './publicComponent/jsP/googleCalendar/googleCalnedar';
 // import getCalendarEvents from './publicComponent/jsP/googleCalendar/googleCalnedar';
 // import Calendar from './publicComponent/jsP/googleCalendar/tryGoogleCalendar';
 import GoogleCalendarConnect from './publicComponent/jsP/tryCalendar';
+import YourComponent from './publicComponent/jsP/Try'
 function App() {
 
   // const [firstTime, setFirstTime] = useState(true)
@@ -36,6 +37,7 @@ function App() {
     <div className="App">
 
 <Logo />
+<YourComponent/>
       <H/>
       {/* <GoogleCalendarConnect/> */}
       <Home />

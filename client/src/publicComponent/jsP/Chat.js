@@ -13,13 +13,14 @@ import {  addToQueueApi } from "./api"
 import { useNavigate } from 'react-router-dom';
 import HomeClient from "../../clientComponent/HomeClient";
 import {  RxExit } from 'react-icons/rx';
+import * as twilio from 'twilio';
 
 
 const QuestionButtons = () => {
   const navigate = useNavigate(); // Use useNavigate for navigation
   const location = useLocation();
   const { value,userid,filteredTreatm,allTreat,userSend } = location.state || {};
-  console.log(userid,filteredTreatm,allTreat,userSend)
+  console.log(value)
   const [earliestTime, setEarliestTime] = useState("Loading...");
   const [selectedAppointmentTime, setSelectedAppointmentTime] = useState(null);
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -148,19 +149,16 @@ const QuestionButtons = () => {
     }
   }, [dayweekList]);
 
-  const googleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        scopes: 'https://www.googleapis.com/auth/calendar'      }
-    });
+  const handleJoinWaitingListClick = () => {
+    // Store client details and preferences in the waiting list
+    // Notify the client when a suitable time becomes available
+    // You can use a state, database, or a messaging system for this purpose
+    // Optionally, display a confirmation message to the user
+    // sendSmsNotification({"phoneNumber":"+972507815777"},"היי")
 
-    if (error) {
-      alert("Error signing in with Google.");
-      console.error(error);
-    }
+    alert("הוספת לרשימת המתנה בוצעה בהצלחה. תודה שבחרת להמתין!");
   };
-
+  
   const renderButtons = () => {
     console.log("earliestTime:", selectedAppointmentTime);
     console.log("isDateSelected:", isDateSelected);
@@ -179,8 +177,13 @@ const QuestionButtons = () => {
     } else if (isDateSelected && selectedTimeOfDay !== null) {
       return (
         <div className="chat-body2">
-        <h3>:שעה זמינה  </h3>
-        {/* Render the EarliestAvailableTime component */}
+          <h3>:פרטי התור</h3>
+          <h7>₪ {filteredTreatm.Price} :מחיר</h7>
+          <br></br>
+          <h7>סוג טיפול: {filteredTreatm.TreatmantName}</h7>
+          <br></br>
+          <h7>כתובת: {value.Addres}</h7>
+        <h5>:שעה זמינה  </h5>
         <EarliestAvailableTime
           selectedDate={selectedDate}
           deatailUserList={deatailUserList}
@@ -190,15 +193,18 @@ const QuestionButtons = () => {
           onEarliestTimeChange={setEarliestTime}
           onTimeSelection={handleTimeSelection}
         />
-        {/* Disable the "הוסף תור" button if earliestTime is "אין תור זמין" */}
-        {selectedAppointmentTime&&selectedAppointmentTime.startsWith("אין תור זמין בשעות") ? (
-            <button className="addQueue" disabled>אין תור זמין</button>
-
+        {selectedAppointmentTime && selectedAppointmentTime.startsWith("אין תור זמין בשעות") ? (
+          <div>
+            <p>אין תור זמין בשעות אלו</p>
+          </div>
         ) : (
           <button className="addQueue" onClick={handleAddToQueueClick}>הוסף תור</button>
-
-        )}
-      </div>
+        )
+        }
+        <p>?האם ברצונך להיכנס לרשימת המתנה ולקבל הודעה </p>
+            <button className="addQueue" onClick={handleJoinWaitingListClick}>הצטרף לרשימת המתנה</button>
+      </div>      
+       
       );
     } else {
       return (
@@ -264,9 +270,11 @@ const QuestionButtons = () => {
     console.log(time)
     setSelectedAppointmentTime(time);
   };
+
   const handleAddToQueueClick = () => {
     console.log("1234567890")
     setButtonClicked(true);
+    //sendSmsNotification({"phoneNumber":"+972507815777"},"היי")
   };
 
   useEffect(() => {

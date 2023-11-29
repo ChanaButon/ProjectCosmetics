@@ -96,3 +96,38 @@
   top: 400px; /* Adjust this value as needed */
   left: 200px; /* Adjust this value as needed */
 }
+.TableDetail {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f3eaea;
+  position: relative; /* Add this for positioning */
+  min-height: 300px; /* Set a minimum height based on your design */
+}
+
+.TableDetail table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.TableDetail th, .TableDetail td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.TableDetail th {
+  background-color: #ff4081;
+  color: #fff;
+}
+
+.TableDetail tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.TableDetail tbody tr:hover {
+  background-color: #e2f0ff;
+}
