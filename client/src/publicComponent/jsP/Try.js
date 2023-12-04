@@ -71,7 +71,7 @@ const YourComponent = () => {
 
   const sendSMS = async () => {
     try {
-      const response = await axios.post('http://localhost:3321/send-sms', {
+      const response = await axios.post('http://localhost:3321/send-mail', {
         to: phoneNumber,
         body: message,
       });

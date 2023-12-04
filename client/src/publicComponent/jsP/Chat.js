@@ -10,6 +10,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Calendar from 'react-calendar';
 import EarliestAvailableTime from "./EarliestAvailableTime";
 import {  addToQueueApi } from "./api"
+import {handleJoinWaitingListClick} from "./api"
+import {checkWaitList} from './api'
 import { useNavigate } from 'react-router-dom';
 import HomeClient from "../../clientComponent/HomeClient";
 import {  RxExit } from 'react-icons/rx';
@@ -149,15 +151,7 @@ const QuestionButtons = () => {
     }
   }, [dayweekList]);
 
-  const handleJoinWaitingListClick = () => {
-    // Store client details and preferences in the waiting list
-    // Notify the client when a suitable time becomes available
-    // You can use a state, database, or a messaging system for this purpose
-    // Optionally, display a confirmation message to the user
-    // sendSmsNotification({"phoneNumber":"+972507815777"},"היי")
-
-    alert("הוספת לרשימת המתנה בוצעה בהצלחה. תודה שבחרת להמתין!");
-  };
+ 
   
   const renderButtons = () => {
     console.log("earliestTime:", selectedAppointmentTime);
@@ -202,7 +196,7 @@ const QuestionButtons = () => {
         )
         }
         <p>?האם ברצונך להיכנס לרשימת המתנה ולקבל הודעה </p>
-            <button className="addQueue" onClick={handleJoinWaitingListClick}>הצטרף לרשימת המתנה</button>
+            <button className="addQueue" onClick={()=>{handleJoinWaitingListClick(userSend._id,filteredTreatm,selectedDate,selectedTimeOfDay,userSend,value._id)}}>הצטרף לרשימת המתנה</button>
       </div>      
        
       );
@@ -231,6 +225,7 @@ const QuestionButtons = () => {
       console.log("ftgyhjk")
       const message = await addToQueueApi(date,filteredTreatm,userSend._id,deatailUserList._id);
       console.log(message); // Handle the success message (e.g., show a success notification to the user)
+      checkWaitList(value._id,value.Name,value.Family,selectedTimeOfDay,selectedDate,userSend)
     } catch (error) {
       console.error('Error adding user to the queue:', error); // Handle errors (e.g., show an error message to the user)
     }
