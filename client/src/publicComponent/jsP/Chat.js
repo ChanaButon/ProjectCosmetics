@@ -15,7 +15,6 @@ import {checkWaitList} from './api'
 import { useNavigate } from 'react-router-dom';
 import HomeClient from "../../clientComponent/HomeClient";
 import {  RxExit } from 'react-icons/rx';
-import * as twilio from 'twilio';
 
 
 const QuestionButtons = () => {
@@ -189,13 +188,14 @@ const QuestionButtons = () => {
         />
         {selectedAppointmentTime && selectedAppointmentTime.startsWith("אין תור זמין בשעות") ? (
           <div>
-            <p>אין תור זמין בשעות אלו</p>
+            {/* <p>אין תור זמין בשעות אלו</p> */}
+            <br></br>
           </div>
         ) : (
           <button className="addQueue" onClick={handleAddToQueueClick}>הוסף תור</button>
         )
         }
-        <p>?האם ברצונך להיכנס לרשימת המתנה ולקבל הודעה </p>
+        <h6> האם ברצונך להיכנס לרשימת המתנה ולקבל הודעה ברגע שיש שעה אחרת זמינה </h6>
             <button className="addQueue" onClick={()=>{handleJoinWaitingListClick(userSend._id,filteredTreatm,selectedDate,selectedTimeOfDay,userSend,value._id)}}>הצטרף לרשימת המתנה</button>
       </div>      
        
@@ -289,7 +289,7 @@ const QuestionButtons = () => {
     <div className="chat-container">
     {value && <HomeClient  userName={value}   />}
       <div className="chat-header ">
-        <h2> צ'אט  <RxExit   onClick={handleBackClick}/> </h2>
+        <h2 className="H2Chat"> צ'אט  <RxExit   onClick={handleBackClick}/> </h2>
         {/* <button className="back-button" onClick={handleBackClick}>
             X
           </button> */}

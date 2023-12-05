@@ -15,7 +15,6 @@ const mongoose=require('mongoose')
 const nodemailer = require('nodemailer'); // Import nodemailer
 const accountSid = 'ACad15a0d1f1b604c34f2bded930f83f90';
 const authToken = 'f1c43faa29896d0002aebb5f059adc09';
-const client = require('twilio')(accountSid, authToken);
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -33,8 +32,8 @@ app.post('/send-mail', async (req, res) => {
   const mailOptions = {
     from: 'roihodaya@gmail.com', // Your Gmail email address
     to: to, // Recipient's email address
-    subject: 'Mail Notification',
-    text: `Mail sent successfully to ${to}: ${body}`,
+    subject: 'עידכון שעה זמינה',
+    text: ` ${body}`,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

@@ -154,8 +154,7 @@ const checkWaitList = async (serviceId,name,family, selectedTimeOfDay, date1, us
           const formattedDate = date.toLocaleDateString('en-IL'); 
           const responsee = await axios.post('http://localhost:3321/send-mail', {
             to: userSend.Mail,
-            // body:"fghj"
-            body: family + " " + name + "אצל" + formattedDate + " - קיים שעה שונה זמינה בתאריך",
+            body:`!קיים שעה שונה זמינה בתאריך ${formattedDate} אצל ${name} ${family} בדוק באתר`
           });
 
           console.log(responsee.data);
