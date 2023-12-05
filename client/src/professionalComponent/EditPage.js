@@ -8,6 +8,7 @@ import axios from 'axios';
 const EditForm = () => {
     const location = useLocation();
     const navigate = useNavigate()
+    const [editedWorkingDay, setEditedWorkingDay] = useState({});
 
     const { value } = location.state || {};
     const [formData, setFormData] = useState(value || {});
@@ -175,15 +176,20 @@ const [dayWeekList, setDayWeekList] = useState([]);
   // Add this function to handle the day button click
   const handleDayButtonClick = (index) => {
     setSelectedDayIndex(index);
+    setEditedWorkingDay(deatailUserList[index]); // Initialize editedWorkingDay with the selected day
     setShowModal(true);
   };
-  const handleSaveChanges = () => {
-    // Add logic to save changes made in the modal
-    // For example, update the state, send a request to the server, etc.
-    console.log('Changes saved!');
+  
+  const handleSaveChanges = (index) => {
+    // Update the deatailUserList with the edited day
+    setDeatailUserList((prevUser) => {
+      const updatedList = [...prevUser];
+      updatedList[index] = editedWorkingDay;
+      return updatedList;
+    });
+
     setShowModal(false); // Close the modal after saving changes
   };
-  
  
  
 
@@ -211,28 +217,52 @@ const [dayWeekList, setDayWeekList] = useState([]);
 
       </div>
       <div>
-      <label>ימי עבודה:</label>
-      {/* <input
-        type="text"
-        name="WorkingDay"
-       
-        value={formatDaysForDisplay(deatailUserList) || ''}
-        onChange={handleChange}
-        required
-      /> */}
-      <label>ימי עבודה:</label>
-      {formatDaysForDisplayWithButtons(deatailUserList, handleDayButtonClick)}
-      <Modal
-        isOpen={showModal}
-        onRequestClose={() => setShowModal(false)}
-        contentLabel="Edit Day"
-      >
-        {/* Your modal content */}
-        {/* Include the necessary inputs for editing hours */}
-        <button onClick={() => handleSaveChanges(selectedDayIndex)}>Save Changes</button>
-      </Modal>
-    </div>
-    
+        <label>ימי עבודה:</label>
+        {formatDaysForDisplayWithButtons(deatailUserList, handleDayButtonClick)}
+        <Modal
+          isOpen={showModal}
+          onRequestClose={() => setShowModal(false)}
+          contentLabel="Edit Day"
+        >
+          <div>
+            <h2>Edit Working Day</h2>
+            {/* Display the working hours of the selected day in the modal */}
+            {editedWorkingDay && (
+              <>
+                <p>{`Day: ${editedWorkingDay.Day}`}</p>
+                <label>Start Time:</label>
+                <input
+                  type="text"
+                  name="Start"
+                  value={editedWorkingDay.Start || ''}
+                  onChange={(e) =>
+                    setEditedWorkingDay({
+                      ...editedWorkingDay,
+                      Start: e.target.value,
+                    })
+                  }
+                />
+                <label>End Time:</label>
+                <input
+                  type="text"
+                  name="End"
+                  value={editedWorkingDay.End || ''}
+                  onChange={(e) =>
+                    setEditedWorkingDay({
+                      ...editedWorkingDay,
+                      End: e.target.value,
+                    })
+                  }
+                />
+                <button onClick={() => handleSaveChanges(selectedDayIndex)}>
+                  Save Changes
+                </button>
+              </>
+            )}
+          </div>
+        </Modal>
+      </div>
+
       {/* Add more fields as needed */}
       <button  onClick={handleSubmit} type="submit">Save</button>
     </form>

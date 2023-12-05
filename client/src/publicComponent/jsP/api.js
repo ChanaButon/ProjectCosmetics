@@ -55,7 +55,7 @@ const findTretmentQueuewithoutDate = async (list, tretment) => {
   const newQueue = [];
   list.map((element) => {
     const treatfind = tretment.find((a) => a.id._id === element.TreatmantType);
-     console.log(element.DateTime);
+     console.log(element);
 
       const a = new Date(element.DateTime);
       console.log(a,a.toLocaleString())
