@@ -101,6 +101,8 @@ async function serverFunction1(data) {
   }
 
   const updateProduct = async (req, res) => {
+    console.log(req.body,'mioo')
+
     try {
       const existingProduct = await Product.findOne({ _id: req.body._id });
       console.log(existingProduct)
@@ -127,7 +129,7 @@ async function serverFunction1(data) {
           { _id: req.body._id },
           existingProduct,
           { new: true }
-        );
+        );n
   
         if (!updatedProduct) {
           return res.status(404).send({ message: 'No product found with the specified ID' });
@@ -143,6 +145,39 @@ async function serverFunction1(data) {
     }
   };
   
+  const updateProductById = async (req, res) => {
+    try {
+        // Step 1: Find the existing product by its ID
+        const existingProduct = await Product.findOne({ _id: req.body._id });
+
+        // Step 2: Check if the product exists
+        if (existingProduct) {
+            // Step 3: Update the existing product with the new data from the request body
+            Object.assign(existingProduct, req.body);
+
+            // Step 4: Save the updated product to the database
+            const updatedProduct = await existingProduct.save();
+
+            // Step 5: Check if the update was successful
+            if (updatedProduct) {
+                // Step 6: Send the updated product as the response
+                return res.send(updatedProduct);
+            } else {
+                // Step 7: If the update fails, send a 500 response with an error message
+                return res.status(500).send({ message: 'Failed to update the product.' });
+            }
+        } else {
+            // Step 8: If no product found with the specified ID, send a 404 response
+            return res.status(404).send({ message: 'No product found with the specified ID' });
+        }
+    } catch (error) {
+        // Step 9: Handle errors and send a 500 response with an error message
+        console.error(error);
+        return res.status(500).send(error.message);
+    }
+};
+
+  
   
 
-module.exports = { newProduct,getAllProduct,updateProduct }
+module.exports = { newProduct,getAllProduct,updateProduct,updateProductById}
