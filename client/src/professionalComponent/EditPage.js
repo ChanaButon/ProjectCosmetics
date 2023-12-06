@@ -14,6 +14,8 @@ const EditForm = () => {
     const [formData, setFormData] = useState(value || {});
 const [dayList, setDayList] = useState([]);
 const [dayWeekList, setDayWeekList] = useState([]);
+const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const statusOptions = ['true', 'false'];
 
  // const [formData, setFormData] = useState(value);
   //const [dayList, setDayList] = useState([]);
@@ -179,7 +181,7 @@ const [dayWeekList, setDayWeekList] = useState([]);
     setEditedWorkingDay(deatailUserList[index]); // Initialize editedWorkingDay with the selected day
     setShowModal(true);
   };
-  
+
   const handleSaveChanges = (index) => {
     // Update the deatailUserList with the edited day
     setDeatailUserList((prevUser) => {
@@ -232,7 +234,7 @@ const [dayWeekList, setDayWeekList] = useState([]);
                 <p>{`Day: ${editedWorkingDay.Day}`}</p>
                 <label>Start Time:</label>
                 <input
-                  type="text"
+                  type="time"
                   name="Start"
                   value={editedWorkingDay.Start || ''}
                   onChange={(e) =>
@@ -240,11 +242,13 @@ const [dayWeekList, setDayWeekList] = useState([]);
                       ...editedWorkingDay,
                       Start: e.target.value,
                     })
+                    
                   }
+                  
                 />
                 <label>End Time:</label>
                 <input
-                  type="text"
+                  type="time"
                   name="End"
                   value={editedWorkingDay.End || ''}
                   onChange={(e) =>
@@ -258,9 +262,11 @@ const [dayWeekList, setDayWeekList] = useState([]);
                   Save Changes
                 </button>
               </>
+              
             )}
           </div>
         </Modal>
+        
       </div>
 
       {/* Add more fields as needed */}
