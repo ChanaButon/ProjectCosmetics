@@ -45,7 +45,7 @@ const ImageUploader = () => {
   //console.log(appointments)
   const [ isEditing, setIsEditing] = useState(false);
 
-  console.log(findQueue,value)
+  console.log(findQueue,value,tretment)
 
   const handleExitClick = () => {
     navigate(-1); // Navigate to the main page

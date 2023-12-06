@@ -4,18 +4,33 @@ import { useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import AddTreatmentModal from './AddTreatmentModal';
+
 
 const EditForm = () => {
     const location = useLocation();
     const navigate = useNavigate()
+    const [newTreatment, setNewTreatment] = useState('');
     const [editedWorkingDay, setEditedWorkingDay] = useState({});
-
+    const [selectedTreatmentIndex, setSelectedTreatmentIndex] = useState(null);
+    const [editedTreatment, setEditedTreatment] = useState({});
+    const [selectedNewTreatment, setSelectedNewTreatment] = useState(null);
+    const [showTreatmentModal, setShowTreatmentModal] = useState(false);  
     const { value } = location.state || {};
     const [formData, setFormData] = useState(value || {});
 const [dayList, setDayList] = useState([]);
 const [dayWeekList, setDayWeekList] = useState([]);
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 const statusOptions = ['true', 'false'];
+const [TreatmantID, setTreatmantID] = useState([
+  "גבות/שפם",
+  "מניקור",
+  "פדיקור",
+  "טיפול פנים",
+  "הלחמת ריסים"
+]);
+
+const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
 
  // const [formData, setFormData] = useState(value);
   //const [dayList, setDayList] = useState([]);
@@ -26,11 +41,11 @@ const statusOptions = ['true', 'false'];
   const [deatailUserList, setDeatailUserList] = useState([]);
   const [selectedDayIndex, setSelectedDayIndex] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
+  const updatedTreatments = [...formData.TreatmantID];
 
   console.log(value)
 
-
+  
   const fetchData = async () => {
     try {
       // const response = await fetch('http://localhost:3321/product/getProducts');
@@ -95,6 +110,26 @@ const statusOptions = ['true', 'false'];
 
    };
   
+   const handleAddTreatmentClick = () => {
+    // Open the modal or dropdown to select a new treatment
+    // For simplicity, let's assume you have a modal for this
+    // and the selected treatment will be stored in selectedNewTreatment
+    setShowAddTreatmentModal(true);
+  };
+
+  const handleAddTreatment = () => {
+    // Check if a treatment is selected
+    if (selectedNewTreatment) {
+      // Add the selected treatment to the TreatmantID list
+      setTreatmantID([...TreatmantID, selectedNewTreatment]);
+
+      // Close the modal or reset the state
+      setShowAddTreatmentModal(false);
+      setSelectedNewTreatment(null);
+      setNewTreatment(''); // Clear the newTreatment state
+    }
+  };
+  
  
 
   useEffect(() => {
@@ -115,13 +150,15 @@ const statusOptions = ['true', 'false'];
 
   const UpdateProduct = async (value) => {
     try {
+      const treatmantIDs = value.TreatmantID.map((treatment) => treatment._id);
 
       const data1 = {
         _id: value._id,
          Name:value.Name,
          Addres:value.Addres,
-         WorkingDay:deatailUserList.WorkingDay,
+        //  WorkingDay:deatailUserList.WorkingDay,
          //QueueList:response.data._id,
+         TreatmantID:treatmantIDs,
        };
        console.log(data1)
       const response = await axios.put('http://localhost:3321/product/updateProductById', data1);
@@ -181,6 +218,84 @@ const statusOptions = ['true', 'false'];
     setEditedWorkingDay(deatailUserList[index]); // Initialize editedWorkingDay with the selected day
     setShowModal(true);
   };
+ 
+  const handleEditTreatment = (index) => {
+    setSelectedTreatmentIndex(index);
+    setEditedTreatment({ ...formData.TreatmantID[index] }); // Initialize editedTreatment with the selected treatment
+    setShowTreatmentModal(true);
+  };
+  
+  
+  const handleSaveTreatmentChanges = () => {
+    // Update the TreatmantID list with the edited treatment
+    setFormData((prevFormData) => {
+      const updatedTreatments = [...prevFormData.TreatmantID];
+      updatedTreatments[selectedTreatmentIndex] = editedTreatment;
+      return { ...prevFormData, TreatmantID: updatedTreatments };
+    });
+  
+    // Update the value prop with the edited treatments
+    const updatedValue = { ...value };
+    updatedValue.TreatmantID = [...formData.TreatmantID];
+    updatedValue.TreatmantID[selectedTreatmentIndex] = editedTreatment;
+  
+    // Set the updated value prop
+    location.state.value = updatedValue;
+  
+    setShowTreatmentModal(false); // Close the modal after saving changes
+  };
+  
+  const handleDeleteTreatment = async (index) => {
+    try {
+      console.log(formData.TreatmantID[index]._id);
+      
+      // Send DELETE request to delete the treatment
+      const response = await axios.delete(`http://localhost:3321/treatmant/deleteTreatmant/${formData.TreatmantID[index]._id}`);
+  
+      if (response.data) {
+        console.log(response.data);
+      } else {
+        throw new Error('Error deleting the treatment.');
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle the error (e.g., show an error message to the user)
+    } finally {
+      // Update the TreatmantID list by removing the treatment at the specified index
+      setFormData((prevFormData) => {
+        const updatedTreatments = [...prevFormData.TreatmantID];
+        updatedTreatments.splice(index, 1);
+        return { ...prevFormData, TreatmantID: updatedTreatments };
+      });
+  
+      // Update the value prop by removing the treatment at the specified index
+      const updatedValue = { ...value };
+      updatedValue.TreatmantID = [...formData.TreatmantID];
+      updatedValue.TreatmantID.splice(index, 1);
+  
+      // Set the updated value prop
+      location.state.value = updatedValue;
+      console.log(updatedValue, value);
+    }
+  };
+  
+
+  const handleSubmitTreatmant = async (e) => {
+    e.preventDefault();
+    console.log(value);
+    value.TreatmantID.map(async (e)=>{
+      const response = await axios.put('http://localhost:3321/treatmant/updateTreatmant', e);     
+      console.log(response)
+      if (response.data) {
+        console.log(response.data);
+        return response.data; // Assuming your server sends a success message back
+      } else {
+        throw new Error('Error updating the product.');
+      }
+
+    })
+    
+  };
 
   const handleSaveChanges = (index) => {
     // Update the deatailUserList with the edited day
@@ -192,8 +307,6 @@ const statusOptions = ['true', 'false'];
 
     setShowModal(false); // Close the modal after saving changes
   };
- 
- 
 
   return (
     <form onSubmit={handleSubmit}>
@@ -219,6 +332,86 @@ const statusOptions = ['true', 'false'];
 
       </div>
       <div>
+      <div>
+        <label>טיפולים:</label>
+        {value.TreatmantID.map((treatment, index) => (
+          <div key={index}>
+            {`טיפול: ${treatment.TreatmantName}, מחיר: ${treatment.Price}, זמן: ${treatment.TreatmantTime}`}
+            <button onClick={() => handleEditTreatment(index)}>Edit</button>
+            <button onClick={() => handleDeleteTreatment(index)}>Delete</button>
+
+          </div>
+        ))}
+      </div>
+      <button onClick={handleAddTreatmentClick} type="button">
+          Add Treatment
+        </button>
+        <AddTreatmentModal
+        isOpen={showAddTreatmentModal}
+        onClose={() => setShowAddTreatmentModal(false)}
+        onAddTreatment={handleAddTreatment}
+        // Pass newTreatment and setNewTreatment to the modal
+        newTreatment={newTreatment}
+        setNewTreatment={setNewTreatment}
+      />
+        <br></br>
+      <button onClick={handleSubmitTreatmant} type="submit">
+        Save
+      </button>
+      {/* Modal for editing treatments */}
+      <Modal
+        isOpen={showTreatmentModal}
+        onRequestClose={() => setShowTreatmentModal(false)}
+        contentLabel="Edit Treatment"
+      >
+        <div>
+          <h2>Edit Treatment</h2>
+          {editedTreatment && (
+            <>
+              <label>Treatmant Name:</label>
+              <input
+                type="text"
+                name="TreatmantName"
+                value={editedTreatment.TreatmantName || ''}
+                onChange={(e) =>
+                  setEditedTreatment({
+                    ...editedTreatment,
+                    TreatmantName: e.target.value,
+                  })
+                }
+              />
+              <label>Price:</label>
+              <input
+                type="text"
+                name="Price"
+                value={editedTreatment.Price || ''}
+                onChange={(e) =>
+                  setEditedTreatment({
+                    ...editedTreatment,
+                    Price: e.target.value,
+                  })
+                }
+              />
+              <label>Treatmant Time:</label>
+              <input
+                type="text"
+                name="TreatmantTime"
+                value={editedTreatment.TreatmantTime || ''}
+                onChange={(e) =>
+                  setEditedTreatment({
+                    ...editedTreatment,
+                    TreatmantTime: e.target.value,
+                  })
+                }
+              />
+              <button onClick={handleSaveTreatmentChanges}>
+                Save Changes
+              </button>
+            </>
+          )}
+        </div>
+      </Modal>
+      <br></br>
         <label>ימי עבודה:</label>
         {formatDaysForDisplayWithButtons(deatailUserList, handleDayButtonClick)}
         <Modal
