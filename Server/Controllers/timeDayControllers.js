@@ -82,7 +82,21 @@ async function newTimeDay(req, res) {
     }
   }
 
+  async function updateTimeDay(req, res) {
+    const updatedTimeDay ={...req.body};
+    try {
+      const result = await timeDays.findOneAndUpdate({_id:req.body._id}, updatedTimeDay, {new:true})
+      if(!result){
+        res.status(404).send({message: "no such timeDay with the specific id"})
+      }
+      console.log(result)
+      res.send(result);
+    } catch (e) {
+      console.log(e);
+      res.send(e.message);
+    }
+}
  
 
-module.exports = {newTimeDay , deleteDay,findDayById }
+module.exports = {newTimeDay , deleteDay,findDayById,updateTimeDay }
 

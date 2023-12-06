@@ -51,6 +51,7 @@ const findTretmentQueue = async (list, tretment) => {
 };
 
 const findTretmentQueuewithoutDate = async (list, tretment) => {
+  console.log("findTretmentQueuewithoutDate",list,tretment)
   console.log(list, tretment);
   const newQueue = [];
   list.map((element) => {
@@ -72,6 +73,8 @@ const findTretmentQueuewithoutDate = async (list, tretment) => {
   console.log(newQueue);
   return newQueue; 
 };
+
+
 const findCustomerQueue = async (list, customer) => {
   console.log(list, customer);
   const newQueue = [];
