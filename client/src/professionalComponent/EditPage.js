@@ -6,11 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AddTreatmentModal from './AddTreatmentModal';
 
+import VacationDaysModal from './VacationDaysModal';
 
 const EditForm = () => {
     const location = useLocation();
     const navigate = useNavigate()
     const [newTreatment, setNewTreatment] = useState('');
+
     const [editedWorkingDay, setEditedWorkingDay] = useState({});
     const [selectedTreatmentIndex, setSelectedTreatmentIndex] = useState(null);
     const [editedTreatment, setEditedTreatment] = useState({});
@@ -18,10 +20,11 @@ const EditForm = () => {
     const [showTreatmentModal, setShowTreatmentModal] = useState(false);  
     const { value } = location.state || {};
     const [formData, setFormData] = useState(value || {});
-const [dayList, setDayList] = useState([]);
-const [dayWeekList, setDayWeekList] = useState([]);
-const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-const statusOptions = ['true', 'false'];
+    const [dayList, setDayList] = useState([]);
+    const [dayWeekList, setDayWeekList] = useState([]);
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const statusOptions = ['true', 'false'];
+
 const [TreatmantID, setTreatmantID] = useState([
   "גבות/שפם",
   "מניקור",
@@ -30,7 +33,8 @@ const [TreatmantID, setTreatmantID] = useState([
   "הלחמת ריסים"
 ]);
 
-const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
+  const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
+  const [showVacationDaysModal, setShowVacationDaysModal] = useState(false);
 
  // const [formData, setFormData] = useState(value);
   //const [dayList, setDayList] = useState([]);
@@ -242,6 +246,9 @@ const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
     
   };
 
+
+ 
+
   const handleSaveChanges = (index) => {
     setDeatailUserList((prevUser) => {
       const updatedList = [...prevUser];
@@ -252,43 +259,41 @@ const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
     setShowModal(false);
   };
 
-  const addHoliday = (newHoliday) => {
-    setEditedHolidays((prevHolidays) => [...prevHolidays, newHoliday]);
+
+  const handleAddVacationDay = (newVacationDay) => {
+    setFormData((prevFormData) => {
+      const updatedVacationDays = [...prevFormData.HoliDay, newVacationDay];
+      return { ...prevFormData, HoliDay: updatedVacationDays };
+    });
   };
 
-  const handleDeleteHoliday = (index) => {
-    setEditedHolidays((prevHolidays) => prevHolidays.filter((holiday, i) => i !== index));
+  const handleUpdateVacationDay = (index, updatedVacationDay) => {
+    setFormData((prevFormData) => {
+      const updatedVacationDays = [...prevFormData.HoliDay];
+      updatedVacationDays[index] = updatedVacationDay;
+      return { ...prevFormData, HoliDay: updatedVacationDays };
+    });
   };
 
-  const handleEditHoliday = (index, updatedHoliday) => {
-    setEditedHolidays((prevHolidays) =>
-      prevHolidays.map((holiday, i) => (i === index ? updatedHoliday : holiday))
-    );
+  const handleDeleteVacationDay = (index) => {
+    setFormData((prevFormData) => {
+      const updatedVacationDays = [...prevFormData.HoliDay];
+      updatedVacationDays.splice(index, 1);
+      return { ...prevFormData, HoliDay: updatedVacationDays };
+    });
   };
 
-  const handleSaveVacationDays = () => {
-    setEditedHolidays((prevHolidays) => [...prevHolidays, ...selectedDays]);
-    setShowVacationDaysPage(false);
+  const handleVacationDaysChange = (updatedVacationDays) => {
+    setFormData((prevFormData) => ({ ...prevFormData, HoliDay: updatedVacationDays }));
   };
-  const handleUpdateVacationDays = (date) => {
-    setSelectedDays([date]); // Set the selectedDays array with the single selected date
-    setShowModal(true); // Show the modal for confirming the selected vacation day
-  };
+  
 
-  const handleCancelVacationDays = () => {
-    setShowVacationDaysPage(false);
-  };
 
-  const formatHolidaysForDisplayWithButtons = () => {
-    return editedHolidays.map((holiday, index) => (
-      <div key={index}>
-        {`Start Date: ${holiday.StartDate}, End Date: ${holiday.EndDate}`}
-        <button onClick={() => handleEditHoliday(index)}>Edit</button>
-        <button onClick={() => handleDeleteHoliday(index)}>Delete</button>
-        <button onClick={() => addHoliday(index)}>add</button>
-      </div>
-    ));
-  };
+
+
+
+
+ 
     
 
 
@@ -330,7 +335,7 @@ const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
           </div>
         ))}
       </div>
-      <button onClick={handleAddTreatmentClick} type="button">
+      {/* <button onClick={handleAddTreatmentClick} type="button">
           Add Treatment
         </button>
         <AddTreatmentModal
@@ -340,7 +345,7 @@ const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
         // Pass newTreatment and setNewTreatment to the modal
         newTreatment={newTreatment}
         setNewTreatment={setNewTreatment}
-      />
+      /> */}
         <br></br>
       <button onClick={handleSubmitTreatmant} type="submit">
         Save
@@ -451,16 +456,22 @@ const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
             )}
           </div>
       </Modal>
-
-
-
+    <div>
+    <label>ימי חופשה:</label>
+        <button onClick={() => setShowVacationDaysModal(true)}>Manage Vacation Days</button>
+        <VacationDaysModal
+          isOpen={showVacationDaysModal}
+          onClose={() => setShowVacationDaysModal(false)}
+          value={formData.HoliDay}  // Pass the vacation days array
+          onVacationDaysChange={handleVacationDaysChange}  // Pass the change handler function
+        />
+    </div>
 
     </div>
     <div>
-    <input  className="input-field" placeholder="תחילת התאריך" type="date" />
-    <input  className="input-field" placeholder="סיום התאריך" type="date" />
+    {/* <input  className="input-field" placeholder="תחילת התאריך" type="date" />
+    <input  className="input-field" placeholder="סיום התאריך" type="date" /> */}
     </div>
-    
       {/* Add more fields as needed */}
       <button  onClick={handleSubmit} type="submit">Save</button>
     </form>
