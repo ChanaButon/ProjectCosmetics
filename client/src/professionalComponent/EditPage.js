@@ -60,6 +60,7 @@ const [TreatmantID, setTreatmantID] = useState([
         setDayList(dayResults);
 
         const dayWeekPromises = dayResults.map(async (elemnt) => {
+          console.log(elemnt.id.Day)
           const dayWeekResponse = await axios.get(`http://localhost:3321/days/findDayWeekById:${elemnt.id.Day}`);
           console.log(dayWeekResponse.data);
           return dayWeekResponse.data;
@@ -154,12 +155,13 @@ const [TreatmantID, setTreatmantID] = useState([
     try {
       console.log(value)
       const treatmantIDs = formData.TreatmantID.map((treatment) => treatment._id);
-
+      const workingId = deatailUserList.map((e)=>e._id)
+      console.log(deatailUserList)
       const data1 = {
         _id: value._id,
          Name:value.Name,
          Addres:value.Addres,
-         WorkingDay:deatailUserList.WorkingDay,
+         WorkingDay:workingId,
          //QueueList:response.data._id,
          TreatmantID:treatmantIDs
        };
@@ -193,11 +195,39 @@ const [TreatmantID, setTreatmantID] = useState([
     navigate(-1);
   };
 
+  const handleDayDeleteButtonClick = async (index) => {
+    try {
+      console.log(deatailUserList)
+      const dayId = deatailUserList[index]._id; // Assuming day ID is available in deatailUserList
+      const response = await axios.delete(`http://localhost:3321/timeDay/deleteTimeDay${dayId}`);
+      console.log(response.data)
+  
+      if (response.data) {
+        console.log(response.data);
+      } else {
+        throw new Error('Error deleting the day.');
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle the error (e.g., show an error message to the user)
+    } finally {
+      // Update the deatailUserList by removing the day at the specified index
+      setDeatailUserList((prevUser) => {
+        const updatedList = [...prevUser];
+        console.log(updatedList)
+        updatedList.splice(index, 1);
+        console.log(updatedList)
+        return updatedList;
+      });
+    }
+  };
+
   const formatDaysForDisplayWithButtons = (workingDays, handleDayButtonClick) => {
     return workingDays.map((day, index) => (
       <div key={index}>
         {`Day: ${day.Day}, Start: ${day.Start}, End: ${day.End}`}
         <button onClick={() => handleDayButtonClick(index)}>Edit</button>
+        <button onClick={() => handleDayDeleteButtonClick(index)}>delete</button>
       </div>
     )).concat(
       <div key="addNewDay">
@@ -324,31 +354,7 @@ const [TreatmantID, setTreatmantID] = useState([
     setShowModal(false);
   };
   
-  
 
-
-  const handleAddVacationDay = (newVacationDay) => {
-    setFormData((prevFormData) => {
-      const updatedVacationDays = [...prevFormData.HoliDay, newVacationDay];
-      return { ...prevFormData, HoliDay: updatedVacationDays };
-    });
-  };
-
-  const handleUpdateVacationDay = (index, updatedVacationDay) => {
-    setFormData((prevFormData) => {
-      const updatedVacationDays = [...prevFormData.HoliDay];
-      updatedVacationDays[index] = updatedVacationDay;
-      return { ...prevFormData, HoliDay: updatedVacationDays };
-    });
-  };
-
-  const handleDeleteVacationDay = (index) => {
-    setFormData((prevFormData) => {
-      const updatedVacationDays = [...prevFormData.HoliDay];
-      updatedVacationDays.splice(index, 1);
-      return { ...prevFormData, HoliDay: updatedVacationDays };
-    });
-  };
 
   const handleVacationDaysChange = (updatedVacationDays) => {
     setFormData((prevFormData) => ({ ...prevFormData, HoliDay: updatedVacationDays }));
@@ -477,7 +483,7 @@ const [TreatmantID, setTreatmantID] = useState([
       <div>
       
       <label>ימי עבודה:</label>
-      {formatDaysForDisplayWithButtons(deatailUserList, handleDayButtonClick)}
+      {formatDaysForDisplayWithButtons(deatailUserList, handleDayButtonClick,handleDayDeleteButtonClick)}
       <Modal
         isOpen={showModal}
         onRequestClose={() => setShowModal(false)}
