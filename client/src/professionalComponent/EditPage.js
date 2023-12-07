@@ -100,6 +100,43 @@ const [TreatmantID, setTreatmantID] = useState([
 
    };
   
+   const handleAddTreatmentClick = () => {
+    // Open the modal or dropdown to select a new treatment
+    // For simplicity, let's assume you have a modal for this
+    // and the selected treatment will be stored in selectedNewTreatment
+    setShowAddTreatmentModal(true);
+  };
+  const handleAddTreatment = async (newTreatment) => {   
+    // Close the modal or reset the state
+    setShowAddTreatmentModal(false);
+    setSelectedNewTreatment(null);
+    setNewTreatment(''); // Clear the newTreatment state
+  
+    try {
+      const response = await axios.post('http://localhost:3321/treatmant/newTreatmant', newTreatment);     
+      console.log(response);
+  
+      const updatedFormData = {
+        ...formData,
+        TreatmantID: [...formData.TreatmantID, response.data],
+      };
+      value.TreatmantID.push(response.data)
+      setFormData(updatedFormData);
+      console.log(updatedFormData);
+  
+      if (response.data) {
+        console.log(response.data);
+        return response.data; // Assuming your server sends a success message back
+      } else {
+        throw new Error('Error updating the product.');
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle the error (e.g., show an error message to the user)
+    }
+  };
+  
+  
  
 
   useEffect(() => {
@@ -115,6 +152,8 @@ const [TreatmantID, setTreatmantID] = useState([
 
   const UpdateProduct = async (value) => {
     try {
+      console.log(value)
+      const treatmantIDs = formData.TreatmantID.map((treatment) => treatment._id);
 
       const data1 = {
         _id: value._id,
@@ -326,17 +365,17 @@ const [TreatmantID, setTreatmantID] = useState([
     <div>
       <div>
         <label>טיפולים:</label>
-        {value.TreatmantID.map((treatment, index) => (
+        {formData.TreatmantID.map((treatment, index) => (
           <div key={index}>
             {`טיפול: ${treatment.TreatmantName}, מחיר: ${treatment.Price}, זמן: ${treatment.TreatmantTime}`}
-            <button onClick={() => handleEditTreatment(index)}>Edit</button>
-            <button onClick={() => handleDeleteTreatment(index)}>Delete</button>
+            <button onClick={() => handleEditTreatment(index)}>עריכה</button>
+            <button onClick={() => handleDeleteTreatment(index)}>מחיקה</button>
 
           </div>
         ))}
       </div>
       {/* <button onClick={handleAddTreatmentClick} type="button">
-          Add Treatment
+          הוספת טיפול
         </button>
         <AddTreatmentModal
         isOpen={showAddTreatmentModal}
@@ -348,7 +387,7 @@ const [TreatmantID, setTreatmantID] = useState([
       /> */}
         <br></br>
       <button onClick={handleSubmitTreatmant} type="submit">
-        Save
+        שמירת שינויים
       </button>
       {/* Modal for editing treatments */}
       <Modal
