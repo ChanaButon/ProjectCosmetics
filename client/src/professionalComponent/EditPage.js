@@ -46,7 +46,7 @@ const [TreatmantID, setTreatmantID] = useState([
 
 
   console.log(value)
-
+  console.log(editedWorkingDay)
 
   const fetchData = async () => {
     try {
@@ -196,17 +196,36 @@ const [TreatmantID, setTreatmantID] = useState([
   const formatDaysForDisplayWithButtons = (workingDays, handleDayButtonClick) => {
     return workingDays.map((day, index) => (
       <div key={index}>
-        {`${day.Day}: ${day.Start} - ${day.End}`}
+        {`Day: ${day.Day}, Start: ${day.Start}, End: ${day.End}`}
         <button onClick={() => handleDayButtonClick(index)}>Edit</button>
       </div>
-    ));
+    )).concat(
+      <div key="addNewDay">
+        <button onClick={() => handleDayButtonClick(-1)}>Add New Day</button>
+      </div>
+    );
   };
+  
+  
 
   const handleDayButtonClick = (index) => {
-    setSelectedDayIndex(index);
-    setEditedWorkingDay(deatailUserList[index]);
+    if (index === -1) {
+      // Adding a new day
+      setEditedWorkingDay({
+        Day: daysOfWeek[0],  // Initialize the day properties as needed
+        Start: '',
+        End: '',
+      });
+      setSelectedDayIndex(null);  // Reset selected day index
+    } else {
+      // Editing an existing day
+      setSelectedDayIndex(index);
+      setEditedWorkingDay(deatailUserList[index]);
+    }
     setShowModal(true);
   };
+  
+  
  
   const handleEditTreatment = (index) => {
     setSelectedTreatmentIndex(index);
@@ -290,14 +309,22 @@ const [TreatmantID, setTreatmantID] = useState([
  
 
   const handleSaveChanges = (index) => {
-    setDeatailUserList((prevUser) => {
-      const updatedList = [...prevUser];
-      updatedList[index] = editedWorkingDay;
-      return updatedList;
-    });
-
+    if (index !== -1) {
+      // Editing an existing day
+      setDeatailUserList((prevUser) => {
+        const updatedList = [...prevUser];
+        updatedList[index] = editedWorkingDay;
+        return updatedList;
+      });
+    } else {
+      // Adding a new day
+      setDeatailUserList((prevUser) => [...prevUser, editedWorkingDay]);
+    }
+  
     setShowModal(false);
   };
+  
+  
 
 
   const handleAddVacationDay = (newVacationDay) => {
@@ -458,7 +485,24 @@ const [TreatmantID, setTreatmantID] = useState([
       >
         <div>
             <h2>Edit Working Day</h2>
-            {/* Display the working hours of the selected day in the modal */}
+            <label>Day Name:</label>
+<select
+  name="Day"
+  value={editedWorkingDay.Day || ''}
+  onChange={(e) =>
+    setEditedWorkingDay({
+      ...editedWorkingDay,
+      Day: e.target.value,
+    })
+  }
+>
+  {daysOfWeek.map((day) => (
+    <option key={day} value={day}>
+      {day}
+    </option>
+  ))}
+</select>
+
             {editedWorkingDay && (
               <>
                 <p>{`Day: ${editedWorkingDay.Day}`}</p>
@@ -488,6 +532,7 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
+                 <button onClick={() => setShowModal(true)}>Add New Day</button>
                 <button onClick={() => handleSaveChanges(selectedDayIndex)}>
                   Save Changes
                 </button>

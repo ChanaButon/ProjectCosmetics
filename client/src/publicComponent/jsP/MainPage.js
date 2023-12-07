@@ -121,7 +121,8 @@ import Search from './search.js'
         const listTreat = []
         element.TreatmantID.forEach((treat=>{
           // console.log(treat)
-          const treatfind = tretment.find(a=>a.id._id===treat)
+          const treatfind = tretment.find(a => a.id && a.id._id === treat);
+
           if (treatfind) {
             const flattenedObject = {
               _id: treatfind.id._id,
@@ -223,8 +224,9 @@ import Search from './search.js'
           const userQueue1 = []
           myQueue.map(element=>{
               // console.log(myQueue)
-              // console.log(tretment)
-              const treatfind = tretment.find(a=>a.id._id===element.TreatmantType)
+              console.log(tretment)
+              const treatfind = tretment.find(a => a.id && a.id._id === element.TreatmantType);
+
              // console.log(treatfind)
               if (treatfind) {
                 flattenedObject = {
