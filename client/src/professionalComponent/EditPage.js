@@ -161,6 +161,7 @@ const [TreatmantID, setTreatmantID] = useState([
          Addres:value.Addres,
          WorkingDay:deatailUserList.WorkingDay,
          //QueueList:response.data._id,
+         TreatmantID:treatmantIDs
        };
        console.log(data1)
       const response = await axios.put('http://localhost:3321/product/updateProductById', data1);
@@ -374,7 +375,7 @@ const [TreatmantID, setTreatmantID] = useState([
           </div>
         ))}
       </div>
-      {/* <button onClick={handleAddTreatmentClick} type="button">
+      <button onClick={handleAddTreatmentClick} type="button">
           הוספת טיפול
         </button>
         <AddTreatmentModal
@@ -384,7 +385,7 @@ const [TreatmantID, setTreatmantID] = useState([
         // Pass newTreatment and setNewTreatment to the modal
         newTreatment={newTreatment}
         setNewTreatment={setNewTreatment}
-      /> */}
+      />
         <br></br>
       <button onClick={handleSubmitTreatmant} type="submit">
         שמירת שינויים
