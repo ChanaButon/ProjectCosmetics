@@ -55,10 +55,10 @@ async function newTimeDay(req, res) {
   const deleteDay = async (req, res) => {
       try {
           const dayName = req.body.DayName; 
-          const result = await Days.findOneAndDelete({ DayName: dayName });
+          const result = await timeDays.findOneAndDelete({ DayName: dayName });
   
           if (result) {
-              res.send("Day deleted: " + result.DayName);
+              res.send("timeDays deleted: " + result.DayName);
           } else {
               res.send('Cannot find this day.');
           }
@@ -67,6 +67,18 @@ async function newTimeDay(req, res) {
       }
   }
   
+ 
+const deleteTimeDayById = async (req, res) => {
+  console.log(req.params.id)
+  const id = req.params.id.replace(':', ''); // This removes the colon
+  try {
+      let user = await timeDays.findByIdAndDelete(id)
+      res.send("time Day deleted!!" + user)
+  }
+  catch {
+      res.send('cant find this time Day')
+  }
+}
   
   const findDayById = async (req, res) => {
     try {
@@ -98,5 +110,5 @@ async function newTimeDay(req, res) {
 }
  
 
-module.exports = {newTimeDay , deleteDay,findDayById,updateTimeDay }
+module.exports = {newTimeDay , deleteDay,findDayById,updateTimeDay,deleteTimeDayById }
 
