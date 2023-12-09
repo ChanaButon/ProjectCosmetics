@@ -40,6 +40,7 @@ const [TreatmantID, setTreatmantID] = useState([
   //const [dayList, setDayList] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [dayweekList, setDayweekList] = useState([]);
+  const [holidayList, setHolidayList] = useState([]);
   const [deatailUserList, setDeatailUserList] = useState([]);
   const [selectedDayIndex, setSelectedDayIndex] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -47,6 +48,7 @@ const [TreatmantID, setTreatmantID] = useState([
 
   console.log(value)
   console.log(editedWorkingDay)
+  console.log(deatailUserList)
 
   const fetchData = async () => {
     try {
@@ -96,6 +98,7 @@ const [TreatmantID, setTreatmantID] = useState([
       });
     }
   });
+  console.log(connectedList)
      setDeatailUserList(connectedList);
     // setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList, ...value }));
 
@@ -162,6 +165,7 @@ const [TreatmantID, setTreatmantID] = useState([
          Name:value.Name,
          Addres:value.Addres,
          WorkingDay:workingId,
+         HoliDay:holidayList,
          //QueueList:response.data._id,
          TreatmantID:treatmantIDs
        };
@@ -226,8 +230,8 @@ const [TreatmantID, setTreatmantID] = useState([
     return workingDays.map((day, index) => (
       <div key={index}>
         {`Day: ${day.Day}, Start: ${day.Start}, End: ${day.End}`}
-        <button onClick={() => handleDayButtonClick(index)}>Edit</button>
-        <button onClick={() => handleDayDeleteButtonClick(index)}>delete</button>
+        <button onClick={() => handleDayButtonClick(index)}>עריכה</button>
+        <button onClick={() => handleDayDeleteButtonClick(index)}>מחיקה</button>
       </div>
     )).concat(
       <div key="addNewDay">
@@ -239,21 +243,24 @@ const [TreatmantID, setTreatmantID] = useState([
   
 
   const handleDayButtonClick = (index) => {
+    // Adding a new day
     if (index === -1) {
-      // Adding a new day
       setEditedWorkingDay({
-        Day: daysOfWeek[0],  // Initialize the day properties as needed
+        Day: daysOfWeek[0],  // Initialize the day properties with default values
         Start: '',
         End: '',
+        Status:true
       });
-      setSelectedDayIndex(null);  // Reset selected day index
     } else {
       // Editing an existing day
       setSelectedDayIndex(index);
+      console.log(deatailUserList[index])
       setEditedWorkingDay(deatailUserList[index]);
     }
+  
     setShowModal(true);
   };
+  
   
   
  
@@ -337,13 +344,33 @@ const [TreatmantID, setTreatmantID] = useState([
 
 
  
-
-  const handleSaveChanges = (index) => {
+  const handleSaveChanges = async (index) => {
     if (index !== -1) {
       // Editing an existing day
+      let dataDay = {
+        _id: editedWorkingDay._id,
+        Start: editedWorkingDay.Start,
+        End: editedWorkingDay.End,
+      };
+  
+      try {
+        const response = await axios.put('http://localhost:3321/timeDay/updateTimeDay', dataDay);
+        console.log(response);
+        if (response.data) {
+          console.log(response.data);
+          // Assuming your server sends a success message back
+        } else {
+          throw new Error('Error updating the work day.');
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle the error (e.g., show an error message to the user)
+      }
+  
       setDeatailUserList((prevUser) => {
         const updatedList = [...prevUser];
         updatedList[index] = editedWorkingDay;
+        console.log(editedWorkingDay, updatedList);
         return updatedList;
       });
     } else {
@@ -352,16 +379,34 @@ const [TreatmantID, setTreatmantID] = useState([
     }
   
     setShowModal(false);
+    setEditedWorkingDay({}); // Clear the editedWorkingDay state after saving changes
   };
+  
+  
+  
   
 
 
   const handleVacationDaysChange = (updatedVacationDays) => {
     setFormData((prevFormData) => ({ ...prevFormData, HoliDay: updatedVacationDays }));
+    setHolidayList(updatedVacationDays)
   };
-  
 
 
+  const addNewDay =async ()=>{
+    setShowModal(true)
+    console.log(editedWorkingDay)
+    const response = await axios.post('http://localhost:3321/timeDay/newTimeDay', editedWorkingDay);     
+    console.log(response)
+    if (response.data) {
+      console.log(response.data);
+      deatailUserList.push({...response.data,Day:editedWorkingDay.Day})
+      return response.data; // Assuming your server sends a success message back
+    } else {
+      throw new Error('Error add the time day.');
+    }
+
+  }
 
 
 
@@ -564,11 +609,12 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                <button onClick={() => setShowModal(true)}>Add New Day</button>
+                 <button onClick={() => setShowModal(true)}>Add New Day</button>
                 <button onClick={() => handleSaveChanges(selectedDayIndex)}>
                   Save Changes
                 </button>
-              </>
+</>
+              
             )}
           </div>
         </Modal>
