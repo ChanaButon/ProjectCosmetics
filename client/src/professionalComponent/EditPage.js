@@ -623,9 +623,9 @@ const [TreatmantID, setTreatmantID] = useState([
         <label>ימי חופשה:</label>
         {(formData.HoliDay || []).map((HoliDay, index) => (
           <div key={index}>
-            {`Start Date: ${HoliDay.StartDate}, End Date: ${HoliDay.EndDate}`}
+            {`תחילת יום: ${HoliDay.StartDate}, סוף יום: ${HoliDay.EndDate}`}
             <button onClick={() => setShowVacationDaysModal(true)}>
-              Manage Vacation Days
+              עריכת ימי חופשה
             </button>
           </div>
         ))}
@@ -641,7 +641,7 @@ const [TreatmantID, setTreatmantID] = useState([
         שמירת שינויים
       </button>
       <button onClick={handleSubmit} type="submit">
-        Save
+        שמור
       </button>
     </form>
   );
