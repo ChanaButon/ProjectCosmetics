@@ -376,139 +376,167 @@ const [TreatmantID, setTreatmantID] = useState([
   return (
     <form onSubmit={handleSubmit}>
       <div>
-
-      <button className="exit-button" onClick={handleExitClick}>
-      X
-    </button>
+        <button className="exit-button" onClick={handleExitClick}>
+          X
+        </button>
         <label>שם:</label>
-        <input type="text" name="Name" value={formData.Name|| ''} onChange={handleChange} required />
+        <input
+          type="text"
+          name="Name"
+          value={formData.Name || ''}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label>משפחה:</label>
-        <input type="text" name="Family" value={formData.Family|| ''} onChange={handleChange} required />
+        <input
+          type="text"
+          name="Family"
+          value={formData.Family || ''}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label>כתובת:</label>
-        <input type="text" name="Addres" value={formData.Addres || ''}  onChange={handleChange} required />
+        <input
+          type="text"
+          name="Addres"
+          value={formData.Addres || ''}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <label>תיאור:</label>
-        <input type="text" name="Describe" value={formData.Describe || ''} onChange={handleChange} required />
-      
+        <input
+          type="text"
+          name="Describe"
+          value={formData.Describe || ''}
+          onChange={handleChange}
+          required
+        />
       </div>
-    <div>
       <div>
-        <label>טיפולים:</label>
-        {formData.TreatmantID.map((treatment, index) => (
-          <div key={index}>
-            {`טיפול: ${treatment.TreatmantName}, מחיר: ${treatment.Price}, זמן: ${treatment.TreatmantTime}`}
-            <button onClick={() => handleEditTreatment(index)}>עריכה</button>
-            <button onClick={() => handleDeleteTreatment(index)}>מחיקה</button>
-
-          </div>
-        ))}
-      </div>
-      <button onClick={handleAddTreatmentClick} type="button">
+        <div>
+          <label>טיפולים:</label>
+          {formData.TreatmantID.map((treatment, index) => (
+            <div key={index}>
+              {`טיפול: ${treatment.TreatmantName}, מחיר: ${treatment.Price}, זמן: ${treatment.TreatmantTime}`}
+              <button onClick={() => handleEditTreatment(index)}>עריכה</button>
+              <button onClick={() => handleDeleteTreatment(index)}>מחיקה</button>
+            </div>
+          ))}
+        </div>
+        <button onClick={handleAddTreatmentClick} type="button">
           הוספת טיפול
         </button>
         <AddTreatmentModal
-        isOpen={showAddTreatmentModal}
-        onClose={() => setShowAddTreatmentModal(false)}
-        onAddTreatment={handleAddTreatment}
-        // Pass newTreatment and setNewTreatment to the modal
-        newTreatment={newTreatment}
-        setNewTreatment={setNewTreatment}
-      />
+          isOpen={showAddTreatmentModal}
+          onClose={() => setShowAddTreatmentModal(false)}
+          onAddTreatment={handleAddTreatment}
+          newTreatment={newTreatment}
+          setNewTreatment={setNewTreatment}
+        />
         <br></br>
-      <button onClick={handleSubmitTreatmant} type="submit">
-        שמירת שינויים
-      </button>
-      {/* Modal for editing treatments */}
-      <Modal
-        isOpen={showTreatmentModal}
-        onRequestClose={() => setShowTreatmentModal(false)}
-        contentLabel="Edit Treatment"
-      >
-        <div>
-          <h2>Edit Treatment</h2>
-          {editedTreatment && (
-            <>
-              <label>Treatmant Name:</label>
-              <input
-                type="text"
-                name="TreatmantName"
-                value={editedTreatment.TreatmantName || ''}
-                onChange={(e) =>
-                  setEditedTreatment({
-                    ...editedTreatment,
-                    TreatmantName: e.target.value,
-                  })
-                }
-              />
-              <label>Price:</label>
-              <input
-                type="text"
-                name="Price"
-                value={editedTreatment.Price || ''}
-                onChange={(e) =>
-                  setEditedTreatment({
-                    ...editedTreatment,
-                    Price: e.target.value,
-                  })
-                }
-              />
-              <label>Treatmant Time:</label>
-              <input
-                type="text"
-                name="TreatmantTime"
-                value={editedTreatment.TreatmantTime || ''}
-                onChange={(e) =>
-                  setEditedTreatment({
-                    ...editedTreatment,
-                    TreatmantTime: e.target.value,
-                  })
-                }
-              />
-              <button onClick={handleSaveTreatmentChanges}>
-                Save Changes
-              </button>
-            </>
-          )}
-        </div>
-      </Modal>
-      <br></br>
-      <label>זמן הפסקה:</label>
-      <input type="number" name="BrakeTime" value={formData.BrakeTime || ''}    onChange={handleChange} required />
-    </div>
+        <button onClick={handleSubmitTreatmant} type="submit">
+          שמירת שינויים
+        </button>
+        {/* Modal for editing treatments */}
+        <Modal
+          isOpen={showTreatmentModal}
+          onRequestClose={() => setShowTreatmentModal(false)}
+          contentLabel="Edit Treatment"
+        >
+          <div>
+            <h2>Edit Treatment</h2>
+            {editedTreatment && (
+              <>
+                <label>Treatmant Name:</label>
+                <input
+                  type="text"
+                  name="TreatmantName"
+                  value={editedTreatment.TreatmantName || ''}
+                  onChange={(e) =>
+                    setEditedTreatment({
+                      ...editedTreatment,
+                      TreatmantName: e.target.value,
+                    })
+                  }
+                />
+                <label>Price:</label>
+                <input
+                  type="text"
+                  name="Price"
+                  value={editedTreatment.Price || ''}
+                  onChange={(e) =>
+                    setEditedTreatment({
+                      ...editedTreatment,
+                      Price: e.target.value,
+                    })
+                  }
+                />
+                <label>Treatmant Time:</label>
+                <input
+                  type="text"
+                  name="TreatmantTime"
+                  value={editedTreatment.TreatmantTime || ''}
+                  onChange={(e) =>
+                    setEditedTreatment({
+                      ...editedTreatment,
+                      TreatmantTime: e.target.value,
+                    })
+                  }
+                />
+                <button onClick={handleSaveTreatmentChanges}>
+                  Save Changes
+                </button>
+              </>
+            )}
+          </div>
+        </Modal>
+        <br></br>
+        <label>זמן הפסקה:</label>
+        <input
+          type="number"
+          name="BrakeTime"
+          value={formData.BrakeTime || ''}
+          onChange={handleChange}
+          required
+        />
+      </div>
       <div>
-      
-      <label>ימי עבודה:</label>
-      {formatDaysForDisplayWithButtons(deatailUserList, handleDayButtonClick,handleDayDeleteButtonClick)}
-      <Modal
-        isOpen={showModal}
-        onRequestClose={() => setShowModal(false)}
-        contentLabel="Edit Day"
-      >
-        <div>
+        <label>ימי עבודה:</label>
+        {formatDaysForDisplayWithButtons(
+          deatailUserList,
+          handleDayButtonClick,
+          handleDayDeleteButtonClick
+        )}
+        <Modal
+          isOpen={showModal}
+          onRequestClose={() => setShowModal(false)}
+          contentLabel="Edit Day"
+        >
+          <div>
             <h2>Edit Working Day</h2>
             <label>Day Name:</label>
-<select
-  name="Day"
-  value={editedWorkingDay.Day || ''}
-  onChange={(e) =>
-    setEditedWorkingDay({
-      ...editedWorkingDay,
-      Day: e.target.value,
-    })
-  }
->
-  {daysOfWeek.map((day) => (
-    <option key={day} value={day}>
-      {day}
-    </option>
-  ))}
-</select>
-
+            <select
+              name="Day"
+              value={editedWorkingDay.Day || ''}
+              onChange={(e) =>
+                setEditedWorkingDay({
+                  ...editedWorkingDay,
+                  Day: e.target.value,
+                })
+              }
+            >
+              {daysOfWeek.map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
+            </select>
             {editedWorkingDay && (
               <>
                 <p>{`Day: ${editedWorkingDay.Day}`}</p>
@@ -522,9 +550,7 @@ const [TreatmantID, setTreatmantID] = useState([
                       ...editedWorkingDay,
                       Start: e.target.value,
                     })
-                    
                   }
-                  
                 />
                 <label>End Time:</label>
                 <input
@@ -538,37 +564,40 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                 <button onClick={() => setShowModal(true)}>Add New Day</button>
+                <button onClick={() => setShowModal(true)}>Add New Day</button>
                 <button onClick={() => handleSaveChanges(selectedDayIndex)}>
                   Save Changes
                 </button>
-</>
-              
+              </>
             )}
           </div>
-      </Modal>
-    <div>
-    <label>ימי חופשה:</label>
-        <button onClick={() => setShowVacationDaysModal(true)}>Manage Vacation Days</button>
+        </Modal>
+      </div>
+      <div>
+        <label>ימי חופשה:</label>
+        {(formData.HoliDay || []).map((HoliDay, index) => (
+          <div key={index}>
+            {`Start Date: ${HoliDay.StartDate}, End Date: ${HoliDay.EndDate}`}
+            <button onClick={() => setShowVacationDaysModal(true)}>
+              Manage Vacation Days
+            </button>
+          </div>
+        ))}
         <VacationDaysModal
           isOpen={showVacationDaysModal}
           onClose={() => setShowVacationDaysModal(false)}
-          value={formData.HoliDay}  // Pass the vacation days array
-          onVacationDaysChange={handleVacationDaysChange}  // Pass the change handler function
+          value={formData.HoliDay} // Pass the entire vacation days array
+          onVacationDaysChange={handleVacationDaysChange} // Pass the change handler function
         />
-    </div>
-
-    </div>
-    <div>
-    {/* <input  className="input-field" placeholder="תחילת התאריך" type="date" />
-    <input  className="input-field" placeholder="סיום התאריך" type="date" /> */}
-    </div>
+      </div>
       {/* Add more fields as needed */}
-      <button  onClick={handleSubmit} type="submit">Save</button>
+      <button onClick={handleSubmitTreatmant} type="submit">
+        שמירת שינויים
+      </button>
+      <button onClick={handleSubmit} type="submit">
+        Save
+      </button>
     </form>
   );
-};
-
-
-
+}  
 export default EditForm;
