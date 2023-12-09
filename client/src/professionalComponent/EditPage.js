@@ -295,13 +295,13 @@ const [TreatmantID, setTreatmantID] = useState([
       console.log(formData.TreatmantID[index]._id);
       
       // Send DELETE request to delete the treatment
-      const response = await axios.delete(`http://localhost:3321/treatmant/deleteTreatmant/${formData.TreatmantID[index]._id}`);
+      // const response = await axios.delete(`http://localhost:3321/treatmant/deleteTreatmant/${formData.TreatmantID[index]._id}`);
   
-      if (response.data) {
-        console.log(response.data);
-      } else {
-        throw new Error('Error deleting the treatment.');
-      }
+      // if (response.data) {
+      //   console.log(response.data);
+      // } else {
+      //   throw new Error('Error deleting the treatment.');
+      // }
     } catch (error) {
       console.error(error);
       // Handle the error (e.g., show an error message to the user)

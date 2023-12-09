@@ -375,9 +375,9 @@ return(
       <h4 className='h4Queue'>:לקביעת תורים</h4>
       {finData.length > 0 && <Search finData={finData} userSend={userSend} />}
 <div className="container1">
-  <div className='TableDetail'>
+  {queueHistory.length>0 && <div className='TableDetail'>
 {queueHistory.length>0 && <QueueHistoryTable />}
-</div>
+</div>}
  {visible && (
   <div className="queue">
     <h1>:התורים הקרובים שלך</h1>
