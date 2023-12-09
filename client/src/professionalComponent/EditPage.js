@@ -98,6 +98,7 @@ const [TreatmantID, setTreatmantID] = useState([
       });
     }
   });
+  console.log(connectedList)
      setDeatailUserList(connectedList);
     // setDeatailUserList((prevUser) => ({ ...prevUser, WorkingDay: connectedList, ...value }));
 
@@ -229,8 +230,8 @@ const [TreatmantID, setTreatmantID] = useState([
     return workingDays.map((day, index) => (
       <div key={index}>
         {`Day: ${day.Day}, Start: ${day.Start}, End: ${day.End}`}
-        <button onClick={() => handleDayButtonClick(index)}>Edit</button>
-        <button onClick={() => handleDayDeleteButtonClick(index)}>delete</button>
+        <button onClick={() => handleDayButtonClick(index)}>עריכה</button>
+        <button onClick={() => handleDayDeleteButtonClick(index)}>מחיקה</button>
       </div>
     )).concat(
       <div key="addNewDay">
@@ -343,13 +344,33 @@ const [TreatmantID, setTreatmantID] = useState([
 
 
  
-
-  const handleSaveChanges = (index) => {
+  const handleSaveChanges = async (index) => {
     if (index !== -1) {
       // Editing an existing day
+      let dataDay = {
+        _id: editedWorkingDay._id,
+        Start: editedWorkingDay.Start,
+        End: editedWorkingDay.End,
+      };
+  
+      try {
+        const response = await axios.put('http://localhost:3321/timeDay/updateTimeDay', dataDay);
+        console.log(response);
+        if (response.data) {
+          console.log(response.data);
+          // Assuming your server sends a success message back
+        } else {
+          throw new Error('Error updating the work day.');
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle the error (e.g., show an error message to the user)
+      }
+  
       setDeatailUserList((prevUser) => {
         const updatedList = [...prevUser];
         updatedList[index] = editedWorkingDay;
+        console.log(editedWorkingDay, updatedList);
         return updatedList;
       });
     } else {
@@ -444,7 +465,7 @@ const [TreatmantID, setTreatmantID] = useState([
         setNewTreatment={setNewTreatment}
       />
         <br></br>
-      <button onClick={handleSubmitTreatmant} type="submit">
+      <button onClick={handleSubmitTreatmant} >
         שמירת שינויים
       </button>
       {/* Modal for editing treatments */}
