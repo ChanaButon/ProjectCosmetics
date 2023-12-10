@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AddTreatmentModal from './AddTreatmentModal';
-
+import './EditPage.css'
 import VacationDaysModal from './VacationDaysModal';
 
 const EditForm = () => {
@@ -421,13 +421,14 @@ const [TreatmantID, setTreatmantID] = useState([
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <button className="exit-button" onClick={handleExitClick}>
+        {/* <button className="exit-button" onClick={handleExitClick}>
           X
-        </button>
+        </button> */}
         <label>שם:</label>
         <input
           type="text"
           name="Name"
+          className='EditInput'
           value={formData.Name || ''}
           onChange={handleChange}
           required
@@ -438,6 +439,7 @@ const [TreatmantID, setTreatmantID] = useState([
         <input
           type="text"
           name="Family"
+          className='EditInput'
           value={formData.Family || ''}
           onChange={handleChange}
           required
@@ -448,6 +450,7 @@ const [TreatmantID, setTreatmantID] = useState([
         <input
           type="text"
           name="Addres"
+          className='EditInput'
           value={formData.Addres || ''}
           onChange={handleChange}
           required
@@ -458,6 +461,7 @@ const [TreatmantID, setTreatmantID] = useState([
         <input
           type="text"
           name="Describe"
+          className='EditInput'
           value={formData.Describe || ''}
           onChange={handleChange}
           required
@@ -502,6 +506,7 @@ const [TreatmantID, setTreatmantID] = useState([
                 <input
                   type="text"
                   name="TreatmantName"
+                  className='EditInput'
                   value={editedTreatment.TreatmantName || ''}
                   onChange={(e) =>
                     setEditedTreatment({
@@ -514,6 +519,7 @@ const [TreatmantID, setTreatmantID] = useState([
                 <input
                   type="text"
                   name="Price"
+                  className='EditInput'
                   value={editedTreatment.Price || ''}
                   onChange={(e) =>
                     setEditedTreatment({
@@ -526,6 +532,7 @@ const [TreatmantID, setTreatmantID] = useState([
                 <input
                   type="text"
                   name="TreatmantTime"
+                  className='EditInput'
                   value={editedTreatment.TreatmantTime || ''}
                   onChange={(e) =>
                     setEditedTreatment({
@@ -546,6 +553,7 @@ const [TreatmantID, setTreatmantID] = useState([
         <input
           type="number"
           name="BrakeTime"
+          className='EditInput'
           value={formData.BrakeTime || ''}
           onChange={handleChange}
           required
@@ -568,6 +576,7 @@ const [TreatmantID, setTreatmantID] = useState([
             <label>Day Name:</label>
             <select
               name="Day"
+              className='EditInput'
               value={editedWorkingDay.Day || ''}
               onChange={(e) =>
                 setEditedWorkingDay({
@@ -589,6 +598,7 @@ const [TreatmantID, setTreatmantID] = useState([
                 <input
                   type="time"
                   name="Start"
+                  className='EditInput'
                   value={editedWorkingDay.Start || ''}
                   onChange={(e) =>
                     setEditedWorkingDay({
@@ -601,6 +611,7 @@ const [TreatmantID, setTreatmantID] = useState([
                 <input
                   type="time"
                   name="End"
+                  className='EditInput'
                   value={editedWorkingDay.End || ''}
                   onChange={(e) =>
                     setEditedWorkingDay({
