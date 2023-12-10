@@ -423,44 +423,44 @@ const [TreatmantID, setTreatmantID] = useState([
         <button className="exit-button" onClick={handleExitClick}>
           X
         </button>
-        <label>שם:</label>
+        <label>:שם</label>
         <input
           type="text"
           name="Name"
-          className='EditInput'
+          className="EditInput"
           value={formData.Name || ''}
           onChange={handleChange}
           required
         />
       </div>
       <div>
-        <label>משפחה:</label>
+        <label>:משפחה</label>
         <input
           type="text"
           name="Family"
-          className='EditInput'
+          className="EditInput"
           value={formData.Family || ''}
           onChange={handleChange}
           required
         />
       </div>
       <div>
-        <label>כתובת:</label>
+        <label>:כתובת</label>
         <input
           type="text"
           name="Addres"
-          className='EditInput'
+          className="EditInput"
           value={formData.Addres || ''}
           onChange={handleChange}
           required
         />
       </div>
       <div>
-        <label>תיאור:</label>
+        <label>:תיאור</label>
         <input
           type="text"
           name="Describe"
-          className='EditInput'
+          className="EditInput"
           value={formData.Describe || ''}
           onChange={handleChange}
           required
@@ -468,10 +468,10 @@ const [TreatmantID, setTreatmantID] = useState([
       </div>
       <div>
         <div>
-          <label>טיפולים:</label>
+          <label>:טיפולים</label>
           {formData.TreatmantID.map((treatment, index) => (
             <div key={index}>
-              {`טיפול: ${treatment.TreatmantName}, מחיר: ${treatment.Price}, זמן: ${treatment.TreatmantTime}`}
+              {`:טיפול ${treatment.TreatmantName}, מחיר ${treatment.Price}, זמן ${treatment.TreatmantTime}`}
               <button onClick={() => handleEditTreatment(index)}>עריכה</button>
               <button onClick={() => handleDeleteTreatment(index)}>מחיקה</button>
             </div>
@@ -501,11 +501,11 @@ const [TreatmantID, setTreatmantID] = useState([
             <h2>עריכת טיפול</h2>
             {editedTreatment && (
               <>
-                <label>שם טיפול:</label>
+                <label>:שם טיפול</label>
                 <input
                   type="text"
                   name="TreatmantName"
-                  className='EditInput'
+                  className="EditInput"
                   value={editedTreatment.TreatmantName || ''}
                   onChange={(e) =>
                     setEditedTreatment({
@@ -514,11 +514,11 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                <label>מחיר:</label>
+                <label>:מחיר</label>
                 <input
                   type="text"
                   name="Price"
-                  className='EditInput'
+                  className="EditInput"
                   value={editedTreatment.Price || ''}
                   onChange={(e) =>
                     setEditedTreatment({
@@ -527,11 +527,11 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                <label>זמו טיפול:</label>
+                <label>:זמו טיפול</label>
                 <input
                   type="text"
                   name="TreatmantTime"
-                  className='EditInput'
+                  className="EditInput"
                   value={editedTreatment.TreatmantTime || ''}
                   onChange={(e) =>
                     setEditedTreatment({
@@ -541,25 +541,25 @@ const [TreatmantID, setTreatmantID] = useState([
                   }
                 />
                 <button onClick={handleSaveTreatmentChanges}>
-                 שמירת שינוים
+                  שמירת שינויים
                 </button>
               </>
             )}
           </div>
         </Modal>
         <br></br>
-        <label>זמן הפסקה:</label>
+        <label>:זמן הפסקה</label>
         <input
           type="number"
           name="BrakeTime"
-          className='EditInput'
+          className="EditInput"
           value={formData.BrakeTime || ''}
           onChange={handleChange}
           required
         />
       </div>
       <div>
-        <label>ימי עבודה </label>
+        <label>:ימי עבודה </label>
         {formatDaysForDisplayWithButtons(
           deatailUserList,
           handleDayButtonClick,
@@ -572,10 +572,10 @@ const [TreatmantID, setTreatmantID] = useState([
         >
           <div>
             <h2>עריכת יום עבודה</h2>
-            <label>יום:</label>
+            <label>:יום</label>
             <select
               name="Day"
-              className='EditInput'
+              className="EditInput"
               value={editedWorkingDay.Day || ''}
               onChange={(e) =>
                 setEditedWorkingDay({
@@ -592,12 +592,12 @@ const [TreatmantID, setTreatmantID] = useState([
             </select>
             {editedWorkingDay && (
               <>
-                <p>{`Day: ${editedWorkingDay.Day}`}</p>
-                <label>תחילת יום:</label>
+                <p>{`:יום ${editedWorkingDay.Day}`}</p>
+                <label>:תחילת יום</label>
                 <input
                   type="time"
                   name="Start"
-                  className='EditInput'
+                  className="EditInput"
                   value={editedWorkingDay.Start || ''}
                   onChange={(e) =>
                     setEditedWorkingDay({
@@ -606,11 +606,11 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                <label>סיום יום:</label>
+                <label>:סיום יום</label>
                 <input
                   type="time"
                   name="End"
-                  className='EditInput'
+                  className="EditInput"
                   value={editedWorkingDay.End || ''}
                   onChange={(e) =>
                     setEditedWorkingDay({
@@ -619,55 +619,49 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                {/* Remove this line */}
-                <br> </br>
+                <br></br>
                 <button onClick={addNewDay}>הוסף יום חדש</button>
                 <button onClick={() => handleSaveChanges(selectedDayIndex)}>
                   שמירת שינויים
-                  </button>
-
-</>
-              
+                </button>
+              </>
             )}
           </div>
         </Modal>
       </div>
       <div>
-      <label>ימי חופשה:</label>
-{(formData.HoliDay || []).map((HoliDay, index) => (
-  <div key={index}>
-    {`תחילת חופשה: ${HoliDay.StartDate}, סוף חופשה: ${HoliDay.EndDate}`}
-    <br></br>
-    <button onClick={() => setShowVacationDaysModal(true)}>
-      עריכת ימי חופשה
-    </button>
-
-  </div>
-))}
-{/* Display the button even when there are no vacation days */}
-{(!formData.HoliDay || formData.HoliDay.length === 0) && (
-  <div>
-    <button onClick={() => setShowVacationDaysModal(true)}>
-      עריכת ימי חופשה
-    </button>
-  </div>
-)}
-<VacationDaysModal
-  isOpen={showVacationDaysModal}
-  onClose={() => setShowVacationDaysModal(false)}
-  value={formData.HoliDay} // Pass the entire vacation days array
-  onVacationDaysChange={handleVacationDaysChange} // Pass the change handler function
-/>
+        <label>:ימי חופשה</label>
+        {(formData.HoliDay || []).map((HoliDay, index) => (
+          <div key={index}>
+            {`:תחילת חופשה ${HoliDay.StartDate}, סוף חופשה ${HoliDay.EndDate}`}
+            <br></br>
+            <button onClick={() => setShowVacationDaysModal(true)}>
+              עריכת ימי חופשה
+            </button>
+          </div>
+        ))}
+        {/* Display the button even when there are no vacation days */}
+        {(!formData.HoliDay || formData.HoliDay.length === 0) && (
+          <div>
+            <button onClick={() => setShowVacationDaysModal(true)}>
+              עריכת ימי חופשה
+            </button>
+          </div>
+        )}
+        <VacationDaysModal
+          isOpen={showVacationDaysModal}
+          onClose={() => setShowVacationDaysModal(false)}
+          value={formData.HoliDay} // Pass the entire vacation days array
+          onVacationDaysChange={handleVacationDaysChange} // Pass the change handler function
+        />
       </div>
       {/* Add more fields as needed */}
-      {/* <button onClick={handleSubmitTreatmant} type="submit">
-        שמירת שינויים
-      </button> */}
       <br></br>
       <button onClick={handleSubmit} type="submit">
         עידכון פרטי העסק
       </button>
     </form>
   );
-}  
-export default EditForm;
+  }  
+  export default EditForm;
+  
