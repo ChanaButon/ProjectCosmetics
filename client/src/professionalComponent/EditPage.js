@@ -156,7 +156,7 @@ const [TreatmantID, setTreatmantID] = useState([
 
   const UpdateProduct = async (value) => {
     try {
-      console.log(value)
+      console.log(value.BrakeTime)
       const treatmantIDs = formData.TreatmantID.map((treatment) => treatment._id);
       const workingId = deatailUserList.map((e)=>e._id)
       console.log(deatailUserList)
@@ -167,7 +167,8 @@ const [TreatmantID, setTreatmantID] = useState([
          WorkingDay:workingId,
          HoliDay:holidayList,
          //QueueList:response.data._id,
-         TreatmantID:treatmantIDs
+         TreatmantID:treatmantIDs,
+         BrakeTime:value.BrakeTime
        };
        console.log(data1)
       const response = await axios.put('http://localhost:3321/product/updateProductById', data1);
@@ -175,7 +176,6 @@ const [TreatmantID, setTreatmantID] = useState([
       console.log(response);
       if (response.data) {
         console.log(response.data);
-        return response.data;
       } else {
         throw new Error('Error updating the product.');
       }
@@ -394,17 +394,16 @@ const [TreatmantID, setTreatmantID] = useState([
 
 
   const addNewDay =async ()=>{
-    setShowModal(true)
+    setShowModal(false)
     console.log(editedWorkingDay)
     const response = await axios.post('http://localhost:3321/timeDay/newTimeDay', editedWorkingDay);     
     console.log(response)
     if (response.data) {
       console.log(response.data);
-      deatailUserList.push({...response.data,Day:editedWorkingDay.Day})
+      setDeatailUserList((prevList) => [...prevList, { ...response.data, Day: editedWorkingDay.Day }]);
     } else {
       throw new Error('Error add the time day.');
     }
-    setShowModal(false)
 
   }
 
@@ -421,9 +420,9 @@ const [TreatmantID, setTreatmantID] = useState([
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        {/* <button className="exit-button" onClick={handleExitClick}>
+        <button className="exit-button" onClick={handleExitClick}>
           X
-        </button> */}
+        </button>
         <label>שם:</label>
         <input
           type="text"
@@ -560,7 +559,7 @@ const [TreatmantID, setTreatmantID] = useState([
         />
       </div>
       <div>
-        <label>ימי עבודה:</label>
+        <label>ימי עבודה </label>
         {formatDaysForDisplayWithButtons(
           deatailUserList,
           handleDayButtonClick,
@@ -621,7 +620,8 @@ const [TreatmantID, setTreatmantID] = useState([
                   }
                 />
                 {/* Remove this line */}
-                <button onClick={() => addNewDay()}>הוסף יום חדש</button>
+                <br> </br>
+                <button onClick={addNewDay}>הוסף יום חדש</button>
                 <button onClick={() => handleSaveChanges(selectedDayIndex)}>
                   שמירת שינויים
                   </button>
@@ -637,9 +637,11 @@ const [TreatmantID, setTreatmantID] = useState([
 {(formData.HoliDay || []).map((HoliDay, index) => (
   <div key={index}>
     {`תחילת חופשה: ${HoliDay.StartDate}, סוף חופשה: ${HoliDay.EndDate}`}
+    <br></br>
     <button onClick={() => setShowVacationDaysModal(true)}>
       עריכת ימי חופשה
     </button>
+
   </div>
 ))}
 {/* Display the button even when there are no vacation days */}
@@ -661,8 +663,9 @@ const [TreatmantID, setTreatmantID] = useState([
       {/* <button onClick={handleSubmitTreatmant} type="submit">
         שמירת שינויים
       </button> */}
+      <br></br>
       <button onClick={handleSubmit} type="submit">
-        שמור
+        עידכון פרטי העסק
       </button>
     </form>
   );

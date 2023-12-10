@@ -16,15 +16,7 @@ form {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-label {
-  font-weight: bold;
-  display: block;
-  margin-bottom: 5px;
-}
 
-div {
-  margin-bottom: 15px;
-}
 
 .Modal {
   position: absolute;
