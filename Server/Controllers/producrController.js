@@ -129,7 +129,7 @@ async function serverFunction1(data) {
           { _id: req.body._id },
           existingProduct,
           { new: true }
-        );n
+        );
   
         if (!updatedProduct) {
           return res.status(404).send({ message: 'No product found with the specified ID' });
