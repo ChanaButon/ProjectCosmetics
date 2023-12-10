@@ -633,21 +633,29 @@ const [TreatmantID, setTreatmantID] = useState([
         </Modal>
       </div>
       <div>
-        <label>ימי חופשה:</label>
-        {(formData.HoliDay || []).map((HoliDay, index) => (
-          <div key={index}>
-            {`תחילת חופשה: ${HoliDay.StartDate}, סוף חופשה: ${HoliDay.EndDate}`}
-            <button onClick={() => setShowVacationDaysModal(true)}>
-              עריכת ימי חופשה
-            </button>
-          </div>
-        ))}
-        <VacationDaysModal
-          isOpen={showVacationDaysModal}
-          onClose={() => setShowVacationDaysModal(false)}
-          value={formData.HoliDay} // Pass the entire vacation days array
-          onVacationDaysChange={handleVacationDaysChange} // Pass the change handler function
-        />
+      <label>ימי חופשה:</label>
+{(formData.HoliDay || []).map((HoliDay, index) => (
+  <div key={index}>
+    {`תחילת חופשה: ${HoliDay.StartDate}, סוף חופשה: ${HoliDay.EndDate}`}
+    <button onClick={() => setShowVacationDaysModal(true)}>
+      עריכת ימי חופשה
+    </button>
+  </div>
+))}
+{/* Display the button even when there are no vacation days */}
+{(!formData.HoliDay || formData.HoliDay.length === 0) && (
+  <div>
+    <button onClick={() => setShowVacationDaysModal(true)}>
+      עריכת ימי חופשה
+    </button>
+  </div>
+)}
+<VacationDaysModal
+  isOpen={showVacationDaysModal}
+  onClose={() => setShowVacationDaysModal(false)}
+  value={formData.HoliDay} // Pass the entire vacation days array
+  onVacationDaysChange={handleVacationDaysChange} // Pass the change handler function
+/>
       </div>
       {/* Add more fields as needed */}
       {/* <button onClick={handleSubmitTreatmant} type="submit">
