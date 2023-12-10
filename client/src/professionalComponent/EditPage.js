@@ -495,10 +495,10 @@ const [TreatmantID, setTreatmantID] = useState([
           contentLabel="Edit Treatment"
         >
           <div>
-            <h2>Edit Treatment</h2>
+            <h2>עריכת טיפול</h2>
             {editedTreatment && (
               <>
-                <label>Treatmant Name:</label>
+                <label>שם טיפול:</label>
                 <input
                   type="text"
                   name="TreatmantName"
@@ -510,7 +510,7 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                <label>Price:</label>
+                <label>מחיר:</label>
                 <input
                   type="text"
                   name="Price"
@@ -522,7 +522,7 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                <label>Treatmant Time:</label>
+                <label>זמו טיפול:</label>
                 <input
                   type="text"
                   name="TreatmantTime"
@@ -535,7 +535,7 @@ const [TreatmantID, setTreatmantID] = useState([
                   }
                 />
                 <button onClick={handleSaveTreatmentChanges}>
-                  Save Changes
+                 שמירת שינוים
                 </button>
               </>
             )}
@@ -564,8 +564,8 @@ const [TreatmantID, setTreatmantID] = useState([
           contentLabel="Edit Day"
         >
           <div>
-            <h2>Edit Working Day</h2>
-            <label>Day Name:</label>
+            <h2>עריכת יום עבודה</h2>
+            <label>יום:</label>
             <select
               name="Day"
               value={editedWorkingDay.Day || ''}
@@ -585,7 +585,7 @@ const [TreatmantID, setTreatmantID] = useState([
             {editedWorkingDay && (
               <>
                 <p>{`Day: ${editedWorkingDay.Day}`}</p>
-                <label>Start Time:</label>
+                <label>תחילת יום:</label>
                 <input
                   type="time"
                   name="Start"
@@ -597,7 +597,7 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                <label>End Time:</label>
+                <label>סיום יום:</label>
                 <input
                   type="time"
                   name="End"
@@ -625,7 +625,7 @@ const [TreatmantID, setTreatmantID] = useState([
         <label>ימי חופשה:</label>
         {(formData.HoliDay || []).map((HoliDay, index) => (
           <div key={index}>
-            {`תחילת יום: ${HoliDay.StartDate}, סוף יום: ${HoliDay.EndDate}`}
+            {`תחילת חופשה: ${HoliDay.StartDate}, סוף חופשה: ${HoliDay.EndDate}`}
             <button onClick={() => setShowVacationDaysModal(true)}>
               עריכת ימי חופשה
             </button>
@@ -639,9 +639,9 @@ const [TreatmantID, setTreatmantID] = useState([
         />
       </div>
       {/* Add more fields as needed */}
-      <button onClick={handleSubmitTreatmant} type="submit">
+      {/* <button onClick={handleSubmitTreatmant} type="submit">
         שמירת שינויים
-      </button>
+      </button> */}
       <button onClick={handleSubmit} type="submit">
         שמור
       </button>
