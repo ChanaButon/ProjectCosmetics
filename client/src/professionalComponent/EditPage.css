@@ -16,7 +16,9 @@ form {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-
+.editClick{
+  background-color: red;
+}
 
 .Modal {
   position: absolute;

@@ -235,6 +235,7 @@ const [TreatmantID, setTreatmantID] = useState([
       </div>
     )).concat(
       <div key="addNewDay">
+        <br></br>
         <button onClick={() => handleDayButtonClick(-1)}>הוסף יום חדש</button>
       </div>
     );
@@ -477,9 +478,12 @@ const [TreatmantID, setTreatmantID] = useState([
             </div>
           ))}
         </div>
+        <br></br>
         <button onClick={handleAddTreatmentClick} type="button">
           הוספת טיפול
         </button>
+        <br></br>
+
         <AddTreatmentModal
           isOpen={showAddTreatmentModal}
           onClose={() => setShowAddTreatmentModal(false)}
@@ -489,7 +493,7 @@ const [TreatmantID, setTreatmantID] = useState([
         />
         <br></br>
         <button onClick={handleSubmitTreatmant} type="submit">
-          שמירת שינויים
+          שמירת שינוים
         </button>
         {/* Modal for editing treatments */}
         <Modal
@@ -540,6 +544,7 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
+                <br></br>
                 <button onClick={handleSaveTreatmentChanges}>
                  שמירת שינוים
                 </button>
@@ -622,6 +627,7 @@ const [TreatmantID, setTreatmantID] = useState([
                 {/* Remove this line */}
                 <br> </br>
                 <button onClick={addNewDay}>הוסף יום חדש</button>
+                <br></br>
                 <button onClick={() => handleSaveChanges(selectedDayIndex)}>
                   שמירת שינויים
                   </button>
@@ -660,11 +666,8 @@ const [TreatmantID, setTreatmantID] = useState([
 />
       </div>
       {/* Add more fields as needed */}
-      {/* <button onClick={handleSubmitTreatmant} type="submit">
-        שמירת שינויים
-      </button> */}
       <br></br>
-      <button onClick={handleSubmit} type="submit">
+      <button onClick={handleSubmit} className='editClick' type="submit">
         עידכון פרטי העסק
       </button>
     </form>

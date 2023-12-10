@@ -31,13 +31,13 @@ const AddTreatmentModal = ({ isOpen, onClose, onAddTreatment }) => {
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} contentLabel="Add Treatment">
-      <h2>Add New Treatment</h2>
-      <label>Select Treatment:</label>
+      <h2>הוספת טיפול חדש</h2>
+      <label>:בחירת טיפול</label>
       <select
         value={selectedTreatment}
         onChange={(e) => setSelectedTreatment(e.target.value)}
       >
-        <option value="" disabled>Select Treatment</option>
+        <option value="" disabled>בחירת טיפול</option>
         {treatmantList.map((treatment) => (
           <option key={treatment} value={treatment}>
             {treatment}
@@ -56,8 +56,8 @@ const AddTreatmentModal = ({ isOpen, onClose, onAddTreatment }) => {
         value={treatmentTime}
         onChange={(e) => setTreatmentTime(e.target.value)}
       />
-      <button onClick={handleAddClick}>Add</button>
-      <button onClick={onClose}>Cancel</button>
+      <button onClick={handleAddClick}>הוסף</button>
+      <button onClick={onClose}>ביטול</button>
     </Modal>
   );
 };
