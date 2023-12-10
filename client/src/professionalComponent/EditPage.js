@@ -235,7 +235,7 @@ const [TreatmantID, setTreatmantID] = useState([
       </div>
     )).concat(
       <div key="addNewDay">
-        <button onClick={() => handleDayButtonClick(-1)}>Add New Day</button>
+        <button onClick={() => handleDayButtonClick(-1)}>הוסף יום חדש</button>
       </div>
     );
   };
@@ -609,10 +609,12 @@ const [TreatmantID, setTreatmantID] = useState([
                     })
                   }
                 />
-                 <button onClick={() => setShowModal(true)}>Add New Day</button>
+                {/* Remove this line */}
+                <button onClick={() => addNewDay()}>הוסף יום חדש</button>
                 <button onClick={() => handleSaveChanges(selectedDayIndex)}>
-                  Save Changes
-                </button>
+                  שמירת שינויים
+                  </button>
+
 </>
               
             )}
