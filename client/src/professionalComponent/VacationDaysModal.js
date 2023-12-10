@@ -46,46 +46,46 @@ const VacationDaysModal = ({
       contentLabel="Vacation Days"
     >
       <div>
-        <h2>Vacation Days</h2>
+        <h2>ימי חופשה</h2>
         <div>
         {(value || []).map((vacationDay, index) => (
     <div key={index}>
       {`Start Date: ${vacationDay.StartDate}, End Date: ${vacationDay.EndDate}`}
-      <button onClick={() => handleUpdateVacationDay(index)}>Edit</button>
-      <button onClick={() => handleDeleteVacationDay(index)}>Delete</button>
+      <button onClick={() => handleUpdateVacationDay(index)}>עריכה</button>
+      <button onClick={() => handleDeleteVacationDay(index)}>מחיקה</button>
     </div>
   ))}
         </div>
         <div>
-          <label>Start Date:</label>
+          <label>תחילת חופשה:</label>
           <input
             type="date"
             value={newVacationDay.StartDate}
             onChange={(e) => setNewVacationDay({ ...newVacationDay, StartDate: e.target.value })}
           />
-          <label>End Date:</label>
+          <label>סוף חופשה:</label>
           <input
             type="date"
             value={newVacationDay.EndDate}
             onChange={(e) => setNewVacationDay({ ...newVacationDay, EndDate: e.target.value })}
           />
-          <button onClick={handleAddVacationDay}>Add Vacation Day</button>
+          <button onClick={handleAddVacationDay}>הוספת ימי חופשה</button>
         </div>
         {selectedVacationDayIndex !== null && (
           <div>
-            <label>Start Date:</label>
+            <label>תחילת חופשה:</label>
             <input
               type="date"
               value={editedVacationDay.StartDate || ''}
               onChange={(e) => setEditedVacationDay({ ...editedVacationDay, StartDate: e.target.value })}
             />
-            <label>End Date:</label>
+            <label>סוף חופשה:</label>
             <input
               type="date"
               value={editedVacationDay.EndDate || ''}
               onChange={(e) => setEditedVacationDay({ ...editedVacationDay, EndDate: e.target.value })}
             />
-            <button onClick={handleUpdateSave}>Save Changes</button>
+            <button onClick={handleUpdateSave}>שמירת שינוים</button>
           </div>
         )}
       </div>
