@@ -2,7 +2,7 @@ const UserType = require('../Models/userTypeModel')
 
 
 async function serverFunction(userData) {
-    console.log("usertype");
+    console.log("usertype");;
 
     let myUserType = new UserType({
         userNameType: userData.type,

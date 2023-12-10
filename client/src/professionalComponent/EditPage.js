@@ -401,10 +401,10 @@ const [TreatmantID, setTreatmantID] = useState([
     if (response.data) {
       console.log(response.data);
       deatailUserList.push({...response.data,Day:editedWorkingDay.Day})
-      return response.data; // Assuming your server sends a success message back
     } else {
       throw new Error('Error add the time day.');
     }
+    setShowModal(false)
 
   }
 
