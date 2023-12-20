@@ -249,13 +249,13 @@ axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
       id="FinishTimeInput"
       type="time"
     />
-    <select ref={statusRef} className="input-field" placeholder="Status" id="StatusInput">
+    {/* <select ref={statusRef} className="input-field" placeholder="Status" id="StatusInput">
     {statusOptions.map((status, index) => (
           <option key={index} value={status}>
             {status}
           </option>
         ))}
-      </select>
+      </select> */}
     <button className="button1" onClick={handleAddDay}>
      הוסף יום
     </button>

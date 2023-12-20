@@ -2,6 +2,7 @@ const Treat = require('../Models/TreatmantModel')
 const Product = require('../Models/productModel')
 const timeDays = require('../Models/timeDayModel');
 const Days = require('../Models/daysModel');
+const User = require('../Models/userModel');
 
 
 
@@ -147,37 +148,63 @@ async function serverFunction1(data) {
   
   const updateProductById = async (req, res) => {
     try {
-        // Step 1: Find the existing product by its ID
-        const existingProduct = await Product.findOne({ _id: req.body._id });
-
-        // Step 2: Check if the product exists
-        if (existingProduct) {
-            // Step 3: Update the existing product with the new data from the request body
-            Object.assign(existingProduct, req.body);
-
-            // Step 4: Save the updated product to the database
-            const updatedProduct = await existingProduct.save();
-
-            // Step 5: Check if the update was successful
-            if (updatedProduct) {
-                // Step 6: Send the updated product as the response
-                return res.send(updatedProduct);
-            } else {
-                // Step 7: If the update fails, send a 500 response with an error message
-                return res.status(500).send({ message: 'Failed to update the product.' });
+      // Step 1: Find the existing product by its ID
+      const existingProduct = await Product.findOne({ _id: req.body._id });
+  
+      // Step 2: Check if the product exists
+      if (existingProduct) {
+        // Step 3: Update the existing product with the new data from the request body
+        Object.assign(existingProduct, req.body);
+  
+        // Step 4: Save the updated product to the database
+        const updatedProduct = await existingProduct.save();
+  
+        // Step 5: Check if the update was successful
+        if (updatedProduct) {
+          // Step 6: Find the associated user and update it
+          if (existingProduct.UserID) {
+            try {
+              const objectId = existingProduct.UserID;
+              const objectIdString = objectId.toString();    
+              console.log(objectIdString)      
+              const existingUser = await User.findOne({ _id: objectIdString });
+              console.log(existingUser,"meooooooooooooooooooooooooooo")
+              const data2={
+                _id:objectIdString,
+                Name:req.body.Name,
+                FamilyName:req.body.FamilyName
+              }
+              console.log(data2)
+              if (existingUser) {
+                // Update the existing user with the new data from the request body
+              Object.assign(existingUser, data2);
+  
+                // Save the updated user to the database
+                await existingUser.save();
+              } else {
+                // Handle case where no user is found with the specified UserID
+                console.error('No user found with the specified UserID');
+              }
+            } catch (userError) {
+              console.error('Error updating user:', userError.message);
             }
+          }
+  
+          // Step 7: Send the updated product as the response
+          return res.send(updatedProduct);
         } else {
-            // Step 8: If no product found with the specified ID, send a 404 response
-            return res.status(404).send({ message: 'No product found with the specified ID' });
+          // Step 8: If the product update fails, send a 500 response with an error message
+          return res.status(500).send({ message: 'Failed to update the product.' });
         }
+      } else {
+        // Step 9: If no product found with the specified ID, send a 404 response
+        return res.status(404).send({ message: 'No product found with the specified ID' });
+      }
     } catch (error) {
-        // Step 9: Handle errors and send a 500 response with an error message
-        console.error(error);
-        return res.status(500).send(error.message);
+      // Step 10: Handle errors and send a 500 response with an error message
+      console.error(error);
+      return res.status(500).send(error.message);
     }
-};
-
+  };
   
-  
-
 module.exports = { newProduct,getAllProduct,updateProduct,updateProductById}

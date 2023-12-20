@@ -156,20 +156,21 @@ const [TreatmantID, setTreatmantID] = useState([
 
   const UpdateProduct = async (value) => {
     try {
-      console.log(value.BrakeTime)
+      console.log(value.Family)
       const treatmantIDs = formData.TreatmantID.map((treatment) => treatment._id);
       const workingId = deatailUserList.map((e)=>e._id)
       console.log(deatailUserList)
       const data1 = {
         _id: value._id,
          Name:value.Name,
+         FamilyName:value.Family,
          Addres:value.Addres,
          WorkingDay:workingId,
          HoliDay:holidayList,
-         //QueueList:response.data._id,
          TreatmantID:treatmantIDs,
          BrakeTime:value.BrakeTime
        };
+       
        console.log(data1)
       const response = await axios.put('http://localhost:3321/product/updateProductById', data1);
       console.log(value);
@@ -187,6 +188,7 @@ const [TreatmantID, setTreatmantID] = useState([
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name,value)
     setFormData({ ...formData, [name]: value });
   };
 
