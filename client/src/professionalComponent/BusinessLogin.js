@@ -92,7 +92,7 @@ useEffect(()=>{
       Day: selectedDayRef.current.value,
       Start: startTimeRef.current.value,
       End: finishTimeRef.current.value,
-      Status: statusRef.current.value,
+      Status: true,
     };
 
     // Add the newDay to the dayList array
@@ -101,7 +101,7 @@ useEffect(()=>{
      selectedDayRef.current.value = '';
      startTimeRef.current.value = '';
      finishTimeRef.current.value = '';
-     statusRef.current.value = 'true'; // Reset status to the default value
+    //  statusRef.current.defaultValue  = true; // Reset status to the default value
    };
 
    const handelADDFreeDays=()=>{
@@ -262,7 +262,7 @@ axios.post('http://localhost:3321/product/newProduct',product).then((res) => {
     <ul className="added-days-list">
       {dayList.map((day, index) => (
         <li key={index} className="day-item">
-          Day: {day.Day}, Start: {day.Start}, End: {day.End}, Status: {day.Status}
+          Day: {day.Day}, Start: {day.Start}, End: {day.End}
         </li>
       ))}
     </ul>
