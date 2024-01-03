@@ -86,8 +86,8 @@ const Register = (props) => {
       
 
     }
-    console.log(isValidEmail(MailRef.current.value),isValidPhoneNumber(PhoneRef.current.value))
-    if(user.Name!==""&&user.FamilyName!==""&&user.ID!==""&&user.Password!==""&&user.Mail!==""&&user.Phone!==""&&isValidEmail(MailRef.current.value)&&isValidPhoneNumber(PhoneRef.current.value))
+    console.log(isValidEmail(MailRef.current.value),isValidPhoneNumber(PhoneRef.current.value),isValidId(IDRef.current.value))
+    if(user.Name!==""&&user.FamilyName!==""&&user.ID!==""&&user.Password!==""&&user.Mail!==""&&user.Phone!==""&&isValidEmail(MailRef.current.value)&&isValidPhoneNumber(PhoneRef.current.value)&&isValidId(IDRef.current.value))
     {
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser', user).then((res) => {

@@ -124,7 +124,17 @@ useEffect(()=>{
 
 
   const submitUser = () =>{
-
+    if (
+      !businessDescription ||
+      !businessAddress ||
+      treatmantList.length === 0 ||
+      dayList.length === 0 ||
+      !BrakeTimeRef.current.value
+    ) {
+      // If any of the fields are empty, show an alert and return
+      alert('בבקשה למלא את כל השדות');
+      return;
+    }
 console.log(typeof(freeDaysList))
 let product = {
   UserID : idUser,

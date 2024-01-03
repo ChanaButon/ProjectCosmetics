@@ -90,7 +90,7 @@ if (!isChecked) {
       
     }
     console.log(isValidEmail(MailRef.current.value),isValidPhoneNumber(PhoneRef.current.value))
-    if(product.Name!==""&&product.FamilyName!==""&&product.ID!==""&&product.Password!==""&&product.Mail!==""&&product.Phone!==""&&product.TreatmantName!==""){
+    if(product.Name!==""&&product.FamilyName!==""&&product.ID!==""&&product.Password!==""&&product.Mail!==""&&product.Phone!==""&&product.TreatmantName!==""&&isValidId(IDRef.current.value)){
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser',product).then((res) => {
       if (res.data) {
