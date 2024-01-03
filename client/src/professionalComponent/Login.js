@@ -76,6 +76,11 @@ if (!isChecked) {
     (item, index) => checkListRef.current[index].checked
   );
 
+  if (selectedTreatments.length === 0) {
+    // If no specialization is chosen, show an error message
+    alert("בבקשה לבחור לפחות התמחות אחת");
+    return;
+  }
     
     let product = {
       //מכיל את כל יוזר ואת כל עסק
@@ -89,8 +94,8 @@ if (!isChecked) {
       Type: "business",
       
     }
-    console.log(isValidEmail(MailRef.current.value),isValidPhoneNumber(PhoneRef.current.value))
-    if(product.Name!==""&&product.FamilyName!==""&&product.ID!==""&&product.Password!==""&&product.Mail!==""&&product.Phone!==""&&product.TreatmantName!==""&&isValidId(IDRef.current.value)){
+    console.log(isValidEmail(MailRef.current.value),isValidPhoneNumber(PhoneRef.current.value),product.TreatmantName.length)
+    if(product.Name!==""&&product.FamilyName!==""&&product.ID!==""&&product.Password!==""&&product.Mail!==""&&product.Phone!==""&&product.TreatmantName.length>0&&isValidId(IDRef.current.value)){
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser',product).then((res) => {
       if (res.data) {
