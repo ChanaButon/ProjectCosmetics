@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState,useEffect  } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
@@ -47,6 +47,19 @@ const Register = (props) => {
 
 
 
+  useEffect(() => {
+    if (Object.values(formErrors).some((status) => status === true)) {
+      return;
+    }
+
+    if (!isChecked) {
+      setCheckboxError(true); // Set checkbox error to true
+      return;
+    }
+
+    // Continue with the rest of your code (axios.post, navigation, etc.)
+  }, [formErrors, isChecked]);
+
   const checkUser = () => {
     
     setFormErrors({name: !nameRef.current.value,
@@ -56,18 +69,11 @@ const Register = (props) => {
       mail: !isValidEmail(MailRef.current.value),
       phone: !isValidPhoneNumber(PhoneRef.current.value),
   });
-    console.log(formErrors)
+    
+    console.log(formErrors);
 
-  
-    if(Object.values(formErrors).some((status) => status === true)){
-      return
-    }
- 
 
-  if (!isChecked) {
-    setCheckboxError(true); // Set checkbox error to true
-    return;
-  }
+
     //שליחת הנתונים להוספה לנוד - משתמש חדש כולל כל הנתונים 
     let user = {
       Name: nameRef.current.value,
@@ -80,7 +86,9 @@ const Register = (props) => {
       
 
     }
-
+    console.log(isValidEmail(MailRef.current.value),isValidPhoneNumber(PhoneRef.current.value))
+    if(user.Name!==""&&user.FamilyName!==""&&user.ID!==""&&user.Password!==""&&user.Mail!==""&&user.Phone!==""&&isValidEmail(MailRef.current.value)&&isValidPhoneNumber(PhoneRef.current.value))
+    {
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser', user).then((res) => {
       if (res.data) {
@@ -95,7 +103,7 @@ const Register = (props) => {
     })
 
   }
-
+  }
   return (
     <div>
       <button className="exit-button" onClick={handleExitClick}>

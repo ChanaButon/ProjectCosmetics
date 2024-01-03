@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { addUser, setUser } from '../redux/actions'//יבוא של השם של הפונקציה באקשנס שאותו נרצה להפעיל
 import { isValidPhoneNumber } from '../validation/validationUtils.js'
 import {isValidEmail} from '../validation/validationUtils'
+import { isValidId } from '../validation/validationUtils.js'
 
 import '.././clientComponent/register.css'
 
@@ -52,12 +53,11 @@ const Register = (props) => {
   };
  
 
-
 const checkUser = () => {
   setFormErrors( {
     name: !nameRef.current.value,
     familyName: !FamilyNameRef.current.value,
-    ID: !IDRef.current.value,
+    ID:!isValidId(IDRef.current.value),
     password: !passwordRef.current.value,
     mail: !isValidEmail(MailRef.current.value),
     phone: !isValidPhoneNumber(PhoneRef.current.value),
@@ -89,8 +89,8 @@ if (!isChecked) {
       Type: "business",
       
     }
-    
-
+    console.log(isValidEmail(MailRef.current.value),isValidPhoneNumber(PhoneRef.current.value))
+    if(product.Name!==""&&product.FamilyName!==""&&product.ID!==""&&product.Password!==""&&product.Mail!==""&&product.Phone!==""&&product.TreatmantName!==""){
     //שליחה לשרת
     axios.post('http://localhost:3321/User/newUser',product).then((res) => {
       if (res.data) {
@@ -102,9 +102,7 @@ if (!isChecked) {
     }).catch((err) => {
       console.log(err);
       alert("אירעה שגיאה")
-    })
-
-
+    })}
 
 
 
